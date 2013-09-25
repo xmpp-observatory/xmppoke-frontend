@@ -14,11 +14,11 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 
 		$result = pg_fetch_object($res);
 	} else {
-	        pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
+		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
-                $res = pg_execute($dbconn, "find_result", array($result_domain, $result_type));
+		$res = pg_execute($dbconn, "find_result", array($result_domain, $result_type));
 
-                $result = pg_fetch_object($res);
+		$result = pg_fetch_object($res);
 
 		$result_id = $result->test_id;
 	}
@@ -33,11 +33,11 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 
 	pg_prepare($dbconn, "find_certs", "SELECT * FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1 ORDER BY chain_index;");
 
-        pg_prepare($dbconn, "find_cert", "SELECT * FROM certificates WHERE certificates.certificate_id = $1;");
+	pg_prepare($dbconn, "find_cert", "SELECT * FROM certificates WHERE certificates.certificate_id = $1;");
 
 	pg_prepare($dbconn, "find_errors", "SELECT * FROM srv_certificate_errors WHERE srv_certificates_id = $1 ORDER BY message");
 
-        pg_prepare($dbconn, "find_subjects", "SELECT * FROM certificate_subjects WHERE certificate_id = $1 ORDER BY name;");
+	pg_prepare($dbconn, "find_subjects", "SELECT * FROM certificate_subjects WHERE certificate_id = $1 ORDER BY name;");
 
 	pg_prepare($dbconn, "find_tlsas", "SELECT * FROM tlsa_records WHERE srv_result_id = $1 ORDER BY tlsa_record_id;");
 }
@@ -107,6 +107,132 @@ function grade($score) {
 	return "F";
 }
 
+function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $srv, $i) {
+
+	$res = pg_execute($dbconn, "find_subjects", array($cert["certificate_id"]));
+
+	$subjects = pg_fetch_all($res);
+
+	$name = "";
+
+	foreach ($subjects as $subject) {
+		if ($subject["name"] == "commonName") {
+			$name = $subject["value"];
+			break;
+		}
+	}
+
+	if (!$name) {
+		foreach ($subjects as $subject) {
+			if ($subject["name"] == "organizationName") {
+				$name = $subject["value"];
+				break;
+			}
+		}
+	}
+	
+
+	?>
+		<h4 class="page-header">#<?= $cert["chain_index"] ?> <?= $name ?></h4>
+
+		<h5>Subject</h5>
+
+		<dl class="dl-horizontal">
+<?php
+
+foreach ($subjects as $subject) {
+		
+?>
+			<dt><?= $subject["name"] ? htmlspecialchars($subject["name"]) : $subject["oid"] ?></dt>
+			<dd><?= htmlspecialchars($subject["value"]) ?></dd>
+<?php
+}
+?>
+		</dl>
+
+		<h5>Details</h5>
+
+<?php
+if ($cert["trusted_root"] === 't' && $cert["chain_index"]) {
+?>
+		<div class="alert alert-block alert-warning">
+						<strong>Warning:</strong> Trusted root certificate is included in the chain.
+				</div>
+<?php
+}
+if ($cert["trusted_root"] === 'f' && $cert["chain_index"] == NULL) {
+?>
+		<div class="alert alert-block alert-error">
+						<strong>Error:</strong> Intermediate certificate was not included in the chain.
+				</div>
+<?php
+}
+if ($prev_signed_by_id != $cert["certificate_id"] && $cert["chain_index"] != 0) {
+?>
+				<div class="alert alert-block alert-warning">
+						<strong>Warning:</strong> Certificate is unused.
+				</div>
+
+<?php
+} else {
+	$prev_signed_by_id = $cert["signed_by_id"];
+}
+
+foreach ($errors as $error) {
+?>
+		<div class="alert alert-block alert-error">
+						<strong>Error:</strong> <?= $error["message"] ?>.
+				</div>
+
+<?php
+}
+?>
+		<dl class="dl-horizontal">
+			<dt>Signature algorithm</dt>
+			<dd><?= $cert["sign_algorithm"] ?></dd>
+			<dt>Key size</dt>
+			<dd><?= $cert["rsa_bitsize"] ?></dd>
+			<dt>Valid from</dt>
+			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-error" : "muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
+			<dt>Valid to</dt>
+			<dd><?= $cert["notafter"] ?> UTC <time class="<?= strtotime($cert["notafter"]) < strtotime("now") ? "text-error" : "muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notafter"])) ?>"></time></dd>
+<?php
+if (isset($cert["crl_url"])) {
+?>
+			<dt>CRL</dt>
+			<dd><a href="<?= htmlspecialchars($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
+<?php
+}
+?>
+<?php
+if (isset($cert["ocsp_url"])) {
+?>
+						<dt>OCSP</dt>
+						<dd><a href="<?= htmlspecialchars($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
+<?php
+}
+
+if ($i === 0) {
+?>
+			<dt>Valid for <?= $server_name ?></dt>
+			<dd class="<?= $srv["valid_identity"] === 't' ? "" : "text-error" ?>"><?= $srv["valid_identity"] === 't' ? "Yes" : "No" ?></dd>
+<?php } ?>
+			<dt>
+				<select class="hash-select input-small">
+					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha1"]) ?>'>SHA-1</option>
+					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha256"]) ?>'>SHA-256</option>
+					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha512"]) ?>'>SHA-512</option>
+				</select> hash
+			</dt>
+			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
+		</dl>
+
+
+		<button class="btn pem" data-pem="<?= $cert["pem"] ?>">Show PEM</button>
+	<?php
+	return $prev_signed_by_id;
+}
+
 ?><!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -151,9 +277,8 @@ function grade($score) {
 			<a class="brand" href="#">XMPPoke</a>
 			<div class="nav-collapse collapse">
 			<ul class="nav">
-				<li class="active"><a href="#">Home</a></li>
-				<li><a href="#about">About</a></li>
-				<li><a href="#contact">Contact</a></li>
+				<li class="active"><a href="#">Test results</a></li>
+				<li><a href="list.php">Recent tests</a></li>
 			</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -178,21 +303,31 @@ if (!$result) {
 		<h1>XMPP <?= $result->type ?> TLS report for <?= htmlspecialchars($result->server_name) ?></h1>
 		<p class="muted">On <time><?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?></time>.</p>
 
-                <h2>Score</h2>
+				<h2>Score</h2>
 <?php
+
+$i = 0;
 
 foreach ($srvs as $srv) {
 
-if ($srv["done"] === 'f') {
-
+	if ($srv["done"] === 'f') {
 ?>
 		<div class="alert alert-block alert-warning">
 			Test did not complete successfully or is still in progress.
 		</div>
 
-<?php } ?>
+<?php
+	}
 
-                <h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
+	if ($i === 1) {
+?>
+		<div class="collapse-group">
+				<div class="collapse">
+<?php
+	}
+?>
+
+		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 
 		<div class="row">
 			<div class="span9">
@@ -252,19 +387,24 @@ if ($srv["done"] === 'f') {
 
 
 <?php
-
-
-if ($srv["certificate_score"] == 0) {
-
+	if ($srv["certificate_score"] == 0) {
 ?>
-                <div class="alert alert-block alert-error">
-                        Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
-                </div>
+				<div class="alert alert-block alert-error">
+						Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
+				</div>
+<?php
+	}
+
+	$i = $i + 1;
+}
+
+if (count($srvs) > 1) {
+?>
+				</div>
+			<p><a class="btn" href="#">Show all <?= count($srvs) ?> SRV targets &raquo;</a></p>
+		</div>
 <?php
 }
-
-}
-
 ?>
 
 		<h2 class="page-header">DNS</h2>
@@ -298,13 +438,22 @@ foreach ($srvs as $srv) {
 		</div>
 	
 		<h3>TLSA records</h3>
-
 <?php
-foreach ($srvs as $srv) {
-?>
-                <h3 class="page-header">_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars($srv["target"]) ?> <span class="label<?= $srv["tlsa_dnssec_good"] === 't' ? " label-success" : ($srv["tlsa_dnssec_bogus"] === 't' ? " label-warning" : "")?>"><?= $srv["tlsa_dnssec_good"] === 't' ? "" : ($srv["tlsa_dnssec_bogus"] === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></h3>
 
-		<table class="table table-bordered table-striped">
+$i = 0;
+
+foreach ($srvs as $srv) {
+
+		if ($i === 1) {
+?>
+		<div class="collapse-group">
+				<div class="collapse">
+<?php
+		}
+?>
+		<h3 class="page-header">_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars($srv["target"]) ?> <span class="label<?= $srv["tlsa_dnssec_good"] === 't' ? " label-success" : ($srv["tlsa_dnssec_bogus"] === 't' ? " label-warning" : "")?>"><?= $srv["tlsa_dnssec_good"] === 't' ? "" : ($srv["tlsa_dnssec_bogus"] === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></h3>
+
+		<table class="span10 table table-bordered table-striped">
 			<tr>
 				<th>Verified</th>
 				<th>Usage</th>
@@ -314,11 +463,11 @@ foreach ($srvs as $srv) {
 			</tr>
 <?php
 
-$res = pg_execute($dbconn, "find_tlsas", array($srv["srv_result_id"]));
+	$res = pg_execute($dbconn, "find_tlsas", array($srv["srv_result_id"]));
 
-$tlsas = pg_fetch_all($res);
+	$tlsas = pg_fetch_all($res);
 
-foreach ($tlsas as $tlsa) {
+	if ($tlsas) foreach ($tlsas as $tlsa) {
 ?>
 		<tr>
 			<td><span class="label label-<?= $tlsa["verified"] === 't' ? "success" : "warning" ?>"><?= $tlsa["verified"] === 't' ? "Yes" : "No" ?></span></td>
@@ -326,21 +475,34 @@ foreach ($tlsas as $tlsa) {
 			<td><?= tlsa_selector($tlsa["selector"]) ?></td>
 			<td><?= tlsa_match($tlsa["match"]) ?></td>
 <?php
-if ($tlsa["match"] == 0) {
+		if ($tlsa["match"] == 0) {
 ?>
 			<td>
 				<div class="collapse-group">
 					<pre class="collapse" style="height: 100px"><?= pg_unescape_bytea($tlsa["data"]) ?></pre>
 				<p><a class="btn" href="#">Show full &raquo;</a></p>
 			</div></td>
-<? } else { ?>
-                        <td><pre><?= fp(pg_unescape_bytea($tlsa["data"])) ?></pre></td>
-<? } ?>
+<?
+		} else {
+?>
+						<td><pre><?= fp(pg_unescape_bytea($tlsa["data"])) ?></pre></td>
+<?
+		}
+?>
 		</tr>
 <?php
-}
+	}
 ?>
 		</table>
+<?php
+	$i = $i + 1;
+}
+
+if (count($srvs) > 1) {
+?>
+				</div>
+			<p><a class="btn" href="#">Show all <?= count($srvs) ?> SRV targets &raquo;</a></p>
+		</div>
 <?php
 }
 ?>
@@ -350,145 +512,77 @@ if ($tlsa["match"] == 0) {
 <?php
 
 $i = 0;
+$j = 0;
 
 foreach ($srvs as $srv) {
-
+	if ($j === 1) {
+?>
+		<div class="collapse-group">
+			<div class="collapse">
+<?php
+	}
 ?>		
 		<h3 class="page-header"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
 
 		<h3>Certificates</h3>
 <?php
 
-$res = pg_execute($dbconn, "find_certs", array($srv["srv_result_id"]));
+	$res = pg_execute($dbconn, "find_certs", array($srv["srv_result_id"]));
 
-$certs = pg_fetch_all($res);
+	$certs = pg_fetch_all($res);
 
-$prev_signed_by_id = NULL;
+	$cert = $certs[0];
 
-foreach ($certs as $cert) {
-	$res = pg_execute($dbconn, "find_subjects", array($cert["certificate_id"]));
+	$prev_signed_by_id = NULL;
 
-	$subjects = pg_fetch_all($res);
+	while (true) {
 
-	$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
+		$index = NULL;
 
-	$errors = pg_fetch_all($res);
+		foreach ($certs as $k => $v) {
+			if ($v["digest_sha512"] == $cert["digest_sha512"]) {
+				$index = $k;
+				break;
+			}
+		}
 
-	$name = "";
+		$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
 
-	foreach ($subjects as $subject) {
-		if ($subject["name"] == "commonName") {
-			$name = $subject["value"];
+		$errors = pg_fetch_all($res);
+
+		show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i);
+
+		$prev_signed_by_id = $cert["signed_by_id"];
+
+		if ($prev_signed_by_id == NULL) {
 			break;
 		}
-	}
-?>
-		<h4 class="page-header">#<?= $cert["chain_index"] ?> <?= $name ?></h4>
 
-		<h5>Subject</h5>
+		if ($cert["signed_by_id"] == $cert["certificate_id"]) {
+			break;
+		}
 
-		<dl class="dl-horizontal">
-<?php
+		$cert = NULL;
 
-foreach ($subjects as $subject) {
+		foreach ($certs as $k => $v) {
+			if ($v["certificate_id"] == $prev_signed_by_id) {
+				$cert = $v;
+				break;
+			}
+		}
+
+		if (!$cert) {
+			$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
 		
-?>
-			<dt><?= $subject["name"] ? htmlspecialchars($subject["name"]) : $subject["oid"] ?></dt>
-			<dd><?= htmlspecialchars($subject["value"]) ?></dd>
-<?php
-}
-?>
-		</dl>
+			$cert = pg_fetch_assoc($res);
+		}
 
-		<h5>Details</h5>
+		if (!$cert) {
+			break;
+		}
 
-<?php
-if ($cert["trusted_root"] === 't') {
-?>
-		<div class="alert alert-block alert-error">
-                        <strong>Error:</strong> Trusted root certificate is included in the chain.
-                </div>
-<?php
-}
-if ($prev_signed_by_id != $cert["certificate_id"] && $cert["chain_index"] != 0) {
-?>
-                <div class="alert alert-block alert-warning">
-                        <strong>Warning:</strong> Certificate is unused.
-                </div>
-
-<?php
-}
-
-$prev_signed_by_id = $cert["signed_by_id"];
-
-foreach ($errors as $error) {
-?>
-		<div class="alert alert-block alert-error">
-                        <strong>Error:</strong> <?= $error["message"] ?>.
-                </div>
-
-<?php
-}
-?>
-		<dl class="dl-horizontal">
-			<dt>Signature algorithm</dt>
-			<dd><?= $cert["sign_algorithm"] ?></dd>
-			<dt>Key size</dt>
-			<dd><?= $cert["rsa_bitsize"] ?></dd>
-			<dt>Valid from</dt>
-			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-error" : "muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
-			<dt>Valid to</dt>
-			<dd><?= $cert["notafter"] ?> UTC <time class="<?= strtotime($cert["notafter"]) < strtotime("now") ? "text-error" : "muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notafter"])) ?>"></time></dd>
-<?php
-if (isset($cert["crl_url"])) {
-?>
-			<dt>CRL</dt>
-			<dd><a href="<?= htmlspecialchars($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
-<?php
-}
-?>
-<?php
-if (isset($cert["ocsp_url"])) {
-?>
-                        <dt>OCSP</dt>
-                        <dd><a href="<?= htmlspecialchars($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
-<?php
-}
-?>
-			<dt>
-				<select class="hash-select input-small">
-					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha1"]) ?>'>SHA-1</option>
-					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha256"]) ?>'>SHA-256</option>
-					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha512"]) ?>'>SHA-512</option>
-				</select> hash
-			</dt>
-			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
-		</dl>
-
-
-		<button class="btn pem" data-pem="-----BEGIN CERTIFICATE-----
-<?= join("\n", str_split(base64_encode(join('', array_map('chr', array_map('hexdec', str_split($cert["der"], 2))))), 64)) ?>
-
------END CERTIFICATE-----">Show PEM</button>
-
-<?php
-	$i = $i + 1;
-}
-
-while (true) {
-	$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
-	
-	$cert = pg_fetch_object($res);
-	if ($prev_signed_by_id == $cert["certificate_id"]) {
-		break;
+		$i = $i + 1;
 	}
-
-	$prev_signed_by_id = $cert["signed_by_id"];
-?>
-
-<?php
-	$i = $i + 1;
-}
 ?>
 
 		<h3>Protocols</h3>
@@ -537,13 +631,23 @@ while (true) {
 ?>
 					<tr><td><abbr class="my-popover" title="" data-content="<strong><?= ($cipher["authentication"] !== $cipher["key_exchange"] ? $cipher["key_exchange"] . "-" : "") . $cipher["authentication"] ?></strong>: ...<br><strong><?= $cipher["symmetric_alg"] ?></strong>: ...<br><strong><?= $cipher["hash_alg"] ?></strong>: ..." data-toggle="popover" data-original-title="<?= $cipher["openssl_name"] ?>"><?= $cipher["openssl_name"] ?></abbr> <span class="muted">(0x<?= dechex($cipher["cipher_id"]) ?>)</span><?= $cipher["export"] === 't' ? " <span class=\"label label-important\">VERY WEAK</span>" : ($cipher["bitsize"] < 128 ? " <span class=\"label label-warning\">WEAK</span>" : "") ?></td><td><span class="badge <?= color_bitsize($cipher["bitsize"]) ?>"><?= $cipher["bitsize"] ?></span><td><span class="label label-<?= $cipher["forward_secret"] === 't' ? "success" : "important" ?>"><?= $cipher["forward_secret"] === 't' ? "Yes" : "No" ?></span></td></tr>
 <?php
-}
+	}
 ?>
 				</table>
 			</div>
 		</div>
 <?php
+	$j = $j + 1;
 }
+
+if (count($srvs) > 1) {
+?>
+				</div>
+			<p><a class="btn" href="#">Show all <?= count($srvs) ?> SRV targets &raquo;</a></p>
+		</div>
+<?php
+}
+
 }
 ?>
 
