@@ -17,20 +17,8 @@ $(document).ready(function () {
         return true;
     });
 
-    $('.collapse-group .btn').on('click', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var $collapse = $this.closest('.collapse-group').find('.collapse');
-        $collapse.collapse('toggle');
-    });
-
     $('button.pem').click(function(){
-        var pem =  window.open('','PEM','width=600,height=800');
-        var html = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"></head><body><div class="container"><div class="span6"><pre>' + $(this).data("pem") + '</pre></div></div></body></html>';
-        pem.document.open();
-        pem.document.write(html);
-        pem.document.close();
-
+        var pem = window.open("https://xnyhps.nl/~thijs/xmppoke-frontend/pem.php?sha256=" + $(this).data("sha-digest"),'PEM','width=600,height=800');
         return false;
     });
 });
