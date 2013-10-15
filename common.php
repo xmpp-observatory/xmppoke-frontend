@@ -114,6 +114,13 @@ function common_header() {
 			padding-left: 30px;
 			font-size: smaller;
 		}
+
+		.footer {
+			border-top: 1px solid #E5E5E5;
+			color: #777777;
+			padding-top: 19px;
+			margin-top: 19px;
+		}
 		</style>
 
 		<link rel="shortcut icon" href="./ico/favicon.png">

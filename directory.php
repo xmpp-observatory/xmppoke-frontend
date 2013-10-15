@@ -84,7 +84,7 @@ function released($software) {
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">XMPPoke</a>
+				<a class="navbar-brand" href="index.php">XMPPoke</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -182,6 +182,10 @@ foreach ($list as $result) {
 		
 <?php } ?>
 
+
+		<div class="footer">
+			<p>Some rights reserved.</p>
+		</div>
 	</div> <!-- /container -->
 
 	<!-- Le javascript
