@@ -18,7 +18,7 @@ $(document).ready(function () {
     });
 
     $('button.pem').click(function(){
-        var pem = window.open("https://xnyhps.nl/~thijs/xmppoke-frontend/pem.php?sha256=" + $(this).data("sha-digest"),'PEM','width=600,height=800');
+        var pem = window.open("pem.php?sha256=" + $(this).data("sha-digest"),'PEM','width=600,height=800');
         return false;
     });
 });
