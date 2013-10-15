@@ -1,6 +1,6 @@
 <?php
 
-$dbconn = pg_connect("port=5433 host=localhost dbname=xmppoke user=xmppoke password=xmppoke") or die('Could not connect: ' . pg_last_error());
+include("common.php");
 
 pg_prepare($dbconn, "list_results", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results ORDER BY test_date DESC LIMIT 200;");
 
@@ -10,41 +10,9 @@ $res = pg_execute($dbconn, "list_results", array());
 
 $list = pg_fetch_all($res);
 
-function color_label_text($score) {
-	if ($score >= 80) {
-		return "label-success";
-	} else if ($score >= 40) {
-		return "label-warning";
-	}
-	return "label-danger";
-}
+common_header();
 
-?><!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>XMPPoke results</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap -->
-		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<meta name="author" content="">
-
-		<style type="text/css">
-		body {
-		    padding-top: 50px;
-		}
-
-		td .label {
-			font-size: 90%;
-		}
-		</style>
-
-		<link rel="shortcut icon" href="./ico/favicon.png">
-	</head>
-
+?>
 	<body>
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -60,6 +28,7 @@ function color_label_text($score) {
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">Test results</a></li>
+					<li><a href="directory.php">Public server directory</a></li>
 				</ul>
 			</div>
 		</div>
@@ -106,7 +75,7 @@ foreach ($list as $result) {
 <?php
 	} else {
 ?>
-				<td><span class="<?= $scores[0]["grade"] === 'F' ? "label-danger" : color_label_text($scores[0]["total_score"]) ?> label"><?= $scores[0]["grade"] ?></span></td>
+				<td><span class="<?= color_label_text_grade($scores[0]["grade"]) ?> label"><?= $scores[0]["grade"] ?></span></td>
 <?php
 }
 ?>

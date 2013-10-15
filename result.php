@@ -1,5 +1,7 @@
 <?php
 
+include("common.php");
+
 $result_id = $_GET['id'];
 $result_domain = $_GET['domain'];
 $result_type = $_GET['type'];
@@ -7,8 +9,7 @@ $result_type = $_GET['type'];
 date_default_timezone_set('UTC');
 
 if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
-	$dbconn = pg_connect("port=5433 host=localhost dbname=xmppoke user=xmppoke password=xmppoke") or die('Could not connect: ' . pg_last_error());
-
+	
 	if (isset($result_id)) {	
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE test_id = $1");
 	
@@ -65,17 +66,6 @@ function tlsa_match($match) {
 	if ($match == 1) return "SHA-256";
 	if ($match == 2) return "SHA-512";
 	return $match;
-}
-
-function color_score_text($score) {
-	if ($score >= 80) {
-		return " text-success";
-	} elseif ($score >= 60) {
-		return "";
-	} else if ($score >= 40) {
-		return " text-warning";
-	}
-	return " text-error";
 }
 
 function color_score_bar($score) {
@@ -223,9 +213,9 @@ foreach ($errors as $error) {
 			<dt>Key size</dt>
 			<dd><?= $cert["rsa_bitsize"] ?></dd>
 			<dt>Valid from</dt>
-			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-error" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
+			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-danger" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
 			<dt>Valid to</dt>
-			<dd><?= $cert["notafter"] ?> UTC <time class="<?= strtotime($cert["notafter"]) < strtotime("now") ? "text-error" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notafter"])) ?>"></time></dd>
+			<dd><?= $cert["notafter"] ?> UTC <time class="<?= strtotime($cert["notafter"]) < strtotime("now") ? "text-danger" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notafter"])) ?>"></time></dd>
 <?php
 if (isset($cert["crl_url"])) {
 ?>
@@ -245,7 +235,7 @@ if (isset($cert["ocsp_url"])) {
 if ($i === 0) {
 ?>
 			<dt>Valid for <?= $server_name ?></dt>
-			<dd class="<?= $srv["valid_identity"] === 't' ? "" : "text-error" ?>"><?= $srv["valid_identity"] === 't' ? "Yes" : "No" ?></dd>
+			<dd class="<?= $srv["valid_identity"] === 't' ? "" : "text-danger" ?>"><?= $srv["valid_identity"] === 't' ? "Yes" : "No" ?></dd>
 <?php } ?>
 			<dt>
 				<select class="hash-select input-small">
@@ -269,67 +259,9 @@ if ($i === 0) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+common_header();
 
-?><!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>XMPPoke results</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<!-- Bootstrap -->
-		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
-
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="">
-		<meta name="author" content="">
-
-		<style type="text/css">
-		body {
-			padding-top: 50px;
-		}
-
-		td .label, dd .label {
-			font-size: 90%;
-		}
-
-		h2[id], h3[id] {
-			margin-top: -45px;
-			padding-top: 80px;
-		}
-
-		@media screen and (min-width: 992px) {
-			.side-bar {
-				position: fixed;
-				top: 80px;
-				width: 200px;
-			}
-		}
-
-		.side-bar {
-			border-radius: 5px 5px 5px 5px;
-		}
-
-		.side-bar .active {
-			background-color: #f8f8f8;
-		}
-
-		.side-bar .nav .nav {
-			display: none;
-		}
-
-		.side-bar .nav > .active > ul {
-			display: block;
-		}
-
-		.side-bar .nav > .active > ul > li > a {
-			padding-left: 30px;
-			font-size: smaller;
-		}
-		</style>
-
-		<link rel="shortcut icon" href="./ico/favicon.png">
-	</head>
-
+?>
 	<body data-spy="scroll" data-target="#sidebar">
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -345,6 +277,7 @@ if ($i === 0) {
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="list.php">Test results</a></li>
+					<li><a href="directory.php">Public server directory</a></li>
 				</ul>
 			</div>
 		</div>
@@ -471,7 +404,7 @@ foreach ($srvs as $srv) {
 			<div class="col-md-2 text-center">
 				<strong>Grade:</strong>
 				<div>
-					<p class="<?= $srv["grade"] === 'F' ? "text-error" : color_score_text($srv["total_score"]) ?>" style="font-size: 1000%; line-height: 100px;"><?= $srv["grade"] ?></p>
+					<p class="<?= color_text_score($srv["grade"]) ?>" style="font-size: 1000%; line-height: 100px;"><?= $srv["grade"] ?></p>
 				</div>
 			</div>
 		</div>
@@ -510,6 +443,8 @@ foreach ($srvs as $srv) {
 
 		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 		<dl class="dl-horizontal">
+			<dt>Version</dt>
+			<dd><?= $result->version ?></dd>
 			<dt>StartTLS</dt>
 			<dd><?= $srv["requires_starttls"] ? "<span class='label label-success'>REQUIRED</span>" : "<span class='label label-warning'>ALLOWED</span>" ?></dd>
 			<dt>TLS compression</dt>
