@@ -38,7 +38,7 @@ common_header();
 		<div class="jumbotron">
 		  <div class="container">
 			<h1>IM Observatory</h1>
-			<p>Testing the security of XMPP TLS connections.</p>
+			<p>Testing the security of the Jabber/XMPP network.</p>
 		  </div>
 		</div>
 
