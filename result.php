@@ -272,7 +272,7 @@ common_header();
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php">XMPPoke</a>
+				<a class="navbar-brand" href="index.php">IM Observatory</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -356,7 +356,7 @@ foreach ($srvs as $srv) {
 			<div class="col-md-10">
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong>Certificate score:</strong>
+						<strong><a href="#certificates">Certificate score:<a/></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">
@@ -369,7 +369,7 @@ foreach ($srvs as $srv) {
 				</div>
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong>Public key score:</strong>
+						<strong><a href="#certificates">Public key score:</a></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">
@@ -382,7 +382,7 @@ foreach ($srvs as $srv) {
 				</div>
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong>Protocol score:</strong>
+						<strong><a href="#protocols">Protocol score:</a></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">
@@ -395,7 +395,7 @@ foreach ($srvs as $srv) {
 				</div>
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong>Cipher score:</strong>
+						<strong><a href="#ciphers">Cipher score:</a></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">

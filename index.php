@@ -23,7 +23,7 @@ common_header();
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">XMPPoke</a>
+				<a class="navbar-brand" href="#">IM Observatory</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
@@ -37,8 +37,8 @@ common_header();
 	<div class="container">
 		<div class="jumbotron">
 		  <div class="container">
-			<h1>XMPPoke</h1>
-			<p>Test the security of XMPP TLS connections.</p>
+			<h1>IM Observatory</h1>
+			<p>Testing the security of XMPP TLS connections.</p>
 		  </div>
 		</div>
 

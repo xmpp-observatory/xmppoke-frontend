@@ -23,7 +23,7 @@ common_header();
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php">XMPPoke</a>
+				<a class="navbar-brand" href="index.php">IM Observatory</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
