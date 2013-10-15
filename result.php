@@ -455,7 +455,7 @@ foreach ($srvs as $srv) {
 			<dt>Version</dt>
 			<dd><?= $result->version ?></dd>
 			<dt>StartTLS</dt>
-			<dd><?= $srv["requires_starttls"] ? "<span class='label label-success'>REQUIRED</span>" : "<span class='label label-warning'>ALLOWED</span>" ?></dd>
+			<dd><?= $srv["requires_starttls"] === 't' ? "<span class='label label-success'>REQUIRED</span>" : "<span class='label label-warning'>ALLOWED</span>" ?></dd>
 			<dt>TLS compression</dt>
 			<dd><?= $srv["compression"] ? $srv["compression"] : "None" ?></dd>
 <?php
