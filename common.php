@@ -1,6 +1,8 @@
 <?php
 
-$dbconn = pg_connect("port=5433 host=localhost dbname=xmppoke user=xmppoke password=xmppoke") or die('Could not connect: ' . pg_last_error());
+include("secrets.php");
+
+$dbconn = pg_connect("port=5433 host=localhost dbname=xmppoke user=xmppoke password=$dbpass") or die('Could not connect: ' . pg_last_error());
 
 function color_label_text_grade($score) {
 	switch ($score) {
