@@ -298,7 +298,14 @@ common_header();
 								<li><a href="#tlsa">TLSA</a></li>
 							</ul>
 						</li>
-						<li><a href="#tls">TLS</a></li>
+						<li>
+							<a href="#tls">TLS</a>
+							<ul class="nav">
+								<li><a href="#certificates">Certificates</a></li>
+								<li><a href="#protocols">Protocols</a></li>
+								<li><a href="#ciphers">Ciphers</a></li>
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -585,7 +592,7 @@ foreach ($srvs as $srv) {
 ?>		
 		<h3 class="page-header"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
 
-		<h3>Certificates</h3>
+		<h3<?= $srv === $srvs[0] ? " id='certificates'" : "" ?>>Certificates</h3>
 <?php
 
 	$res = pg_execute($dbconn, "find_certs", array($srv["srv_result_id"]));
@@ -643,10 +650,14 @@ foreach ($srvs as $srv) {
 		}
 
 		$i = $i + 1;
+
+		if ($i > 10) {
+			break;
+		}
 	}
 ?>
 
-		<h3>Protocols</h3>
+		<h3<?= $srv === $srvs[0] ? " id='protocols'" : "" ?>>Protocols</h3>
 
 		<div class="row">
 			<div class="col-md-4">
@@ -675,7 +686,7 @@ foreach ($srvs as $srv) {
 			</div>
 		</div>
 
-		<h3>Ciphers</h3>
+		<h3<?= $srv === $srvs[0] ? " id='ciphers'" : "" ?>>Ciphers</h3>
 
 		<p>Server does <?= $srv["reorders_ciphers"] === 't' ? "<strong>not</strong> " : "" ?>respect the client's cipher ordering.</p>
 

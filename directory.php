@@ -127,6 +127,9 @@ if (!$list) {
 <?php
 
 foreach ($list as $result) {
+
+	$issuer = NULL;
+
 	$res = pg_execute($dbconn, "find_s2s", array($result["server_name"]));
 
 	$s2s = pg_fetch_assoc($res);
