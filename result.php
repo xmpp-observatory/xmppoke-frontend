@@ -325,8 +325,10 @@ if (!$result) {
 
 ?>
 
-		<h1>XMPP <?= $result->type ?> TLS report for <?= htmlspecialchars($result->server_name) ?></h1>
+		<h1>IM Observatory <?= $result->type ?> report for <?= htmlspecialchars($result->server_name) ?></h1>
 		<p class="text-muted">On <time><?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?></time>.</p>
+
+		<a href='result.php?domain=<?= htmlspecialchars($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result.</a>
 
 		<h2 class="page-header" id="score">Score</h2>
 <?php
