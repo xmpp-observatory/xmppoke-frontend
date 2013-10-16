@@ -13,7 +13,11 @@ if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_asc
 		$type = "server";
 	}
 
-	echo(exec("/opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=10 '" . escapeshellarg($domain) . "'"));
+	$out = array();
+
+	exec("/opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=10 '" . escapeshellarg($domain) . "'", &$out);
+
+	print_r($out);
 
 	// header("Location: result.php?domain=$domain&type=$type");
 
