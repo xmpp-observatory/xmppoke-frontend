@@ -21,4 +21,12 @@ $(document).ready(function () {
         var pem = window.open("pem.php?sha256=" + $(this).data("sha-digest"),'PEM','width=600,height=800');
         return false;
     });
+
+    $('#type-select a').click(function () {
+        var name = $(this).data("type");
+        $("#type").html(name + " <span class='caret'>");
+        $("#type-select .active").removeClass("active");
+        $(this).parent().addClass("active");
+        $("#mode").attr("value", name);
+    });
 });

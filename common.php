@@ -55,7 +55,7 @@ function color_score_text($score) {
 	return " text-danger";
 }
 
-function common_header() {
+function common_header($head) {
 ?>
 
 <!DOCTYPE html>
@@ -75,6 +75,9 @@ function common_header() {
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 
 		<link rel="shortcut icon" href="./ico/favicon.png">
+
+		<?= $head ? $head : "" ?>
+		
 	</head>
 
 <?php

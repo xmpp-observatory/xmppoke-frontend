@@ -176,22 +176,22 @@ foreach ($subjects as $subject) {
 if ($cert["trusted_root"] === 't' && $cert["chain_index"]) {
 ?>
 		<div class="alert alert-block alert-warning">
-						<strong>Warning:</strong> Trusted root certificate is included in the chain.
-				</div>
+			<strong>Warning:</strong> Trusted root certificate is included in the chain.
+		</div>
 <?php
 }
 if ($cert["trusted_root"] === 'f' && $cert["chain_index"] == NULL) {
 ?>
 		<div class="alert alert-block alert-danger">
-						<strong>Error:</strong> Intermediate certificate was not included in the chain.
-				</div>
+			<strong>Error:</strong> Intermediate certificate was not included in the chain.
+		</div>
 <?php
 }
 if ($prev_signed_by_id != $cert["certificate_id"] && $cert["chain_index"] != 0) {
 ?>
-				<div class="alert alert-block alert-warning">
-						<strong>Warning:</strong> Certificate is unused.
-				</div>
+		<div class="alert alert-block alert-warning">
+			<strong>Warning:</strong> Certificate is unused.
+		</div>
 
 <?php
 } else {
@@ -201,8 +201,8 @@ if ($prev_signed_by_id != $cert["certificate_id"] && $cert["chain_index"] != 0) 
 foreach ($errors as $error) {
 ?>
 		<div class="alert alert-block alert-danger">
-						<strong>Error:</strong> <?= $error["message"] ?>.
-				</div>
+			<strong>Error:</strong> <?= $error["message"] ?>.
+		</div>
 
 <?php
 }
@@ -259,7 +259,17 @@ if ($i === 0) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-common_header();
+$done = TRUE;
+
+foreach ($srvs as $srv) {
+	if ($srv["done"] === 'f') {
+		$done = FALSE;
+		break;
+	}
+}
+
+// Refresh every 15 seconds, but give up when it has taken more than 15 minutes.
+common_header($done || time() - strtotime($result->test_date) > 60 * 15 ? "" : "<meta http-equiv='refresh' content='15'>");
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">

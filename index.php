@@ -45,12 +45,20 @@ common_header();
 		<div class="row">
 			<div class="col-lg-6">
 				<h3>Test a server</h3>
-				<div class="input-group">
-					<input type="text" class="form-control" id="server-name" placeholder="jabber.org">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button">Check!</button>
-					</span>
-				</div><!-- /input-group -->
+				<form id="test-server" action="submit.php" method="post">
+					<div class="input-group">
+							<input type="text" class="form-control" name="domain" placeholder="jabber.org">
+							<input type="hidden" name="mode" id="mode" form="test-server" value="c2s">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default">Check!</button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type" value="client">c2s <span class="caret"></span></button>
+								<ul class="dropdown-menu pull-right" id="type-select">
+									<li class="active"><a href="#" data-type="c2s">c2s</a></li>
+									<li><a href="#" onclick='' data-type="s2s">s2s</a></li>
+								</ul>
+							</div><!-- /btn-group -->
+					</div><!-- /input-group -->
+				</form>
 
 				<br>
 
