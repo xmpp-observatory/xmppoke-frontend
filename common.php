@@ -72,56 +72,7 @@ function common_header() {
 		<meta name="description" content="">
 		<meta name="author" content="">
 
-		<style type="text/css">
-		body {
-			padding-top: 50px;
-		}
-
-		td .label, dd .label {
-			font-size: 90%;
-		}
-
-		h2[id], h3[id] {
-			margin-top: -45px;
-			padding-top: 80px;
-		}
-
-		@media screen and (min-width: 992px) {
-			.side-bar {
-				position: fixed;
-				top: 80px;
-				width: 200px;
-			}
-		}
-
-		.side-bar {
-			border-radius: 5px 5px 5px 5px;
-		}
-
-		.side-bar .active {
-			background-color: #f8f8f8;
-		}
-
-		.side-bar .nav .nav {
-			display: none;
-		}
-
-		.side-bar .nav > .active > ul {
-			display: block;
-		}
-
-		.side-bar .nav > .active > ul > li > a {
-			padding-left: 30px;
-			font-size: smaller;
-		}
-
-		.footer {
-			border-top: 1px solid #E5E5E5;
-			color: #777777;
-			padding-top: 19px;
-			margin-top: 19px;
-		}
-		</style>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
 
 		<link rel="shortcut icon" href="./ico/favicon.png">
 	</head>

@@ -75,7 +75,7 @@ foreach ($list as $result) {
 <?php
 	} else {
 ?>
-				<td><span class="<?= color_label_text_grade($scores[0]["grade"]) ?> label"><?= $scores[0]["grade"] ?></span></td>
+				<td><span class="<?= color_label_text_grade($scores[0]["grade"]) ?> label"><?= $scores[0]["grade"] === NULL ? "?" : $scores[0]["grade"] ?></span></td>
 <?php
 }
 ?>
