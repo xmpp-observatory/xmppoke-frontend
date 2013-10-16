@@ -460,10 +460,20 @@ foreach ($srvs as $srv) {
 
 		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 		<dl class="dl-horizontal">
+<?php
+	if ($result->version) {
+?>
 			<dt>Version</dt>
 			<dd><?= $result->version ?></dd>
+<?php
+	}
+	if ($srv["requires_starttls"]) {
+?>
 			<dt>StartTLS</dt>
 			<dd><?= $srv["requires_starttls"] === 't' ? "<span class='label label-success'>REQUIRED</span>" : "<span class='label label-warning'>ALLOWED</span>" ?></dd>
+<?php
+	}
+?>
 			<dt>TLS compression</dt>
 			<dd><?= $srv["compression"] ? $srv["compression"] : "None" ?></dd>
 <?php
