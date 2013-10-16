@@ -2,6 +2,8 @@
 
 include("secrets.php");
 
+date_default_timezone_set('UTC');
+
 $dbconn = pg_connect("port=$dbport host=$dbhost dbname=$dbname user=$dbuser password=$dbpass") or die('Could not connect: ' . pg_last_error());
 
 function color_label_text_grade($score) {
@@ -77,7 +79,7 @@ function common_header($head) {
 		<link rel="shortcut icon" href="./ico/favicon.png">
 
 		<?= $head ? $head : "" ?>
-		
+
 	</head>
 
 <?php

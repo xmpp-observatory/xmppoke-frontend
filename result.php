@@ -6,8 +6,6 @@ $result_id = $_GET['id'];
 $result_domain = $_GET['domain'];
 $result_type = $_GET['type'];
 
-date_default_timezone_set('UTC');
-
 if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 	
 	if (isset($result_id)) {	
@@ -358,7 +356,7 @@ foreach ($srvs as $srv) {
 	if ($srv["done"] === 'f') {
 ?>
 		<div class="alert alert-block alert-warning">
-			Test did not complete successfully or is still in progress.
+			<img src="img/ajax-loader.gif"> Test did not complete successfully or is still in progress.
 		</div>
 
 <?php

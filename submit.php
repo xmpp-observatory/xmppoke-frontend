@@ -5,6 +5,8 @@ include("common.php");
 $domain = $_POST["domain"];
 $type = $_POST["mode"];
 
+$error = NULL;
+
 if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_ascii($domain)) && ($type === "c2s" || $type === "s2s")) {
 
 	if ($type === "c2s") {
@@ -13,12 +15,26 @@ if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_asc
 		$type = "server";
 	}
 
-	exec("LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 '" . escapeshellarg($domain) . "' >/dev/null 2>/dev/null &");
+	pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
-	header("Location: result.php?domain=$domain&type=$type");
+	$res = pg_execute($dbconn, "find_result", array($domain, $type));
+
+	$result = pg_fetch_object($res);
+
+	if ($result && (time() - strtotime($result->test_date)) < 60 * 60) {
+		$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour.';
+	} else {
+		exec("LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 '" . escapeshellarg($domain) . "' >/dev/null 2>/dev/null &");
+
+		header("Refresh: 2;result.php?domain=" . urlencode($domain) . "&type=$type");
+	}
 
 } else {
-	common_header();
+	$error = '"' . htmlspecialchars($domain) . '" is not a valid domain name.';
+}
+
+common_header("");
+
 ?>
 
 	<body>
@@ -44,11 +60,22 @@ if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_asc
 
 	<div class="container">
 
+<?php
+if ($error) {
+?>
 		<h1>Error</h1>
 
 		<div class="alert alert-block alert-danger">
-			"<?= htmlspecialchars($domain) ?>" is not a valid domain name.
+			<?= $error ?>
 		</div>
+
+<?php
+} else {
+?>
+		<h1>Queueing test...</h1>
+<?php
+}
+?>
 
 		<div class="footer">
 			<p>Some rights reserved.</p>
@@ -66,6 +93,3 @@ if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_asc
 
 	</body>
 </html>
-
-<?php
-}

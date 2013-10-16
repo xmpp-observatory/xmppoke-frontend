@@ -69,16 +69,15 @@ foreach ($list as $result) {
 				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
 				<td><?= $result["type"] ?> to server</td>
 <?php
-	if (count($scores) > 1) {
+	$final_score = NULL;
+
+	foreach ($scores as $score) {
+		if ($score["grade"] > $final_score) {
+			$final_score = $score["grade"];
+		}
+	}
 ?>
-				<td><span class="muted">Multiple</span></td>
-<?php
-	} else {
-?>
-				<td><span class="<?= color_label_text_grade($scores[0]["grade"]) ?> label"><?= $scores[0]["grade"] === NULL ? "?" : $scores[0]["grade"] ?></span></td>
-<?php
-}
-?>
+				<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
 				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
 			</tr>
 <?php
