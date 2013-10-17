@@ -99,6 +99,15 @@ function grade($score) {
 	return "F";
 }
 
+function show_bool($b) {
+	if ($b === 't') {
+		return "Yes";
+	} else if ($b === 'f') {
+		return "No";
+	}
+	return "?";
+}
+
 function help($str) {
 	switch($str) {
 		case "AES":
@@ -707,23 +716,23 @@ foreach ($srvs as $srv) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv2 is old, obsolete and insecure. Servers <strong>must not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv2">SSLv2</abbr></td>
-						<td><span class="label label-<?= $srv["sslv2"] === 't' ? "danger" : "success"?>"><?= $srv["sslv2"] === 't' ? "Yes" : "No" ?></span></td>
+						<td><span class="label <?= $srv["sslv2"] === 't' ? "label-danger" : ($srv["sslv2"] === 'f' ? "label-success" : "label-default") ?>"><?= show_bool($srv["sslv2"]) ?></span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv3 is old and not recommended. Servers <strong>should not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv3">SSLv3</abbr></td>
-						<td><span class="label label-<?= $srv["sslv3"] === 't' ? "danger" : "success"?>"><?= $srv["sslv3"] === 't' ? "Yes" : "No" ?></span></td>
+						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-danger" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>"><?= show_bool($srv["sslv3"]) ?></span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="Although replaced by TLSv1.1 and TLSv1.2, it is <strong>recommended</strong> to support TLSv1 for compatibility with older clients. There are no known security issues with TLSv1.0 for XMPP." data-toggle="popover" data-original-title="TLSv1">TLSv1</abbr></td>
-						<td><span class="label label-default"><?= $srv["tlsv1"] === 't' ? "Yes" : "No" ?></span></td>
+						<td><span class="label label-default"><?= show_bool($srv["tlsv1"]) ?></span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="There are no known security issues with TLSv1.1." data-toggle="popover" data-original-title="TLSv1.1">TLSv1.1</abbr></td>
-						<td><span class="label label-<?= $srv["tlsv1_1"] === 't' ? "success" : "danger"?>"><?= $srv["tlsv1_1"] === 't' ? "Yes" : "No" ?></span></td>
+						<td><span class="label <?= $srv["tlsv1_1"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default") ?>"><?= show_bool($srv["tlsv1_1"]) ?></span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="TLSv1.2 is the latest version and it is <strong>strongly recommended</strong> that servers support it as it adds a number of newer cipher suites." data-toggle="popover" data-original-title="TLSv1.2">TLSv1.2</abbr></td>
-						<td><span class="label label-<?= $srv["tlsv1_2"] === 't' ? "success" : "danger"?>"><?= $srv["tlsv1_2"] === 't' ? "Yes" : "No" ?></span></td>
+						<td><span class="label <?= $srv["tlsv1_2"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default" ) ?>"><?= show_bool($srv["tlsv1_2"]) ?></span></td>
 					</tr>
 				</table>
 			</div>
