@@ -277,7 +277,7 @@ foreach ($srvs as $srv) {
 
 $refresh = 15;
 
-if (time() - strtotime($result->test_date) < 30) {
+if (time() - strtotime($result->test_date) < 15) {
 	$refresh = 5;
 }
 
