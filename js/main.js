@@ -4,8 +4,6 @@ $(document).ready(function () {
         placement: 'top',
         html: true,
         trigger: 'hover'
-    }).click(function(e) {
-        e.preventDefault();
     });
     jQuery.timeago.settings.allowFuture = true;
     jQuery("time.timeago").timeago();
