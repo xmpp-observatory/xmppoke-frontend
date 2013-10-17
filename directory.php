@@ -120,7 +120,8 @@ if (!$list) {
 					<th>Country</th>
 					<th>CA</th>
 					<th>Software</th>
-					<th>Grade (c2s / s2s)</th>
+					<th>Grade c2s</th>
+					<th>Grade s2s</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -172,7 +173,12 @@ foreach ($list as $result) {
 				<td><?= $result["country"] ?></td>
 				<td><span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
 				<td data-value="<?= released($c2s["version"]) ?>"><span class="my-popover" title="" <?= released($c2s["version"]) === "" ? "" : "data-content='<strong>" . $c2s["version"] . "</strong> was released on " . released($c2s["version"]) . "'" ?> data-toggle="popover" data-original-title="<?= $c2s["version"] ?>" ><?= htmlspecialchars($c2s["version"]) ?></span></td>
-				<td><a class="label <?= color_label_text_grade($c2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client"><?= $c2s_scores[0] ? $c2s_scores[0] : "?" ?></a> / <a class="label <?= color_label_text_grade($s2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server"><?= $s2s_scores[0] ? $s2s_scores[0] : "?" ?></a></td>
+				<td>
+					<a class="label <?= color_label_text_grade($c2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client"><?= $c2s_scores[0] ? $c2s_scores[0] : "?" ?></a>
+				</td>
+				<td>
+					<a class="label <?= color_label_text_grade($s2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server"><?= $s2s_scores[0] ? $s2s_scores[0] : "?" ?></a>
+				</td>
 			</tr>
 <?php
 }
