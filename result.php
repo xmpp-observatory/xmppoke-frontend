@@ -499,7 +499,7 @@ foreach ($srvs as $srv) {
 			<dd><?= $srv["compression"] ?></dd>
 <?php
 	}
-	if ($result->mode === "server" && $srv["requires_peer_cert"] === 't') {
+	if ($srv["requires_peer_cert"] === 't') {
 ?>
 			<dt>Peer certificate</dt>
 			<dd>The server <strong>requires</strong> incoming s2s connections to present a peer certificate.</dd>
