@@ -354,12 +354,19 @@ foreach ($srvs as $srv) {
 		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 <?php
 	if ($srv["done"] === 'f') {
+		if (time() - strtotime($result->test_date) < 60 * 30) {
 ?>
 		<div class="alert alert-block alert-warning">
 			<img src="img/ajax-loader.gif"> Test did not complete successfully or is still in progress.
 		</div>
-
 <?php
+		} else {
+?>
+		<div class="alert alert-block alert-danger">
+			<strong>Error:</strong> Test failed.
+		</div>
+<?php
+		}
 	}
 ?>
 		<div class="row">
@@ -428,7 +435,7 @@ foreach ($srvs as $srv) {
 
 
 <?php
-	if ($srv["certificate_score"] == 0) {
+	if ($srv["certificate_score"] === 0) {
 ?>
 				<div class="alert alert-block alert-danger">
 						Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
@@ -514,6 +521,7 @@ if (count($srvs) > 1) {
 <?php
 
 foreach ($srvs as $srv) {
+	if (!$srv["priority"]) continue;
 ?>
 					<tr>
 						<td><?= $srv["priority"] ?></td>
@@ -597,7 +605,6 @@ if (count($srvs) > 1) {
 ?>
 		
 		<h2 class="page-header" id="tls">TLS</h2>
-
 <?php
 
 $i = 0;
@@ -612,7 +619,6 @@ foreach ($srvs as $srv) {
 ?>		
 		<h3 class="page-header"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
 
-		<h3<?= $srv === $srvs[0] ? " id='certificates'" : "" ?>>Certificates</h3>
 <?php
 
 	$res = pg_execute($dbconn, "find_certs", array($srv["srv_result_id"]));
@@ -621,60 +627,70 @@ foreach ($srvs as $srv) {
 
 	$cert = $certs[0];
 
-	$prev_signed_by_id = NULL;
+	if (!$cert) {
+?>
+		<div class="alert alert-block alert-danger">
+			<strong>Error:</strong> Connection failed.
+		</div>
+<?php
+	} else {
+?>
+		<h3<?= $srv === $srvs[0] ? " id='certificates'" : "" ?>>Certificates</h3>
+<?php
+		$prev_signed_by_id = NULL;
 
-	while (true) {
+		while (true) {
 
-		$index = NULL;
+			$index = NULL;
 
-		foreach ($certs as $k => $v) {
-			if ($v["digest_sha512"] == $cert["digest_sha512"]) {
-				$index = $k;
+			foreach ($certs as $k => $v) {
+				if ($v["digest_sha512"] == $cert["digest_sha512"]) {
+					$index = $k;
+					break;
+				}
+			}
+
+			$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
+
+			$errors = pg_fetch_all($res);
+
+			show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i);
+
+			$prev_signed_by_id = $cert["signed_by_id"];
+
+			if ($prev_signed_by_id == NULL) {
+				break;
+			}
+
+			if ($cert["signed_by_id"] == $cert["certificate_id"]) {
+				break;
+			}
+
+			$cert = NULL;
+
+			foreach ($certs as $k => $v) {
+				if ($v["certificate_id"] == $prev_signed_by_id) {
+					$cert = $v;
+					break;
+				}
+			}
+
+			if (!$cert) {
+				$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
+			
+				$cert = pg_fetch_assoc($res);
+			}
+
+			if (!$cert) {
+				break;
+			}
+
+			$i = $i + 1;
+
+			if ($i > 10) {
 				break;
 			}
 		}
-
-		$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
-
-		$errors = pg_fetch_all($res);
-
-		show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i);
-
-		$prev_signed_by_id = $cert["signed_by_id"];
-
-		if ($prev_signed_by_id == NULL) {
-			break;
-		}
-
-		if ($cert["signed_by_id"] == $cert["certificate_id"]) {
-			break;
-		}
-
-		$cert = NULL;
-
-		foreach ($certs as $k => $v) {
-			if ($v["certificate_id"] == $prev_signed_by_id) {
-				$cert = $v;
-				break;
-			}
-		}
-
-		if (!$cert) {
-			$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
-		
-			$cert = pg_fetch_assoc($res);
-		}
-
-		if (!$cert) {
-			break;
-		}
-
-		$i = $i + 1;
-
-		if ($i > 10) {
-			break;
-		}
-	}
 ?>
 
 		<h3<?= $srv === $srvs[0] ? " id='protocols'" : "" ?>>Protocols</h3>
@@ -715,15 +731,15 @@ foreach ($srvs as $srv) {
 				<table class="table table-bordered table-striped">
 					<tr><th>Cipher suite</th><th>Bitsize</th><th>Forward secrecy</th></tr>
 <?php
-	if ($srv["reorders_ciphers"] === 't') {
-		$res = pg_execute($dbconn, "find_ciphers", array($srv["srv_result_id"]));
-	} else {
-		$res = pg_execute($dbconn, "find_and_sort_ciphers", array($srv["srv_result_id"]));
-	}
+		if ($srv["reorders_ciphers"] === 't') {
+			$res = pg_execute($dbconn, "find_ciphers", array($srv["srv_result_id"]));
+		} else {
+			$res = pg_execute($dbconn, "find_and_sort_ciphers", array($srv["srv_result_id"]));
+		}
 
-	$ciphers = pg_fetch_all($res);
+		$ciphers = pg_fetch_all($res);
 
-	foreach($ciphers as $cipher) {
+		foreach($ciphers as $cipher) {
 ?>
 					<tr>
 						<td>
@@ -737,12 +753,13 @@ foreach ($srvs as $srv) {
 						</td>
 					</tr>
 <?php
-	}
+		}
 ?>
 				</table>
 			</div>
 		</div>
 <?php
+	}
 }
 
 if (count($srvs) > 1) {
