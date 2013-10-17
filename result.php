@@ -114,8 +114,16 @@ function help($str) {
 			return "Advanced Encryption Standard is a symmetric key encryption algorithm using 128 or 256 bit keys. This is currently the recommended encryption algorithm.";
 		case "DES":
 			return "The Data Encryption Standard is a symmetric key encryption algorithm using 56 bit keys. This encryption algorithm is known to be easy to break and must not be used.";
+		case "3DES":
+			return "The Triple Data Encryption Algorithm is a symmetric key encryption algorithm which applies the DES algorithm 3 times. No practical attacks on 3DES exist, but it is recommended to use the faster AES instead.";
 		case "RC4":
 			return "Rivest Cipher 4 is a fast stream cipher using 128 bit keys. Due to known biases in the output it is no longer safe to use RC4.";
+		case "CAMELLIA":
+			return "Camellia is a symmetric key encryption algorithm using 128 or 256 bit keys.";
+		case "SEED":
+			return "SEED is a symmetric key encryption algorithm using 128 bit keys.";
+		case "RC2":
+			return "Rivest Cipher 2 is a symmetric key encryption algorithm using 128 bit keys.";
 		case "MD5":
 			return "MD5 is a cryptographic hash function producing a 16 byte hash. Due to problems with collision resistance it is no longer safe to use.";
 		case "RSA":
@@ -128,6 +136,14 @@ function help($str) {
 			return help("SHA-2");
 		case "SHA-512":
 			return help("SHA-2");
+		case "DHE-RSA":
+			return "Ephemeral Diffie-Hellman is a key exchange algorithm with forward secrecy. The security depends on the Diffie-Hellman parameters used by the server.";
+		case "ECDHE-RSA":
+			return "Ephemeral Elliptic Curve Diffie-Hellman is the elliptic curve variant of the Diffie-Hellman key exchange. This algorithm supports forward secrecy. The security depends on the curve chosen by the server.";
+		case "AESGCM":
+			return "Advanced Encryption Standard using Galois/Counter Mode is an authenticated symmetric key encryption algorithm. This is a faster way of using AES.";
+		case "AEAD":
+			return "Authenticated Encryption with Associated Data algorithms do not require a separate hash function.";
 		default:
 			return "...";
 	}
