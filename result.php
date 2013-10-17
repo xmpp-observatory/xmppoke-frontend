@@ -739,6 +739,10 @@ foreach ($srvs as $srv) {
 
 		<h3<?= $srv === $srvs[0] ? " id='ciphers'" : "" ?>>Ciphers</h3>
 
+<?php
+		if ($srv["reorders_ciphers"] !== NULL) {
+?>
+
 		<p>Server does <?= $srv["reorders_ciphers"] === 't' ? "<strong>not</strong> " : "" ?>respect the client's cipher ordering.</p>
 
 		<div class="row">
@@ -746,15 +750,15 @@ foreach ($srvs as $srv) {
 				<table class="table table-bordered table-striped">
 					<tr><th>Cipher suite</th><th>Bitsize</th><th>Forward secrecy</th></tr>
 <?php
-		if ($srv["reorders_ciphers"] === 't') {
-			$res = pg_execute($dbconn, "find_ciphers", array($srv["srv_result_id"]));
-		} else {
-			$res = pg_execute($dbconn, "find_and_sort_ciphers", array($srv["srv_result_id"]));
-		}
+			if ($srv["reorders_ciphers"] === 't') {
+				$res = pg_execute($dbconn, "find_ciphers", array($srv["srv_result_id"]));
+			} else {
+				$res = pg_execute($dbconn, "find_and_sort_ciphers", array($srv["srv_result_id"]));
+			}
 
-		$ciphers = pg_fetch_all($res);
+			$ciphers = pg_fetch_all($res);
 
-		foreach($ciphers as $cipher) {
+			foreach($ciphers as $cipher) {
 ?>
 					<tr>
 						<td>
@@ -768,6 +772,7 @@ foreach ($srvs as $srv) {
 						</td>
 					</tr>
 <?php
+			}
 		}
 ?>
 				</table>
