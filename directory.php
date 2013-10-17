@@ -132,9 +132,9 @@ if (!$list) {
 					<th>Founded</th>
 					<th>Country</th>
 					<th>CA</th>
-					<th data-defaultsort="desc">Software</th>
-					<th data-defaultsort="desc">Grade c2s</th>
-					<th data-defaultsort="desc">Grade s2s</th>
+					<th>Software</th>
+					<th>Grade c2s</th>
+					<th>Grade s2s</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -184,10 +184,14 @@ foreach ($list as $result) {
 	$s2s_final_score = NULL;
 
 	foreach ($c2s_scores as $score) {
-		$c2s_final_score = min($score, $c2s_final_score);
+		if (!$c2s_final_score || $score < $c2s_final_score) {
+			$c2s_final_score = $score;
+		}
 	}
 	foreach ($s2s_scores as $score) {
-		$s2s_final_score = min($score, $s2s_final_score);
+		if (!$s2s_final_score || $score < $s2s_final_score) {
+			$s2s_final_score = $score;
+		}
 	}
 ?>
 			<tr>
