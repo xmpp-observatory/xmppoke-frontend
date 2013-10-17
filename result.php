@@ -266,8 +266,13 @@ foreach ($srvs as $srv) {
 	}
 }
 
-// Refresh every 15 seconds, but give up when it has taken more than 15 minutes.
-common_header($done || time() - strtotime($result->test_date) > 60 * 15 ? "" : "<meta http-equiv='refresh' content='15'>");
+$refresh = 15;
+
+if (time() - strtotime($result->test_date) < 30) {
+	$refresh = 5;
+}
+
+common_header($done || time() - strtotime($result->test_date) > 60 * 15 ? "" : "<meta http-equiv='refresh' content='" . $refresh . "'>");
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
