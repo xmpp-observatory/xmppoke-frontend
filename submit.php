@@ -76,10 +76,6 @@ if ($error) {
 <?php
 }
 ?>
-
-		<div class="footer">
-			<p>Some rights reserved.</p>
-		</div>
 	</div> <!-- /container -->
 
 	<!-- Le javascript

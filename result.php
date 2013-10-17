@@ -773,12 +773,18 @@ foreach ($srvs as $srv) {
 					</tr>
 <?php
 			}
-		}
 ?>
 				</table>
 			</div>
 		</div>
 <?php
+		} else {
+?>
+		<div class="alert alert-block alert-warning">
+			<strong>Warning:</strong> Still in progress.
+		</div>
+<?php
+		}
 	}
 }
 
