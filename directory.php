@@ -197,9 +197,9 @@ foreach ($list as $result) {
 ?>
 			<tr>
 				<td>
-					<a class="my-popover" data-content="<?= $result["description"] ?>" data-toggle="popover" data-original-title="<?= htmlspecialchars($result["server_name"]) ?>" href="<?= $result["url"] ?>">
-						<?= htmlspecialchars($result["server_name"]) ?> <span class="glyphicon glyphicon-link"></span>
-					</a>
+					<span class="my-popover" data-content="<?= $result["description"] ?>" data-toggle="popover" data-original-title="<?= htmlspecialchars($result["server_name"]) ?>">
+						<a href="<?= $result["url"] ?>"><?= htmlspecialchars($result["server_name"]) ?> <span class="glyphicon glyphicon-link"></span></a>
+					</span>
 				</td>
 				<td>
 					<?= $result["founded"] ?>
