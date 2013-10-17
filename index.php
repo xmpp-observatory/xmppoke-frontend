@@ -77,7 +77,7 @@ foreach ($list as $result) {
 	$final_score = NULL;
 
 	foreach ($scores as $score) {
-		if (!$final_score || $score["grade"] < $final_score) {
+		if ($score["grade"] && (!$final_score || $score["grade"] < $final_score)) {
 			$final_score = $score["grade"];
 		}
 	}
