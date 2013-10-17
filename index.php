@@ -29,6 +29,7 @@ common_header();
 				<ul class="nav navbar-nav">
 					<li><a href="list.php">Test results</a></li>
 					<li><a href="directory.php">Public server directory</a></li>
+					<li><a href="about.php">About</a></li>
 				</ul>
 			</div>
 		</div>

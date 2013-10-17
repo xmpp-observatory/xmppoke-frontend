@@ -316,6 +316,7 @@ common_header($done || time() - strtotime($result->test_date) > 60 * 15 ? "" : "
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="list.php">Test results</a></li>
 					<li><a href="directory.php">Public server directory</a></li>
+					<li><a href="about.php">About</a></li>
 				</ul>
 			</div>
 		</div>
