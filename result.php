@@ -471,6 +471,13 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
+	if ($srv["sslv2"] === 't' && $srv["done"] === 't') {
+?>
+				<div class="alert alert-block alert-danger">
+						Server allows SSLv2, which is obsolete and insecure. Grade capped at <strong>F</strong>.
+				</div>
+<?php
+	}
 }
 
 if (count($srvs) > 1) {
