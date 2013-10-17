@@ -27,8 +27,14 @@ function released($software) {
         switch ($software) {
         case "Isode M-Link 16.0v4":
             return "2013/06/24";
+        
         case "Metronome 2.9":
             return "2013/10/02";
+        case "Metronome 2.9.16":
+        	return "2013/10/16";
+        
+        case "Openfire 3.6.4":
+        	return "2009/05/01";
         case "Openfire 3.7.1":
             return "2011/10/01";
         case "Openfire 3.8.0":
@@ -37,6 +43,7 @@ function released($software) {
             return "2013/03/03";
         case "Openfire 3.8.2":
             return "2013/05/28";
+
         case "ejabberd 2.1.2":
             return "2010/01/18";
         case "ejabberd 2.1.5":
@@ -52,16 +59,22 @@ function released($software) {
 			return "2013/02/05";
 		case "ejabberd 2.1.13":
             return "2013/06/28";
+        
         case "jabberd 2.2.14":
             return "2011/05/31";
 		case "jabberd 2.2.16":
             return "2012/05/04";
+        case "jabberd 2.2.17":
+        	return "2012/08/26";
+
+        
         case "Prosody 0.8.0":
             return "2011/04/07";
         case "Prosody hg:6f4c8af128e2":
             return "2013/09/06";
 		case "Prosody 0.9.1":
 			return "2013/09/10";
+		
 		case "Tigase 5.1.4-b3001":
 			return "2013/01/14";
 	}
@@ -119,9 +132,9 @@ if (!$list) {
 					<th>Founded</th>
 					<th>Country</th>
 					<th>CA</th>
-					<th>Software</th>
-					<th>Grade c2s</th>
-					<th>Grade s2s</th>
+					<th data-defaultsort="desc">Software</th>
+					<th data-defaultsort="desc">Grade c2s</th>
+					<th data-defaultsort="desc">Grade s2s</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -166,6 +179,16 @@ foreach ($list as $result) {
 			$issuer = pg_fetch_assoc($res);
 		}
 	}
+
+	$c2s_final_score = NULL;
+	$s2s_final_score = NULL;
+
+	foreach ($c2s_scores as $score) {
+		$c2s_final_score = min($score, $c2s_final_score);
+	}
+	foreach ($s2s_scores as $score) {
+		$s2s_final_score = min($score, $s2s_final_score);
+	}
 ?>
 			<tr>
 				<td><a href="<?= $result["url"] ?>"><?= $result["server_name"] ?></a></td>
@@ -173,11 +196,11 @@ foreach ($list as $result) {
 				<td><?= $result["country"] ?></td>
 				<td><span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
 				<td data-value="<?= released($c2s["version"]) ?>"><span class="my-popover" title="" <?= released($c2s["version"]) === "" ? "" : "data-content='<strong>" . $c2s["version"] . "</strong> was released on " . released($c2s["version"]) . "'" ?> data-toggle="popover" data-original-title="<?= $c2s["version"] ?>" ><?= htmlspecialchars($c2s["version"]) ?></span></td>
-				<td>
-					<a class="label <?= color_label_text_grade($c2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client"><?= $c2s_scores[0] ? $c2s_scores[0] : "?" ?></a>
+				<td data-value="<?= $c2s_final_score ? $c2s_final_score : "G" ?>">
+					<a class="label <?= color_label_text_grade($c2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client"><?= $c2s_final_score ? $c2s_final_score : "?" ?></a>
 				</td>
-				<td>
-					<a class="label <?= color_label_text_grade($s2s_scores[0]) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server"><?= $s2s_scores[0] ? $s2s_scores[0] : "?" ?></a>
+				<td data-value="<?= $s2s_final_score ? $s2s_final_score : "G" ?>">
+					<a class="label <?= color_label_text_grade($s2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server"><?= $s2s_final_score ? $s2s_final_score : "?" ?></a>
 				</td>
 			</tr>
 <?php
