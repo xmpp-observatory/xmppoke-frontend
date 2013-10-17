@@ -3,6 +3,7 @@
 include("secrets.php");
 
 date_default_timezone_set('UTC');
+setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");
 
 $dbconn = pg_connect("port=$dbport host=$dbhost dbname=$dbname user=$dbuser password=$dbpass") or die('Could not connect: ' . pg_last_error());
 
