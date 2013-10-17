@@ -348,7 +348,7 @@ if (!$result) {
 ?>
 
 		<h1>IM Observatory <?= $result->type ?> report for <?= htmlspecialchars($result->server_name) ?></h1>
-		<p>On <?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?> <span class="text-muted"><time class="timeago" datetime="<?= date("c", strtotime($result->test_date)) ?>"></time></span>.</p>
+		<p>Test started <?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?> <span class="text-muted"><time class="timeago" datetime="<?= date("c", strtotime($result->test_date)) ?>"></time></span>.</p>
 
 		<a href='result.php?domain=<?= htmlspecialchars($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result.</a>
 
