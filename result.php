@@ -480,10 +480,12 @@ foreach ($srvs as $srv) {
 			<dd><?= $srv["requires_starttls"] === 't' ? "<span class='label label-success'>REQUIRED</span>" : "<span class='label label-warning'>ALLOWED</span>" ?></dd>
 <?php
 	}
+	if ($srv["compression"]) {
 ?>
 			<dt>TLS compression</dt>
-			<dd><?= $srv["compression"] ? $srv["compression"] : "None" ?></dd>
+			<dd><?= $srv["compression"] ?></dd>
 <?php
+	}
 	if ($result->mode === "server" && $srv["requires_peer_cert"] === 't') {
 ?>
 			<dt>Peer certificate</dt>
