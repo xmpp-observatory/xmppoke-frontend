@@ -150,7 +150,7 @@ foreach ($list as $result) {
 
 	$res = pg_execute($dbconn, "find_score", array($s2s["test_id"]));
 
-	$s2s_scores = pg_fetch_array($res);
+	$s2s_scores = pg_fetch_all($res);
 
 	$res = pg_execute($dbconn, "find_c2s", array($result["server_name"]));
 
@@ -158,7 +158,7 @@ foreach ($list as $result) {
 
 	$res = pg_execute($dbconn, "find_score", array($c2s["test_id"]));
 
-	$c2s_scores = pg_fetch_array($res);
+	$c2s_scores = pg_fetch_all($res);
 
 	$res = pg_execute($dbconn, "find_srvs", array($c2s["test_id"]));
 
