@@ -196,16 +196,34 @@ foreach ($list as $result) {
 	}
 ?>
 			<tr>
-				<td><a href="<?= $result["url"] ?>"><?= $result["server_name"] ?></a></td>
-				<td><?= $result["founded"] ?></td>
-				<td><?= $result["country"] ?></td>
-				<td><span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
-				<td data-value="<?= released($c2s["version"]) ?>"><span class="my-popover" title="" <?= released($c2s["version"]) === "" ? "" : "data-content='<strong>" . $c2s["version"] . "</strong> was released on " . released($c2s["version"]) . "'" ?> data-toggle="popover" data-original-title="<?= $c2s["version"] ?>" ><?= htmlspecialchars($c2s["version"]) ?></span></td>
+				<td>
+					<a class="my-popover" data-content="<?= $result["description"] ?>" data-toggle="popover" data-original-title="<?= htmlspecialchars($result["server_name"]) ?>" href="<?= $result["url"] ?>">
+						<?= htmlspecialchars($result["server_name"]) ?> <span class="glyphicon glyphicon-link"></span>
+					</a>
+				</td>
+				<td>
+					<?= $result["founded"] ?>
+				</td>
+				<td>
+					<?= $result["country"] ?>
+				</td>
+				<td>
+					<span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
+				</td>
+				<td data-value="<?= released($c2s["version"]) ?>">
+					<span class="my-popover" title="" <?= released($c2s["version"]) === "" ? "" : "data-content='<strong>" . $c2s["version"] . "</strong> was released on " . released($c2s["version"]) . "'" ?> data-toggle="popover" data-original-title="<?= $c2s["version"] ?>">
+						<?= htmlspecialchars($c2s["version"]) ?>
+					</span>
+				</td>
 				<td data-value="<?= $c2s_final_score ? $c2s_final_score : "G" ?>">
-					<a class="label <?= color_label_text_grade($c2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client"><?= $c2s_final_score ? $c2s_final_score : "?" ?></a>
+					<a class="label <?= color_label_text_grade($c2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client">
+						<?= $c2s_final_score ? $c2s_final_score : "?" ?>
+					</a>
 				</td>
 				<td data-value="<?= $s2s_final_score ? $s2s_final_score : "G" ?>">
-					<a class="label <?= color_label_text_grade($s2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server"><?= $s2s_final_score ? $s2s_final_score : "?" ?></a>
+					<a class="label <?= color_label_text_grade($s2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=server">
+						<?= $s2s_final_score ? $s2s_final_score : "?" ?>
+					</a>
 				</td>
 			</tr>
 <?php
