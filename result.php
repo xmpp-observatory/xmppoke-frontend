@@ -560,7 +560,7 @@ if (count($srvs) > 1) {
 <?php
 
 foreach ($srvs as $srv) {
-	if (!$srv["priority"]) continue;
+	if ($srv["priority"] === NULL) continue;
 ?>
 					<tr>
 						<td><?= $srv["priority"] ?></td>
