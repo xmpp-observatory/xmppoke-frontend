@@ -367,7 +367,7 @@ if (!$result) {
 		<h1>IM Observatory <?= $result->type ?> report for <?= htmlspecialchars($result->server_name) ?></h1>
 		<p>Test started <?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?> <span class="text-muted"><time class="timeago" datetime="<?= date("c", strtotime($result->test_date)) ?>"></time></span>.</p>
 
-		<a href='result.php?domain=<?= htmlspecialchars($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result.</a>
+		<a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result.</a>
 
 		<h2 class="page-header" id="score">Score</h2>
 <?php
@@ -382,7 +382,7 @@ foreach ($srvs as $srv) {
 	}
 ?>
 
-		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
+		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 <?php
 	if ($srv["done"] === 'f') {
 		if (time() - strtotime($result->test_date) < 60 * 30) {
@@ -656,7 +656,7 @@ foreach ($srvs as $srv) {
 <?php
 	}
 ?>		
-		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
+		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
 
 <?php
 
