@@ -502,7 +502,7 @@ foreach ($srvs as $srv) {
 	}
 ?>
 
-		<h5><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
+		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
 		<dl class="dl-horizontal">
 <?php
 	if ($result->version) {
@@ -546,7 +546,7 @@ if (count($srvs) > 1) {
 
 
 		<h2 class="page-header" id="dns">DNS</h2>
-		<h3 id="srv">SRV records <small>_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name) ?> <span class="label <?= $result->srv_dnssec_good === 't' ? "label-success" : ($result->srv_dnssec_bogus === 't' ? "label-warning" : "label-default")?>"><?= $result->srv_dnssec_good === 't' ? "" : ($result->srv_dnssec_bogus === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></small></h3>
+		<h3 id="srv">SRV records <small title="_xmpp-<?= $result->type ?>._tcp.<?= htmlspecialchars($result->server_name) ?>">_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name) ?> <span class="label <?= $result->srv_dnssec_good === 't' ? "label-success" : ($result->srv_dnssec_bogus === 't' ? "label-warning" : "label-default")?>"><?= $result->srv_dnssec_good === 't' ? "" : ($result->srv_dnssec_bogus === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></small></h3>
 		<div class="row">
 			<div class="col-md-5">
 				<table class="table table-bordered table-striped">
@@ -587,7 +587,7 @@ foreach ($srvs as $srv) {
 <?php
 		}
 ?>
-		<h4 class="page-header">_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars($srv["target"]) ?> <span class="label <?= $srv["tlsa_dnssec_good"] === 't' ? "label-success" : ($srv["tlsa_dnssec_bogus"] === 't' ? "label-warning" : "label-default")?>"><?= $srv["tlsa_dnssec_good"] === 't' ? "" : ($srv["tlsa_dnssec_bogus"] === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></h4>
+		<h4 class="page-header" title="_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>">_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars($srv["target"]) ?> <span class="label <?= $srv["tlsa_dnssec_good"] === 't' ? "label-success" : ($srv["tlsa_dnssec_bogus"] === 't' ? "label-warning" : "label-default")?>"><?= $srv["tlsa_dnssec_good"] === 't' ? "" : ($srv["tlsa_dnssec_bogus"] === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></h4>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -656,7 +656,7 @@ foreach ($srvs as $srv) {
 <?php
 	}
 ?>		
-		<h3 class="page-header"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
+		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
 
 <?php
 
