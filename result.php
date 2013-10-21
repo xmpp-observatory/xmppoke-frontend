@@ -203,14 +203,14 @@ if ($cert["trusted_root"] === 't' && $cert["chain_index"] !== NULL) {
 		</div>
 <?php
 }
-if ($cert["trusted_root"] === 'f' && $cert["chain_index"] === NULL) {
+if ($cert["trusted_root"] === 'f' && $cert["chain_index"] === NULL && $cert["signed_by_id"] !== $cert["certificate_id"]) {
 ?>
 		<div class="alert alert-block alert-danger">
 			<strong>Error:</strong> Intermediate certificate was not included in the chain.
 		</div>
 <?php
 }
-if ($prev_signed_by_id !== $cert["certificate_id"] && $cert["chain_index"] !== 0) {
+if ($prev_signed_by_id !== $cert["certificate_id"] && $cert["chain_index"] !== '0') {
 ?>
 		<div class="alert alert-block alert-warning">
 			<strong>Warning:</strong> Certificate is unused.
