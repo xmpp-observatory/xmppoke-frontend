@@ -141,7 +141,7 @@ function help($str) {
 		case "ECDHE-RSA":
 			return "Ephemeral Elliptic Curve Diffie-Hellman is the elliptic curve variant of the Diffie-Hellman key exchange. This algorithm supports forward secrecy. The security depends on the curve chosen by the server.";
 		case "AESGCM":
-			return "Advanced Encryption Standard using Galois/Counter Mode is an authenticated symmetric key encryption algorithm. This is a faster way of using AES.";
+			return "Advanced Encryption Standard using Galois/Counter Mode is an authenticated symmetric key encryption algorithm using 128 or 256 bit keys. This is more efficient and faster compared to normal AES, which uses Cipher-block chaining (CBC).";
 		case "AEAD":
 			return "Authenticated Encryption with Associated Data algorithms do not require a separate hash function.";
 		default:
