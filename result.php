@@ -132,6 +132,8 @@ function help($str) {
 			return "Secure Hash Algorithm 1 is a cryptographic hash function producing a 20 byte hash. A number of weaknesses in SHA-1 are known and it is no longer recommended.";
 		case "SHA-2":
 			return "Secure Hash Algorithm 2 is a set of 4 cryptographic hash functions, SHA-224, SHA-256, SHA-384 and SHA-512, producing respectively 28, 32, 48 or 64 byte hashes. There are no known practical weakneses in SHA-2.";
+		case "SHA-256":
+			return help("SHA-2");
 		case "SHA-384":
 			return help("SHA-2");
 		case "SHA-512":
