@@ -293,13 +293,21 @@ foreach ($srvs as $srv) {
 	}
 }
 
-$refresh = 15;
+$refresh = NULL;
 
-if (time() - strtotime($result->test_date) < 15) {
+// In the first 30 seconds, always refresh every 5 seconds, as the SRV results still need to come in.
+// In the first 15 minutes, refresh every 15 seconds when not yet done.
+if (time() - strtotime($result->test_date) < 30) {
 	$refresh = 5;
+} else if (!$done && time() - strtotime($result->test_date) < 60 * 15) {
+	$refresh = 15;
 }
 
-common_header($done || time() - strtotime($result->test_date) > 60 * 15 ? "" : "<meta http-equiv='refresh' content='" . $refresh . "'>");
+if ($refresh !== NULL) {
+	common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
+} else {
+	common_header("");
+}
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
