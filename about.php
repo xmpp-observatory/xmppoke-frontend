@@ -31,10 +31,10 @@ common_header("");
 		<div>
 			<h2>About</h2>
 			<p>
-				This is a service allowing XMPP users and server administrators to inspect the security of their servers. It can test the TLS configuration and the DNSSEC deployment of XMPP servers. It can give warnings about issues with certificate chains, it can show the list of ciphersuites used by a server and their strength, it will check DANE records and many more.
+				This service enables XMPP users and server administrators to inspect the security of their servers. It can test the TLS configuration and the DNSSEC deployment of XMPP servers, give warnings about issues with certificate chains, show the list of ciphersuites used by a server and their strength, check DANE records, and many more.
 			</p>
 			<p>
-				Every server is given a grade from A to F, both for their client to server and server to server TLS configuration. This test is based on the test by SSL Labs, for more info see <a href="https://www.ssllabs.com/projects/rating-guide/index.html">https://www.ssllabs.com/projects/rating-guide/index.html</a>. Scoring 100 on every test is not the goal: this will lead to incompatibility with many XMPP clients. Scoring an A, on the other hand, does also not mean the security can not be improved. For instance: forward secrecy, forced StartTLS and DNSSEC do not (yet) count for the grade.
+				Every server is given a grade from A to F, both for their client-to-server and server-to-server TLS configuration. The grades are based on the same principles as the tests of SSL Labs, <a href="https://www.ssllabs.com/projects/rating-guide/index.html">https://www.ssllabs.com/projects/rating-guide/index.html</a> for details. Scoring 100 on every test is not the goal: this will lead to incompatibility with many XMPP clients. Scoring an A, on the other hand, does not mean that security cannot be improved. For instance: mandatory channel encryption, forward secrecy, and DNSSEC do not (yet) count toward the grade.
 			</p>
 			
 			<h3>XMPPoke</h3>

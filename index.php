@@ -98,8 +98,13 @@ foreach ($list as $result) {
 
 				<br>
 
-				<h3>Setting up your own server</h3>
-				<p>Interested in setting up your own XMPP server? See <a href="http://xmpp.org/xmpp-software/servers/">http://xmpp.org/xmpp-software/servers/</a>.</p>
+				<h3>Join the network</h3>
+				<p>Interested in setting up your own XMPP server? Our <a href="howto.php">HOWTO page</a> gets you started.</p>
+
+				<br>
+				<h3>Learn about XMPP</h3>
+				<p>XMPP is an open standard for instant messaging and real-time communication. Visit <a href="http://xmpp.org/">xmpp.org</a> for all the details.</p>
+
 			</div> <!-- /.col-lg-6 -->
 		</div> <!-- /.row -->
 
