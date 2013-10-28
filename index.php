@@ -10,7 +10,7 @@ $res = pg_execute($dbconn, "list_results", array());
 
 $list = pg_fetch_all($res);
 
-common_header();
+common_header("");
 
 ?>
 	<body>
@@ -73,7 +73,7 @@ foreach ($list as $result) {
 	$scores = pg_fetch_all($res);
 ?>
 						<tr>
-							<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+							<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a> <span class="text-muted"><?= $result["type"] ?></span></td>
 <?php
 	$final_score = NULL;
 
