@@ -398,7 +398,7 @@ foreach ($srvs as $srv) {
 		if (time() - strtotime($result->test_date) < 60 * 30) {
 ?>
 		<div class="alert alert-block alert-warning">
-			<img src="img/ajax-loader.gif"> Test did not complete successfully or is still in progress.
+			<img src="img/ajax-loader.gif"> Test did not complete successfully or is still in progress. <a class="text-muted" href="about.php#slow">Why is this taking so long?</a>
 		</div>
 <?php
 		} else {

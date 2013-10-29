@@ -41,6 +41,15 @@ common_header("");
 			<p>
 				The backend of this service is provided by XMPPoke, which can be found on <a href="https://bitbucket.org/xnyhps/xmppoke">https://bitbucket.org/xnyhps/xmppoke</a>.
 			</p>
+
+			<h3>Frequently Asked Questions</h3>
+			<strong id="slow">Why is the test so slow?</strong>
+			<p>
+				The test needs to make a large number of connections to the server to determine what it supports: one connection for every protocol and one for every cipher it supports. Other tests, like determining the cipher order require some extra connections. Making 30 connections to the server is not uncommon.
+			</p>
+			<p>
+				During development it was observed that some servers require very strict rate limiting. Only when waiting 15 seconds between connection attempts it was possible to stay under the strict limits. Therefore the test is expected to take around 8 minutes per SRV record.
+			</p>
 		</div>
 
 		<div class="footer">
