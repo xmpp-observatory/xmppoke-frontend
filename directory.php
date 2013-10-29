@@ -31,7 +31,9 @@ function released($software) {
         case "Metronome 2.9":
             return "2013/10/02";
         case "Metronome 2.9.16":
-        	return "2013/10/16";
+            return "2013/10/16";
+        case "Metronome 2.9.27":
+            return "2013/10/27";
         
         case "Openfire 3.6.4":
         	return "2009/05/01";
