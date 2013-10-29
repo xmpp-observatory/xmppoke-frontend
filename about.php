@@ -45,10 +45,10 @@ common_header("");
 			<h3>Frequently Asked Questions</h3>
 			<strong id="slow">Why is the test so slow?</strong>
 			<p>
-				The test needs to make a large number of connections to the server to determine what it supports: one connection for every protocol and one for every cipher it supports. Other tests, like determining the cipher order require some extra connections. Making 30 connections to the server is not uncommon.
+				The test needs to make a large number of connections to the server to determine what it supports: one connection for every TLS version, one for every cipher it and some more for the other tests, like determining whether the server honors the the client's cipher order. Making 30 connections to the server is not uncommon.
 			</p>
 			<p>
-				During development it was observed that some servers require very strict rate limiting. Only when waiting 15 seconds between connection attempts it was possible to stay under the strict limits. Therefore the test is expected to take around 8 minutes per SRV record.
+				During development it was observed that some servers require very strict rate limiting. Only when waiting 15 seconds between connection attempts it was possible to stay under these strict limits. Therefore the test is expected to take around 8 minutes. This is repeated for every SRV record for the server.
 			</p>
 		</div>
 
