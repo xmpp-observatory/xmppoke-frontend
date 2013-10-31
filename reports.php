@@ -2,13 +2,13 @@
 
 include("common.php");
 
-pg_prepare($dbconn, "sslv3_not_tls1", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND sslv3 = 't' AND tlsv1 = 'f' GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "sslv3_not_tls1", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND sslv3 = 't' AND tlsv1 = 'f');");
 
 $res = pg_execute($dbconn, "sslv3_not_tls1", array());
 
 $sslv3_not_tls1 = pg_fetch_all($res);
 
-pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL);");
 
 $res = pg_execute($dbconn, "dnssec_srv", array());
 
