@@ -38,6 +38,8 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 
 	pg_prepare($dbconn, "find_cert", "SELECT * FROM certificates WHERE certificates.certificate_id = $1;");
 
+	pg_prepare($dbconn, "find_root", "SELECT * FROM certificates WHERE trusted_root = 't' AND subject_key_info = (SELECT subject_key_info FROM certificates WHERE certificates.certificate_id = $1);");
+
 	pg_prepare($dbconn, "find_errors", "SELECT * FROM srv_certificate_errors WHERE srv_certificates_id = $1 ORDER BY message");
 
 	pg_prepare($dbconn, "find_subjects", "SELECT * FROM certificate_subjects WHERE certificate_id = $1 ORDER BY name;");
@@ -725,9 +727,17 @@ foreach ($srvs as $srv) {
 			}
 
 			if (!$cert) {
-				$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
+				// First, we look if the certificate was in our trust store, maybe under a different ID.
+				$res = pg_execute($dbconn, "find_root", array($prev_signed_by_id));
 			
 				$cert = pg_fetch_assoc($res);
+
+				// If not, just grab the certificate that we think signed it.
+				if (!$cert) {
+					$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
+			
+					$cert = pg_fetch_assoc($res);
+				}
 			}
 
 			if (!$cert) {
