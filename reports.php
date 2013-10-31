@@ -2,11 +2,11 @@
 
 include("common.php");
 
-pg_prepare($dbconn, "sslv3", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND sslv3 = 't' AND tlsv1 = 'f' GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "sslv3_not_tls1", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND sslv3 = 't' AND tlsv1 = 'f' GROUP BY test_id) > 0;");
 
-$res = pg_execute($dbconn, "sslv3", array());
+$res = pg_execute($dbconn, "sslv3_not_tls1", array());
 
-$sslv3 = pg_fetch_all($res);
+$sslv3_not_tls1 = pg_fetch_all($res);
 
 pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL GROUP BY test_id) > 0;");
 
@@ -14,6 +14,23 @@ $res = pg_execute($dbconn, "dnssec_srv", array());
 
 $dnssec_srv = pg_fetch_all($res);
 
+pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' GROUP BY test_id) > 0;"
+
+$res = pg_execute($dbconn, "total", array());
+
+$total = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "sslv2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;"
+
+$res = pg_execute($dbconn, "sslv2", array());
+
+$sslv2 = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;"
+
+$res = pg_execute($dbconn, "sslv3", array());
+
+$sslv3 = pg_fetch_assoc($res);
 
 common_header();
 
@@ -44,6 +61,19 @@ common_header();
 
 		<h1>Various reports of all servers tested</h1>
 
+		<h3>TLS versions</h3>
+
+		<table>
+			<tr>
+				<td>SSL 2</td>
+				<td><?= $sslv2 / $total ?></td>
+			</tr>
+			<tr>
+				<td>SSL 3</td>
+				<td><?= $sslv3 / $total ?></td>
+			</tr>
+		</table>
+
 		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
 
 		<table class="table table-bordered table-striped">
@@ -53,7 +83,7 @@ common_header();
 				<th>When</th>
 			</tr>
 <?php
-foreach ($sslv3 as $result) {
+foreach ($sslv3_not_tls1 as $result) {
 ?>
 			<tr>
 				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
@@ -65,7 +95,7 @@ foreach ($sslv3 as $result) {
 ?>
 		</table>
 
-		<h3>Servers with DNSSEC signed SRV record</h3>
+		<h3>Servers with DNSSEC signed SRV records</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
