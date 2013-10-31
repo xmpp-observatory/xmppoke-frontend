@@ -50,6 +50,12 @@ $res = pg_execute($dbconn, "tlsv1_2", array());
 
 $tlsv1_2 = pg_fetch_assoc($res);
 
+pg_prepare($dbconn, "bitsizes", "SELECT COUNT(*), rsa_bitsize FROM (SELECT DISTINCT ON (results.test_id, rsa_bitsize) rsa_bitsize FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE results.test_id = srv_results.test_id AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0 AND certificates.certificate_id = srv_certificates.certificate_id) AS bitsizes GROUP BY rsa_bitsize ORDER BY rsa_bitsize;");
+
+$res = pg_execute($dbconn, "bitsizes", array());
+
+$bitsizes = pg_fetch_all($res);
+
 common_header();
 
 ?>
@@ -102,6 +108,25 @@ common_header();
 				<td>TLS 1.2</td>
 				<td><?= 100 * $tlsv1_2["count"] / $total["count"] ?>%</td>
 			</tr>
+		</table>
+
+		<h3>RSA key sizes</h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>RSA key size</th>
+				<th>Count</th>
+			</tr>
+<?php
+foreach ($bitsizes as $bitsize) {
+?>
+			<tr>
+				<td><?= $bitsize["rsa_bitsize"] ?></td>
+				<td><?= $bitsize["count"] ?></td>
+			</tr>
+<?php
+}
+?>
 		</table>
 
 		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
