@@ -90,7 +90,7 @@ common_header();
 		<table class="table table-bordered table-striped">
 			<tr>
                 <td>SSL 2</td>
-                <td><?= 100 * $sslv2["count"] / $total["count"] ?>%</td>
+                <td><?= (int)(100 * $sslv2["count"] / $total["count"]) ?>%</td>
 				<td style="width: 50%;">
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv2["count"] / $total["count"] ?>%"></div>
@@ -99,7 +99,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>SSL 3</td>
-				<td><?= 100 * $sslv3["count"] / $total["count"] ?>%</td>
+				<td><?= (int)(100 * $sslv3["count"] / $total["count"]) ?>%</td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv3["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv3["count"] / $total["count"] ?>%"></div>
@@ -108,7 +108,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.0</td>
-				<td><?= 100 * $tlsv1["count"] / $total["count"] ?>%</td>
+				<td><?= (int)(100 * $tlsv1["count"] / $total["count"]) ?>%</td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1["count"] / $total["count"] ?>%"></div>
@@ -117,7 +117,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.1</td>
-				<td><?= 100 * $tlsv1_1["count"] / $total["count"] ?>%</td>
+				<td><?= (int)(100 * $tlsv1_1["count"] / $total["count"]) ?>%</td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_1["count"] / $total["count"] ?>%"></div>
@@ -126,7 +126,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.2</td>
-				<td><?= 100 * $tlsv1_2["count"] / $total["count"] ?>%</td>
+				<td><?= (int)(100 * $tlsv1_2["count"] / $total["count"]) ?>%</td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_2["count"] / $total["count"] ?>%"></div>
