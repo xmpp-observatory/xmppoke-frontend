@@ -18,19 +18,19 @@ pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_n
 
 $res = pg_execute($dbconn, "total", array());
 
-$total = pg_fetch_assoc($res)[0];
+$total = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "sslv2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "sslv2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't');");
 
 $res = pg_execute($dbconn, "sslv2", array());
 
-$sslv2 = pg_fetch_assoc($res)[0];
+$sslv2 = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv3 = 't');");
 
 $res = pg_execute($dbconn, "sslv3", array());
 
-$sslv3 = pg_fetch_assoc($res)[0];
+$sslv3 = pg_fetch_assoc($res);
 
 common_header();
 
@@ -63,14 +63,14 @@ common_header();
 
 		<h3>TLS versions</h3>
 
-		<table>
+		<table class="table table-bordered table-striped">
 			<tr>
-				<td>SSL 2</td>
-				<td><?= $sslv2 / $total ?></td>
+                <td>SSL 2</td>
+				<td><?= 100 * $sslv2["count"] / $total["count"] ?>%</td>
 			</tr>
 			<tr>
 				<td>SSL 3</td>
-				<td><?= $sslv3 / $total ?></td>
+				<td><?= 100 * $sslv3["count"] / $total["count"] ?>%</td>
 			</tr>
 		</table>
 
