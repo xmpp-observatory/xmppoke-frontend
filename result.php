@@ -737,6 +737,8 @@ foreach ($srvs as $srv) {
 					$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
 			
 					$cert = pg_fetch_assoc($res);
+				} else {
+					$prev_signed_by_id = $cert["certificate_id"];
 				}
 			}
 
