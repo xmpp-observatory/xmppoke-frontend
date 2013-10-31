@@ -14,7 +14,7 @@ $res = pg_execute($dbconn, "dnssec_srv", array());
 
 $dnssec_srv = pg_fetch_all($res);
 
-pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' GROUP BY test_id) > 0;");
+pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't');");
 
 $res = pg_execute($dbconn, "total", array());
 
