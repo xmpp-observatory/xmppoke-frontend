@@ -44,7 +44,7 @@ common_header();
 
 		<h1>Various reports of all servers tested</h1>
 
-		<h2>Servers supporting SSL 3, but not TLS 1.0</h2>
+		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -65,7 +65,7 @@ foreach ($sslv3 as $result) {
 ?>
 		</table>
 
-		<h2>Servers with DNSSEC signed SRV record</h2>
+		<h3>Servers with DNSSEC signed SRV record</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
