@@ -80,6 +80,12 @@ $res = pg_execute($dbconn, "s2s_starttls_required", array());
 
 $s2s_starttls_required = pg_fetch_assoc($res);
 
+pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
+
+$res = pg_execute($dbconn, "trusted_valid", array());
+
+$trusted_valid = pg_fetch_all($res);
+
 common_header();
 
 ?>
@@ -197,6 +203,25 @@ foreach ($bitsizes as $bitsize) {
 				<td><?= $s2s_starttls_allowed["count"] ?></td>
 			</tr>
 		</table>
+
+		<h3>Trust</h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th></th>
+				<th>Trusted</th>
+				<th>Untrusted</th>
+			</tr>
+			<tr>
+				<th>Valid</td>
+				<td><?= $trusted_valid[3]["count"] ?></td>
+				<td><?= $trusted_valid[1]["count"] ?></td>
+			</tr>
+			<tr>
+				<th>Invalid</td>
+				<td><?= $trusted_valid[2]["count"] ?></td>
+				<td><?= $trusted_valid[0]["count"] ?></td>
+			</tr>
 		</table>
 
 		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
