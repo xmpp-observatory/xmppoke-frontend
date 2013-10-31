@@ -32,6 +32,24 @@ $res = pg_execute($dbconn, "sslv3", array());
 
 $sslv3 = pg_fetch_assoc($res);
 
+pg_prepare($dbconn, "tlsv1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1 = 't');");
+
+$res = pg_execute($dbconn, "tlsv1", array());
+
+$tlsv1 = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "tlsv1_1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1_1 = 't');");
+
+$res = pg_execute($dbconn, "tlsv1_1", array());
+
+$tlsv1_1 = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "tlsv1_2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1_2 = 't');");
+
+$res = pg_execute($dbconn, "tlsv1_2", array());
+
+$tlsv1_2 = pg_fetch_assoc($res);
+
 common_header();
 
 ?>
@@ -71,6 +89,18 @@ common_header();
 			<tr>
 				<td>SSL 3</td>
 				<td><?= 100 * $sslv3["count"] / $total["count"] ?>%</td>
+			</tr>
+			<tr>
+				<td>TLS 1.0</td>
+				<td><?= 100 * $tlsv1["count"] / $total["count"] ?>%</td>
+			</tr>
+			<tr>
+				<td>TLS 1.1</td>
+				<td><?= 100 * $tlsv1_1["count"] / $total["count"] ?>%</td>
+			</tr>
+			<tr>
+				<td>TLS 1.2</td>
+				<td><?= 100 * $tlsv1_2["count"] / $total["count"] ?>%</td>
 			</tr>
 		</table>
 
