@@ -110,7 +110,7 @@ common_header();
 			</tr>
 		</table>
 
-		<h3>RSA key sizes</h3>
+		<h3>RSA key sizes for domain certificates</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
