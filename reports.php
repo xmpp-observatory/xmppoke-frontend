@@ -32,7 +32,7 @@ common_header();
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Test results</a></li>
+					<li><a href="list.php">Test results</a></li>
 					<li><a href="directory.php">Public server directory</a></li>
 					<li><a href="about.php">About</a></li>
 				</ul>
@@ -42,7 +42,9 @@ common_header();
 
 	<div class="container">
 
-		<h1>Servers supporting SSL 3, but not TLS 1.0</h1>
+		<h1>Various reports of all servers tested</h1>
+
+		<h2>Servers supporting SSL 3, but not TLS 1.0</h2>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -63,7 +65,7 @@ foreach ($sslv3 as $result) {
 ?>
 		</table>
 
-		<h1>Servers with DNSSEC signed SRV record</h1>
+		<h2>Servers with DNSSEC signed SRV record</h2>
 
 		<table class="table table-bordered table-striped">
 			<tr>
