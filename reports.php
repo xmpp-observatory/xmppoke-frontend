@@ -18,19 +18,19 @@ pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_n
 
 $res = pg_execute($dbconn, "total", array());
 
-$total = pg_fetch_assoc($res);
+$total = pg_fetch_assoc($res)[0];
 
 pg_prepare($dbconn, "sslv2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;"
 
 $res = pg_execute($dbconn, "sslv2", array());
 
-$sslv2 = pg_fetch_assoc($res);
+$sslv2 = pg_fetch_assoc($res)[0];
 
 pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't' GROUP BY test_id) > 0;"
 
 $res = pg_execute($dbconn, "sslv3", array());
 
-$sslv3 = pg_fetch_assoc($res);
+$sslv3 = pg_fetch_assoc($res)[0];
 
 common_header();
 
