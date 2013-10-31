@@ -91,7 +91,7 @@ common_header();
 			<tr>
                 <td>SSL 2</td>
                 <td><?= 100 * $sslv2["count"] / $total["count"] ?>%</td>
-				<td style="width: 200px;">
+				<td style="width: 50%;">
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv2["count"] / $total["count"] ?>%"></div>
 					</div>
