@@ -8,6 +8,13 @@ $res = pg_execute($dbconn, "sslv3", array());
 
 $sslv3 = pg_fetch_all($res);
 
+pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND (SELECT COUNT(*) FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL GROUP BY test_id) > 0;");
+
+$res = pg_execute($dbconn, "dnssec_srv", array());
+
+$dnssec_srv = pg_fetch_all($res);
+
+
 common_header();
 
 ?>
@@ -45,6 +52,27 @@ common_header();
 			</tr>
 <?php
 foreach ($sslv3 as $result) {
+?>
+			<tr>
+				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+				<td><?= $result["type"] ?> to server</td>
+				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+			</tr>
+<?php
+}
+?>
+		</table>
+
+		<h1>Servers with DNSSEC signed SRV record</h1>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Target</th>
+				<th>Type</th>
+				<th>When</th>
+			</tr>
+<?php
+foreach ($dnssec_srv as $result) {
 ?>
 			<tr>
 				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
