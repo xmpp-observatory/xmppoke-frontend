@@ -37,7 +37,7 @@ common_header();
 
 		<h1>Servers supporting SSL 3, but not TLS 1.0</h1>
 
-		<table>
+		<table class="table table-bordered table-striped">
 			<tr>
 				<th>Target</th>
 				<th>Type</th>
