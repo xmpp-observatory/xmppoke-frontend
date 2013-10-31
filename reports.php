@@ -56,6 +56,18 @@ $res = pg_execute($dbconn, "bitsizes", array());
 
 $bitsizes = pg_fetch_all($res);
 
+pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
+
+$res = pg_execute($dbconn, "c2s_starttls_allowed", array());
+
+$c2s_starttls_allowed = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
+
+$res = pg_execute($dbconn, "c2s_starttls_required", array());
+
+$c2s_starttls_required = pg_fetch_assoc($res);
+
 common_header();
 
 ?>
@@ -152,6 +164,21 @@ foreach ($bitsizes as $bitsize) {
 <?php
 }
 ?>
+		</table>
+
+		<h3>StartTLS</h3>
+
+		<table class="table table-bordered table-striped">
+			<th>
+				<td>Type</td>
+				<td>Required</td>
+				<td>Allowed</td>
+			</th>
+			<tr>
+				<td>Client to server</td>
+				<td><?= $c2s_starttls_required["count"] ?></td>
+				<td><?= $c2s_starttls_allowed["count"] ?></td>
+			</tr>
 		</table>
 
 		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
