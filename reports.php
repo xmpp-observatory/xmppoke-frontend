@@ -90,7 +90,11 @@ common_header();
 		<table class="table table-bordered table-striped">
 			<tr>
                 <td>SSL 2</td>
-				<td><?= 100 * $sslv2["count"] / $total["count"] ?>%</td>
+				<td>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="<?= 100 * $sslv2["count"] / $total["count"] ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= 100 * $sslv2["count"] / $total["count"] ?>%"></div>
+					</div><?= 100 * $sslv2["count"] / $total["count"] ?>%
+				</td>
 			</tr>
 			<tr>
 				<td>SSL 3</td>
