@@ -2,7 +2,7 @@
 
 include("common.php");
 
-$domain = $_POST["domain"];
+$domain = idn_to_utf8(strtolower(idn_to_ascii($_POST["domain"], "utf8")));
 $type = $_POST["mode"];
 
 $error = NULL;
@@ -22,7 +22,7 @@ if(strpos($domain, ".") !== FALSE && preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z
 	$result = pg_fetch_object($res);
 
 	if ($result && (time() - strtotime($result->test_date)) < 60 * 60) {
-		$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour.';
+		$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour or <a href="result.php?domain=' . urlencode($domain) . '&type=' . $type . '">check the latest report</a>.';
 	} else {
 		exec("LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --key=/opt/xmppoke/etc/certs/server.key --certificate=/opt/xmppoke/etc/certs/server.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' >/dev/null 2>/dev/null &");
 

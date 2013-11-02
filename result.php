@@ -3,7 +3,7 @@
 include("common.php");
 
 $result_id = $_GET['id'];
-$result_domain = $_GET['domain'];
+$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
 $result_type = $_GET['type'];
 
 if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
