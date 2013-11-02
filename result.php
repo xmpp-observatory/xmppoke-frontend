@@ -13,7 +13,10 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 	
 		$res = pg_execute($dbconn, "find_result", array($result_id));
 
-		$result = pg_fetch_object($res);
+        $result = pg_fetch_object($res);
+
+        $result_domain = $result->server_name;
+        $result_type = $result->type;
 	} else {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
