@@ -212,6 +212,37 @@ common_header();
 			</tr>
 		</table>
 
+		<h3>Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>A</th>
+				<td><?= $score_A["count"] ?> <span class="text-muted"><?= round(100 * $score_A["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+			<tr>
+				<th>B</th>
+				<td><?= $score_B["count"] ?> <span class="text-muted"><?= round(100 * $score_B["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+			<tr>
+				<th>C</th>
+				<td><?= $score_C["count"] ?> <span class="text-muted"><?= round(100 * $score_C["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+			<tr>
+				<th>D</th>
+				<td><?= $score_D["count"] ?> <span class="text-muted"><?= round(100 * $score_D["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+			<tr>
+				<th>E</th>
+				<td><?= $score_E["count"] ?> <span class="text-muted"><?= round(100 * $score_E["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+			<tr>
+				<th>F</th>
+				<td><?= $score_F["count"] ?> <span class="text-muted"><?= round(100 * $score_F["count"] / $total["count"]) ?>%</span></td>
+			</tr>
+		</table>
+
+		<span class="text-muted">Does not penalize untrusted certificates or SSLv2 support.</span>
+
 		<h3>RSA key sizes for domain certificates</h3>
 
 		<table class="table table-bordered table-striped">
@@ -280,35 +311,6 @@ $total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_vali
 				<th>Invalid</td>
 				<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $total) ?>%</span></td>
 				<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $total) ?>%</span></td>
-			</tr>
-		</table>
-
-		<h3>Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
-
-		<table class="table table-bordered table-striped">
-			<tr>
-				<th>A</th>
-				<td><?= $score_A["count"] ?></td>
-			</tr>
-			<tr>
-				<th>B</th>
-				<td><?= $score_B["count"] ?></td>
-			</tr>
-			<tr>
-				<th>C</th>
-				<td><?= $score_C["count"] ?></td>
-			</tr>
-			<tr>
-				<th>D</th>
-				<td><?= $score_D["count"] ?></td>
-			</tr>
-			<tr>
-				<th>E</th>
-				<td><?= $score_E["count"] ?></td>
-			</tr>
-			<tr>
-				<th>F</th>
-				<td><?= $score_F["count"] ?></td>
 			</tr>
 		</table>
 
