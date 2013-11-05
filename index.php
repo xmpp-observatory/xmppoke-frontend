@@ -105,6 +105,12 @@ foreach ($list as $result) {
 				<h3>Learn about XMPP</h3>
 				<p>XMPP is an open standard for instant messaging and real-time communication. Visit <a href="http://xmpp.org/">xmpp.org</a> for all the details.</p>
 
+				<br>
+				<h3>Latest news</h3>
+				<small class="text-muted">November 5, 2013</small>
+				<p>Any server offering EXPORT ciphers can now score at most 40 on the public key score, as these use an ephemeral 512 bit RSA key.</p>
+				<p>Any server offering anonymous DH ciphers now scores 0 on the public key score, as these ciphers are unauthenticated.</p>
+				<p>Effectively, this reduces the grade of many of the servers offering EXPORT/ADH ciphers to one letter lower.</p>
 			</div> <!-- /.col-lg-6 -->
 		</div> <!-- /.row -->
 
