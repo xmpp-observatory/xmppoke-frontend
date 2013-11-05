@@ -61,7 +61,7 @@ common_header("");
 				The public key score depends on two factors: the size of your RSA key pair and whether any cipher suites are enabled that don't use this key.
 			</p>
 			<p>
-				<table>
+				<table class="table">
 					<tr>
 						<th>RSA bitsize</th>
 						<th>Score</th>
@@ -100,11 +100,64 @@ common_header("");
 			<p>
 				Your protocol score is the average of the score for the lowest and the highest protocol you support. This means you have two ways of increasing your score: disabling older protocols and adding new ones. Note that it is recommended to keep support for TLS 1.0 for compatibility.
 			</p>
+			<p>
+				<table class="table">
+					<tr>
+						<th>Protocol</th>
+						<th>Score</th>
+					</tr>
+					<tr>
+						<td>SSL 2</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>SSL 3</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>TLS 1.0</td>
+						<td>90</td>
+					</tr>
+					<tr>
+						<td>TLS 1.1</td>
+						<td>95</td>
+					</tr>
+					<tr>
+						<td>TLS 1.2</td>
+						<td>100</td>
+					</tr>
+				</table>
+			</p>
 
 			<strong>How do I improve my Cipher score?</strong>
 			<p>
 				You cipher score is the average of the score of the ciper suite with the smallest key and the cipher suite with the largest key. Note that it is recommended to keep support for 128 bit AES for compatibility.
 			</p>
+			<p>
+				<table class="table">
+					<tr>
+						<th>Bitsize</th>
+						<th>Score</th>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>&lt; 128</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>&lt; 256</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>≥ 256</td>
+						<td>100</td>
+					</tr>
+				</table>
+			</p>
+
 		</div>
 
 		<div class="footer">
