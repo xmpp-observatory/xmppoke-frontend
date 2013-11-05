@@ -115,12 +115,12 @@ common_header();
 
 		<h1>Various reports of all servers tested</h1>
 
-        <h3>TLS versions <span class="text-muted"><?= $total["count"] ?> servers</span></h3>
+        <h3>TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
                 <td>SSL 2</td>
-                <td><?= $sslv2["count"] ?> <span class="text-muted"><?= (int)(100 * $sslv2["count"] / $total["count"]) ?>%</span></td>
+                <td><?= $sslv2["count"] ?> <span class="text-muted"><?= round(100 * $sslv2["count"] / $total["count"]) ?>%</span></td>
 				<td style="width: 50%;">
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv2["count"] / $total["count"] ?>%"></div>
@@ -129,7 +129,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>SSL 3</td>
-                <td><?= $sslv3["count"] ?> <span class="text-muted"><?= (int)(100 * $sslv3["count"] / $total["count"]) ?>%</span></td>
+                <td><?= $sslv3["count"] ?> <span class="text-muted"><?= round(100 * $sslv3["count"] / $total["count"]) ?>%</span></td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv3["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv3["count"] / $total["count"] ?>%"></div>
@@ -138,7 +138,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.0</td>
-                <td><?= $tlsv1["count"] ?> <span class="text-muted"><?= (int)(100 * $tlsv1["count"] / $total["count"]) ?>%</span></td>
+                <td><?= $tlsv1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1["count"] / $total["count"]) ?>%</span></td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1["count"] / $total["count"] ?>%"></div>
@@ -147,7 +147,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.1</td>
-                <td><?= $tlsv1_1["count"] ?> <span class="text-muted"><?= (int)(100 * $tlsv1_1["count"] / $total["count"]) ?>%</span></td>
+                <td><?= $tlsv1_1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_1["count"] / $total["count"]) ?>%</span></td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_1["count"] / $total["count"] ?>%"></div>
@@ -156,7 +156,7 @@ common_header();
 			</tr>
 			<tr>
 				<td>TLS 1.2</td>
-                <td><?= $tlsv1_2["count"] ?> <span class="text-muted"><?= (int)(100 * $tlsv1_2["count"] / $total["count"]) ?>%</span></td>
+                <td><?= $tlsv1_2["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_2["count"] / $total["count"]) ?>%</span></td>
 				<td>
 					<div class="progress">
 						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_2["count"] / $total["count"] ?>%"></div>
@@ -183,7 +183,7 @@ foreach ($bitsizes as $bitsize) {
 ?>
 			<tr>
 				<td><?= $bitsize["rsa_bitsize"] ?></td>
-                <td><?= $bitsize["count"] ?> <span class="text-muted"><?= (int)(100 * $bitsize["count"] / $total) ?>%</span></td>
+                <td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $total) ?>%</span></td>
 			</tr>
 <?php
 }
@@ -200,17 +200,23 @@ foreach ($bitsizes as $bitsize) {
 			</tr>
 			<tr>
 				<td>Client to server</td>
-                <td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= (int)(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
-                <td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= (int)(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
+                <td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
+                <td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
 			</tr>
 			<tr>
 				<td>Server to server</td>
-                <td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= (int)(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
-                <td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= (int)(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
+                <td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
+                <td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
 			</tr>
 		</table>
 
 		<h3>Trust</h3>
+
+<?php
+
+$total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[2]["count"] + $trusted_valid[3]["count"];
+
+?>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -220,17 +226,17 @@ foreach ($bitsizes as $bitsize) {
 			</tr>
 			<tr>
 				<th>Valid</td>
-				<td><?= $trusted_valid[3]["count"] ?></td>
-				<td><?= $trusted_valid[1]["count"] ?></td>
+				<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $total) ?>%</span></td>
+				<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $total) ?>%</span></td>
 			</tr>
 			<tr>
 				<th>Invalid</td>
-				<td><?= $trusted_valid[2]["count"] ?></td>
-				<td><?= $trusted_valid[0]["count"] ?></td>
+				<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $total) ?>%</span></td>
+				<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $total) ?>%</span></td>
 			</tr>
 		</table>
 
-		<h3>Servers supporting SSL 3, but not TLS 1.0</h3>
+		<h3>Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -251,7 +257,7 @@ foreach ($sslv3_not_tls1 as $result) {
 ?>
 		</table>
 
-		<h3>Servers with DNSSEC signed SRV records</h3>
+		<h3>Servers with DNSSEC signed SRV records <small class="text-muted"><?= count($dnssec_srv) ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
