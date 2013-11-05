@@ -115,7 +115,7 @@ common_header();
 
 		<h1>Various reports of all servers tested</h1>
 
-		<h3>TLS versions</h3>
+        <h3>TLS versions <span class="text-muted"><?= $total["count"] ?> servers</span></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
