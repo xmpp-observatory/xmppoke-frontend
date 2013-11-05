@@ -173,11 +173,17 @@ common_header();
 				<th>Count</th>
 			</tr>
 <?php
+$total = 0;
+
+foreach ($bitsizes as $bitsize) {
+        $total += $bitsize["count"];
+}
+
 foreach ($bitsizes as $bitsize) {
 ?>
 			<tr>
 				<td><?= $bitsize["rsa_bitsize"] ?></td>
-				<td><?= $bitsize["count"] ?></td>
+                <td><?= $bitsize["count"] ?> <span class="text-muted"><?= (int)(100 * $bitsize["count"] / $total) ?>%</span></td>
 			</tr>
 <?php
 }
