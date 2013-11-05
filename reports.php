@@ -14,6 +14,8 @@ $res = pg_execute($dbconn, "dnssec_srv", array());
 
 $dnssec_srv = pg_fetch_all($res);
 
+
+
 pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't');");
 
 $res = pg_execute($dbconn, "total", array());
@@ -50,11 +52,15 @@ $res = pg_execute($dbconn, "tlsv1_2", array());
 
 $tlsv1_2 = pg_fetch_assoc($res);
 
+
+
 pg_prepare($dbconn, "bitsizes", "SELECT COUNT(*), rsa_bitsize FROM (SELECT DISTINCT ON (results.test_id, rsa_bitsize) rsa_bitsize FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE results.test_id = srv_results.test_id AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0 AND certificates.certificate_id = srv_certificates.certificate_id) AS bitsizes GROUP BY rsa_bitsize ORDER BY rsa_bitsize;");
 
 $res = pg_execute($dbconn, "bitsizes", array());
 
 $bitsizes = pg_fetch_all($res);
+
+
 
 pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
 
@@ -80,11 +86,52 @@ $res = pg_execute($dbconn, "s2s_starttls_required", array());
 
 $s2s_starttls_required = pg_fetch_assoc($res);
 
+
+
 pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
 
 $res = pg_execute($dbconn, "trusted_valid", array());
 
 $trusted_valid = pg_fetch_all($res);
+
+
+
+pg_prepare($dbconn, "score_A", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score >= '80');");
+
+$res = pg_execute($dbconn, "score_A", array());
+
+$score_A = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "score_B", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '80' AND total_score >= '65');");
+
+$res = pg_execute($dbconn, "score_B", array());
+
+$score_B = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "score_C", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '65' AND total_score >= '50');");
+
+$res = pg_execute($dbconn, "score_C", array());
+
+$score_C = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "score_D", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '50' AND total_score >= '35');");
+
+$res = pg_execute($dbconn, "score_D", array());
+
+$score_D = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "score_E", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '35' AND total_score >= '20');");
+
+$res = pg_execute($dbconn, "score_E", array());
+
+$score_E = pg_fetch_assoc($res);
+
+pg_prepare($dbconn, "score_F", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '20');");
+
+$res = pg_execute($dbconn, "score_F", array());
+
+$score_F = pg_fetch_assoc($res);
+
 
 common_header();
 
@@ -233,6 +280,35 @@ $total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_vali
 				<th>Invalid</td>
 				<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $total) ?>%</span></td>
 				<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $total) ?>%</span></td>
+			</tr>
+		</table>
+
+		<h3>Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>A</th>
+				<td><?= $score_A["count"] ?></td>
+			</tr>
+			<tr>
+				<th>B</th>
+				<td><?= $score_B["count"] ?></td>
+			</tr>
+			<tr>
+				<th>C</th>
+				<td><?= $score_C["count"] ?></td>
+			</tr>
+			<tr>
+				<th>D</th>
+				<td><?= $score_D["count"] ?></td>
+			</tr>
+			<tr>
+				<th>E</th>
+				<td><?= $score_E["count"] ?></td>
+			</tr>
+			<tr>
+				<th>F</th>
+				<td><?= $score_F["count"] ?></td>
 			</tr>
 		</table>
 
