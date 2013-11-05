@@ -50,6 +50,61 @@ common_header("");
 			<p>
 				During development it was observed that some servers require very strict rate limiting. Only when waiting 15 seconds between connection attempts it was possible to stay under these strict limits. Therefore the test is expected to take around 8 minutes. This is repeated for every SRV record for the server.
 			</p>
+
+			<strong>How do I improve my Certificate score?</strong>
+			<p>
+				The certificate score is either 0, for untrusted or invalid certificates, or 100. Scoring a 0 means your grade is capped to “F”. To obtain 100, you need a certificate that is trusted and valid for your XMPP domain. See <a href="https://www.startssl.com/">StartCom</a> for free XMPP certificates.
+			</p>
+
+			<strong>How do I improve my Public key score?</strong>
+			<p>
+				The public key score depends on two factors: the size of your RSA key pair and whether any cipher suites are enabled that don't use this key.
+			</p>
+			<p>
+				<table>
+					<tr>
+						<th>RSA bitsize</th>
+						<th>Score</th>
+					</tr>
+					<tr>
+						<td>0</td>
+						<td>0</td>
+					</tr>
+					<tr>
+						<td>&lt; 512</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>&lt; 1024</td>
+						<td>40</td>
+					</tr>
+					<tr>
+						<td>&lt; 2048</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>&lt; 4096</td>
+						<td>90</td>
+					</tr>
+					<tr>
+						<td>≥ 4096</td>
+						<td>100</td>
+					</tr>
+				</table>
+			</p>
+			<p>Enabling an anonymous DH cipher suite (ADH) caps your public key score to 0, as these do not use a public key for authentication. Enabling EXPORT cipher suites caps your score to 40, as these use an ephemeral 512-bit RSA key.</p>
+
+			<p>RSA keys larger than 4096 bits have known compatibility problems, notably with OpenSSL.</p>
+
+			<strong>How do I improve my Protocol score?</strong>
+			<p>
+				Your protocol score is the average of the score for the lowest and the highest protocol you support. This means you have two ways of increasing your score: disabling older protocols and adding new ones. Note that it is recommended to keep support for TLS 1.0 for compatibility.
+			</p>
+
+			<strong>How do I improve my Cipher score?</strong>
+			<p>
+				You cipher score is the average of the score of the ciper suite with the smallest key and the cipher suite with the largest key. Note that it is recommended to keep support for 128 bit AES for compatibility.
+			</p>
 		</div>
 
 		<div class="footer">
