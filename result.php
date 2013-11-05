@@ -239,7 +239,7 @@ foreach ($errors as $error) {
 ?>
 		<dl class="dl-horizontal">
 			<dt>Signature algorithm</dt>
-			<dd><?= $cert["sign_algorithm"] ?><?= $cert["sign_algorithm"] === "md5WithRSAEncryption" ?  : " <span class='label label-danger'>INSECURE</span>" ?></dd>
+			<dd><?= $cert["sign_algorithm"] ?><?= $cert["sign_algorithm"] === "md5WithRSAEncryption" ? " <span class='label label-danger'>INSECURE</span>" : "" ?></dd>
 			<dt>Key size</dt>
 			<dd><?= $cert["rsa_bitsize"] ?></dd>
 			<dt>Valid from</dt>
