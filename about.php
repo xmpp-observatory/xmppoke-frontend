@@ -71,19 +71,19 @@ common_header("");
 						<td>0</td>
 					</tr>
 					<tr>
-						<td>&lt; 512</td>
+						<td>1 - 511</td>
 						<td>20</td>
 					</tr>
 					<tr>
-						<td>&lt; 1024</td>
+						<td>512 - 1023</td>
 						<td>40</td>
 					</tr>
 					<tr>
-						<td>&lt; 2048</td>
+						<td>1024 - 2047</td>
 						<td>80</td>
 					</tr>
 					<tr>
-						<td>&lt; 4096</td>
+						<td>2048 - 4095</td>
 						<td>90</td>
 					</tr>
 					<tr>
@@ -144,11 +144,11 @@ common_header("");
 						<td>0</td>
 					</tr>
 					<tr>
-						<td>&lt; 128</td>
+						<td>0 - 127</td>
 						<td>20</td>
 					</tr>
 					<tr>
-						<td>&lt; 256</td>
+						<td>128 - 255</td>
 						<td>80</td>
 					</tr>
 					<tr>
