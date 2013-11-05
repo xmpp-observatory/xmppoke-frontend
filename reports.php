@@ -20,11 +20,11 @@ $res = pg_execute($dbconn, "total", array());
 
 $total = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "sslv2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't');");
+pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't');");
 
 $res = pg_execute($dbconn, "sslv2", array());
 
-$sslv2 = pg_fetch_assoc($res);
+$sslv2 = pg_fetch_all($res);
 
 pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv3 = 't');");
 
@@ -120,10 +120,10 @@ common_header();
 		<table class="table table-bordered table-striped">
 			<tr>
                 <td>SSL 2</td>
-                <td><?= $sslv2["count"] ?> <span class="text-muted"><?= round(100 * $sslv2["count"] / $total["count"]) ?>%</span></td>
+                <td><?= count($sslv2) ?> <span class="text-muted"><?= round(100 * count($sslv2) / $total["count"]) ?>%</span></td>
 				<td style="width: 50%;">
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv2["count"] / $total["count"] ?>%"></div>
+						<div class="progress-bar" role="progressbar" aria-valuenow="<?= count($sslv2) ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * count($sslv2) / $total["count"] ?>%"></div>
 					</div>
 				</td>
 			</tr>
@@ -246,6 +246,27 @@ $total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_vali
 			</tr>
 <?php
 foreach ($sslv3_not_tls1 as $result) {
+?>
+			<tr>
+				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+				<td><?= $result["type"] ?> to server</td>
+				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+			</tr>
+<?php
+}
+?>
+		</table>
+
+		<h3>Servers supporting SSL 2 <small class="text-muted"><?= count($sslv2) ?> results</small></h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Target</th>
+				<th>Type</th>
+				<th>When</th>
+			</tr>
+<?php
+foreach ($sslv2 as $result) {
 ?>
 			<tr>
 				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
