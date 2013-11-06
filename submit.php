@@ -26,7 +26,7 @@ if(strpos($domain, ".") !== FALSE && preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z
 	} else {
 		exec("LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --key=/opt/xmppoke/etc/certs/server.key --certificate=/opt/xmppoke/etc/certs/server.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' >/dev/null 2>/dev/null &");
 
-		header("Refresh: 2;result.php?domain=" . urlencode($domain) . "&type=$type");
+		header("Refresh: 1;result.php?domain=" . urlencode($domain) . "&type=$type");
 	}
 
 } else {
@@ -51,8 +51,10 @@ common_header("");
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="list.php">Test results</a></li>
+					<li><a href="list.php">Test results</a></li>
 					<li><a href="directory.php">Public server directory</a></li>
+					<li><a href="about.php">About</a></li>
+					<li><a href="reports.php">Stats</a></li>
 				</ul>
 			</div>
 		</div>

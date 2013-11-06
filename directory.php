@@ -106,6 +106,7 @@ function released($software) {
 					<li><a href="list.php">Test results</a></li>
 					<li class="active"><a href="#">Public server directory</a></li>
 					<li><a href="about.php">About</a></li>
+					<li><a href="reports.php">Stats</a></li>
 				</ul>
 			</div>
 		</div>

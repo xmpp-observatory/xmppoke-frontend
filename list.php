@@ -30,6 +30,7 @@ common_header();
 					<li class="active"><a href="#">Test results</a></li>
 					<li><a href="directory.php">Public server directory</a></li>
 					<li><a href="about.php">About</a></li>
+					<li><a href="reports.php">Stats</a></li>
 				</ul>
 			</div>
 		</div>
