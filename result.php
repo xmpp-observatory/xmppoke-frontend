@@ -524,7 +524,11 @@ foreach ($srvs as $srv) {
 	if ($result->version) {
 ?>
 			<dt>Version</dt>
-			<dd><?= htmlspecialchars($result->version) ?></dd>
+			<dd>
+				<span class="my-popover" title="" <?= released($result->version) === "" ? "" : "data-content='<strong>" . $result->version . "</strong> was released on " . released($result->version) . "'" ?> data-toggle="popover" data-original-title="<?= $result->version ?>">
+					<?= htmlspecialchars($result->version) ?>
+				</span>
+			</dd>
 <?php
 	}
 	if ($srv["requires_starttls"]) {
