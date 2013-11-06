@@ -162,7 +162,7 @@ common_header();
 
 		<h1>Various reports of all servers tested</h1>
 
-        <h3>TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+        <h3 id="tls">TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -212,7 +212,7 @@ common_header();
 			</tr>
 		</table>
 
-		<h3>Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+		<h3 id="grades">Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -243,7 +243,7 @@ common_header();
 
 		<span class="text-muted">Does not penalize untrusted certificates or SSLv2 support.</span>
 
-		<h3>RSA key sizes for domain certificates</h3>
+		<h3 id="rsa">RSA key sizes for domain certificates</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -268,7 +268,7 @@ foreach ($bitsizes as $bitsize) {
 ?>
 		</table>
 
-		<h3>StartTLS</h3>
+		<h3 id="starttls">StartTLS</h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -288,7 +288,7 @@ foreach ($bitsizes as $bitsize) {
 			</tr>
 		</table>
 
-		<h3>Trust</h3>
+		<h3 id="trust">Trust</h3>
 
 <?php
 
@@ -314,7 +314,7 @@ $total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_vali
 			</tr>
 		</table>
 
-		<h3>Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
+		<h3 id="sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -335,7 +335,7 @@ foreach ($sslv3_not_tls1 as $result) {
 ?>
 		</table>
 
-		<h3>Servers supporting SSL 2 <small class="text-muted"><?= count($sslv2) ?> results</small></h3>
+		<h3 id="sslv2wallofshame">Servers supporting SSL 2 <small class="text-muted"><?= count($sslv2) ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
@@ -356,7 +356,7 @@ foreach ($sslv2 as $result) {
 ?>
 		</table>
 
-		<h3>Servers with DNSSEC signed SRV records <small class="text-muted"><?= count($dnssec_srv) ?> results</small></h3>
+		<h3 id="dnssecsrv">Servers with DNSSEC signed SRV records <small class="text-muted"><?= count($dnssec_srv) ?> results</small></h3>
 
 		<table class="table table-bordered table-striped">
 			<tr>
