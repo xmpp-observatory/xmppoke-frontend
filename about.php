@@ -140,19 +140,19 @@ common_header("");
 						<th>Score</th>
 					</tr>
 					<tr>
-						<td>0</td>
+						<td>0 <span class="text-muted">NULL</span></td>
 						<td>0</td>
 					</tr>
 					<tr>
-						<td>0 - 127</td>
+						<td>0 - 127 <span class="text-muted">DES, EXPORT-*</span></td>
 						<td>20</td>
 					</tr>
 					<tr>
-						<td>128 - 255</td>
+						<td>128 - 255 <span class="text-muted">AES128, RC4, CAMELLIA128, 3DES</span></td>
 						<td>80</td>
 					</tr>
 					<tr>
-						<td>≥ 256</td>
+						<td>≥ 256 <span class="text-muted">AES256, CAMELLIA256</span></td>
 						<td>100</td>
 					</tr>
 				</table>
