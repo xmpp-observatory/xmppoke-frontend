@@ -183,7 +183,7 @@ function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $s
 	
 
 	?>
-		<h4 class="page-header"><?= $cert["chain_index"] !== NULL ? "#" . $cert["chain_index"] : "" ?> <?= $name ?></h4>
+		<h4 class="page-header"><?= $cert["chain_index"] !== NULL ? "#" . $cert["chain_index"] : "" ?> <?= htmlspecialchars($name) ?></h4>
 
 		<h5>Subject</h5>
 
@@ -250,7 +250,7 @@ foreach ($errors as $error) {
 if (isset($cert["crl_url"])) {
 ?>
 			<dt>CRL</dt>
-			<dd><a href="<?= htmlspecialchars($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
+			<dd><a href="<?= urlencode($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
 <?php
 }
 ?>
@@ -258,13 +258,13 @@ if (isset($cert["crl_url"])) {
 if (isset($cert["ocsp_url"])) {
 ?>
 						<dt>OCSP</dt>
-						<dd><a href="<?= htmlspecialchars($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
+						<dd><a href="<?= urlencode($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
 <?php
 }
 
 if ($i === 0) {
 ?>
-			<dt>Valid for <?= $server_name ?></dt>
+			<dt>Valid for <?= htmlspecialchars($server_name) ?></dt>
 			<dd><span class="label <?= $srv["valid_identity"] === 't' ? "label-success" : "label-danger" ?>"><?= $srv["valid_identity"] === 't' ? "YES" : "NO" ?></span></dd>
 <?php } ?>
 			<dt>
@@ -382,7 +382,7 @@ if (!$result) {
 		<h1>IM Observatory <?= $result->type ?> report for <?= htmlspecialchars($result->server_name) ?></h1>
 		<p>Test started <?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?> <span class="text-muted"><time class="timeago" datetime="<?= date("c", strtotime($result->test_date)) ?>"></time></span>.</p>
 
-        <a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result.</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
+        <a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
 
 		<h2 class="page-header" id="score">Score</h2>
 <?php
@@ -397,7 +397,7 @@ foreach ($srvs as $srv) {
 	}
 ?>
 
-		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
+		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= htmlspecialchars($srv["port"]) ?></h5>
 <?php
 	if ($srv["done"] === 'f') {
 		if (time() - strtotime($result->test_date) < 60 * 30) {
@@ -490,7 +490,7 @@ foreach ($srvs as $srv) {
 	if ($srv["sslv2"] === 't' && $srv["done"] === 't') {
 ?>
 				<div class="alert alert-block alert-danger">
-						Server allows SSLv2, which is obsolete and insecure. Grade capped at <strong>F</strong>.
+						Server allows SSLv2, which is obsolete and insecure. Grade capped to <strong>F</strong>.
 				</div>
 <?php
 	}
@@ -517,13 +517,13 @@ foreach ($srvs as $srv) {
 	}
 ?>
 
-		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= $srv["target"] ?>:<?= $srv["port"] ?></h5>
+		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h5>
 		<dl class="dl-horizontal">
 <?php
 	if ($result->version) {
 ?>
 			<dt>Version</dt>
-			<dd><?= $result->version ?></dd>
+			<dd><?= htmlspecialchars($result->version) ?></dd>
 <?php
 	}
 	if ($srv["requires_starttls"]) {
@@ -535,7 +535,7 @@ foreach ($srvs as $srv) {
 	if ($srv["compression"]) {
 ?>
 			<dt>TLS compression</dt>
-			<dd><?= $srv["compression"] ?></dd>
+			<dd><?= htmlspecialchars($srv["compression"]) ?></dd>
 <?php
 	}
 	if ($srv["requires_peer_cert"] === 't') {
@@ -561,7 +561,11 @@ if (count($srvs) > 1) {
 
 
 		<h2 class="page-header" id="dns">DNS</h2>
-		<h3 id="srv">SRV records <small title="_xmpp-<?= $result->type ?>._tcp.<?= htmlspecialchars($result->server_name) ?>">_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name, "UTF-8") ?> <span class="label <?= $result->srv_dnssec_good === 't' ? "label-success" : ($result->srv_dnssec_bogus === 't' ? "label-warning" : "label-default")?>"><?= $result->srv_dnssec_good === 't' ? "" : ($result->srv_dnssec_bogus === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></small></h3>
+		<h3 id="srv">SRV records
+			<small title="_xmpp-<?= $result->type ?>._tcp.<?= htmlspecialchars($result->server_name) ?>">_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name, "UTF-8") ?>
+				<span class="label <?= $result->srv_dnssec_good === 't' ? "label-success" : ($result->srv_dnssec_bogus === 't' ? "label-warning" : "label-default")?>"><?= $result->srv_dnssec_good === 't' ? "" : ($result->srv_dnssec_bogus === 't' ? "BOGUS " : "NO ")?>DNSSEC</span>
+			</small>
+		</h3>
 		<div class="row">
 			<div class="col-md-5">
 				<table class="table table-bordered table-striped">
@@ -578,9 +582,9 @@ foreach ($srvs as $srv) {
 	if ($srv["priority"] === NULL) continue;
 ?>
 					<tr>
-						<td><?= $srv["priority"] ?></td>
-						<td><?= $srv["weight"] ?></td>
-						<td><?= $srv["port"] ?></td>
+						<td><?= htmlspecialchars($srv["priority"]) ?></td>
+						<td><?= htmlspecialchars($srv["weight"]) ?></td>
+						<td><?= htmlspecialchars($srv["port"]) ?></td>
 						<td title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>"><?= htmlspecialchars($srv["target"]) ?></td>
 					</tr>
 <?php
@@ -621,7 +625,7 @@ foreach ($srvs as $srv) {
 	if ($tlsas) foreach ($tlsas as $tlsa) {
 ?>
 		<tr>
-			<td><span class="label label-<?= $tlsa["verified"] === 't' ? "success" : "warning" ?>"><?= $tlsa["verified"] === 't' ? "Yes" : "No" ?></span></td>
+			<td><span class="label label-<?= $tlsa["verified"] === 't' ? "success" : "warning" ?>"><?= $tlsa["verified"] === 't' ? "YES" : "NO" ?></span></td>
 			<td><?= tlsa_usage($tlsa["usage"]) ?></td>
 			<td><?= tlsa_selector($tlsa["selector"]) ?></td>
 			<td><?= tlsa_match($tlsa["match"]) ?></td>
@@ -671,7 +675,7 @@ foreach ($srvs as $srv) {
 <?php
 	}
 ?>		
-		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= $srv["port"] ?></h3>
+		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= htmlspecialchars($srv["port"]) ?></h3>
 
 <?php
 
@@ -698,7 +702,7 @@ foreach ($srvs as $srv) {
 			$index = NULL;
 
 			foreach ($certs as $k => $v) {
-				if ($v["digest_sha512"] == $cert["digest_sha512"]) {
+				if ($v["digest_sha512"] === $cert["digest_sha512"]) {
 					$index = $k;
 					break;
 				}
@@ -712,18 +716,18 @@ foreach ($srvs as $srv) {
 
 			$prev_signed_by_id = $cert["signed_by_id"];
 
-			if ($prev_signed_by_id == NULL) {
+			if ($prev_signed_by_id === NULL) {
 				break;
 			}
 
-			if ($cert["signed_by_id"] == $cert["certificate_id"]) {
+			if ($cert["signed_by_id"] === $cert["certificate_id"]) {
 				break;
 			}
 
 			$cert = NULL;
 
 			foreach ($certs as $k => $v) {
-				if ($v["certificate_id"] == $prev_signed_by_id) {
+				if ($v["certificate_id"] === $prev_signed_by_id) {
 					$cert = $v;
 					break;
 				}
@@ -764,23 +768,33 @@ foreach ($srvs as $srv) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv2 is old, obsolete and insecure. Servers <strong>must not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv2">SSLv2</abbr></td>
-						<td><span class="label <?= $srv["sslv2"] === 't' ? "label-danger" : ($srv["sslv2"] === 'f' ? "label-success" : "label-default") ?>"><?= show_bool($srv["sslv2"]) ?></span></td>
+						<td><span class="label <?= $srv["sslv2"] === 't' ? "label-danger" : ($srv["sslv2"] === 'f' ? "label-success" : "label-default") ?>">
+							<?= show_bool($srv["sslv2"]) ?>
+						</span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv3 is old and not recommended. Servers <strong>should not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv3">SSLv3</abbr></td>
-						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-danger" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>"><?= show_bool($srv["sslv3"]) ?></span></td>
+						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-danger" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>">
+							<?= show_bool($srv["sslv3"]) ?>
+						</span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="Although replaced by TLSv1.1 and TLSv1.2, it is <strong>recommended</strong> to support TLSv1 for compatibility with older clients. There are no known security issues with TLSv1.0 for XMPP." data-toggle="popover" data-original-title="TLSv1">TLSv1</abbr></td>
-						<td><span class="label label-default"><?= show_bool($srv["tlsv1"]) ?></span></td>
+						<td><span class="label label-default">
+							<?= show_bool($srv["tlsv1"]) ?>
+						</span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="There are no known security issues with TLSv1.1." data-toggle="popover" data-original-title="TLSv1.1">TLSv1.1</abbr></td>
-						<td><span class="label <?= $srv["tlsv1_1"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default") ?>"><?= show_bool($srv["tlsv1_1"]) ?></span></td>
+						<td><span class="label <?= $srv["tlsv1_1"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default") ?>">
+							<?= show_bool($srv["tlsv1_1"]) ?>
+						</span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="TLSv1.2 is the latest version and it is <strong>strongly recommended</strong> that servers support it as it adds a number of newer cipher suites." data-toggle="popover" data-original-title="TLSv1.2">TLSv1.2</abbr></td>
-						<td><span class="label <?= $srv["tlsv1_2"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default" ) ?>"><?= show_bool($srv["tlsv1_2"]) ?></span></td>
+						<td><span class="label <?= $srv["tlsv1_2"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default" ) ?>">
+							<?= show_bool($srv["tlsv1_2"]) ?>
+						</span></td>
 					</tr>
 				</table>
 			</div>
