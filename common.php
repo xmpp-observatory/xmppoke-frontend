@@ -100,19 +100,32 @@ function released($software) {
 			return "2013/02/05";
 		case "ejabberd 2.1.13":
 			return "2013/06/28";
+		case "ejabberd 13.03-beta2":
+			return "2013/03/29";
 		
+		case "jabberd2 2.2.1":
+			return "2008/07/30";
+		case "jabberd 2.2.13":
+			return "2011/02/23";
 		case "jabberd 2.2.14":
 			return "2011/05/31";
 		case "jabberd 2.2.16":
 			return "2012/05/04";
 		case "jabberd 2.2.17":
+		case "jabberd 2.2.17-399":
 			return "2012/08/26";
 
 		
+		case "Prosody 0.7.0rc1":
+			return "2010/03/02";
 		case "Prosody 0.8.0":
 			return "2011/04/07";
+		case "Prosody 0.8.2":
+			return "2011/06/20";
 		case "Prosody hg:6f4c8af128e2":
 			return "2013/09/06";
+		case "Prosody 0.9.0":
+			return "2013/08/20";
 		case "Prosody 0.9.1":
 			return "2013/09/10";
 		
