@@ -265,7 +265,7 @@ if (isset($cert["ocsp_url"])) {
 if ($i === 0) {
 ?>
 			<dt>Valid for <?= $server_name ?></dt>
-			<dd class="<?= $srv["valid_identity"] === 't' ? "" : "text-danger" ?>"><?= $srv["valid_identity"] === 't' ? "Yes" : "No" ?></dd>
+			<dd><span class="label <?= $srv["valid_identity"] === 't' ? "label-success" : "label-danger" ?>"><?= $srv["valid_identity"] === 't' ? "YES" : "NO" ?></span></dd>
 <?php } ?>
 			<dt>
 				<select class="hash-select input-small">
