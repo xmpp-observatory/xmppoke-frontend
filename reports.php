@@ -133,6 +133,12 @@ $res = pg_execute($dbconn, "score_F", array());
 $score_F = pg_fetch_assoc($res);
 
 
+pg_prepare($dbconn, "reorders_ciphers", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND reorders_ciphers = 't');");
+
+$res = pg_execute($dbconn, "reorders_ciphers", array());
+
+$reorders_ciphers = pg_fetch_all($res);
+
 common_header();
 
 ?>
@@ -377,6 +383,28 @@ foreach ($dnssec_srv as $result) {
 }
 ?>
 		</table>
+
+		<h3 id="reordersciphers">Servers that pick their own cipher order <small class="text-muted"><?= count($reorders_ciphers) ?> results</small></h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Target</th>
+				<th>Type</th>
+				<th>When</th>
+			</tr>
+<?php
+foreach ($reorders_ciphers as $result) {
+?>
+			<tr>
+				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+				<td><?= $result["type"] ?> to server</td>
+				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+			</tr>
+<?php
+}
+?>
+		</table>
+
 		
 		<div class="footer">
 			<p>Some rights reserved.</p>
