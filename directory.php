@@ -24,56 +24,60 @@ common_header();
 
 // Maybe this should be in a db. Or a file.
 function released($software) {
-        switch ($software) {
-        case "Isode M-Link 16.0v4":
-            return "2013/06/24";
-        
-        case "Metronome 2.9":
-            return "2013/10/02";
-        case "Metronome 2.9.16":
-            return "2013/10/16";
-        case "Metronome 2.9.27":
-            return "2013/10/27";
-        
-        case "Openfire 3.6.4":
-        	return "2009/05/01";
-        case "Openfire 3.7.1":
-            return "2011/10/01";
-        case "Openfire 3.8.0":
-            return "2013/02/06";
-        case "Openfire 3.8.1":
-            return "2013/03/03";
-        case "Openfire 3.8.2":
-            return "2013/05/28";
+		switch ($software) {
+		case "Isode M-Link 16.0v4":
+			return "2013/06/24";
+		
+		case "Metronome 2.9":
+			return "2013/10/02";
+		case "Metronome 2.9.16":
+			return "2013/10/16";
+		case "Metronome 2.9.27":
+			return "2013/10/27";
+		case "Metronome 3.0":
+			return "2013/10/29";
+		case "Metronome 3.0.6":
+			return "2013/11/05";
+		
+		case "Openfire 3.6.4":
+			return "2009/05/01";
+		case "Openfire 3.7.1":
+			return "2011/10/01";
+		case "Openfire 3.8.0":
+			return "2013/02/06";
+		case "Openfire 3.8.1":
+			return "2013/03/03";
+		case "Openfire 3.8.2":
+			return "2013/05/28";
 
-        case "ejabberd 2.1.2":
-            return "2010/01/18";
-        case "ejabberd 2.1.5":
-            return "2010/08/03";
-        case "ejabberd 2.1.9":
-            return "2011/10/3";
-        case "ejabberd 2.1.10":
-        case "ejabberd 2.1.10 Jabbim I need Holidays Edition":
+		case "ejabberd 2.1.2":
+			return "2010/01/18";
+		case "ejabberd 2.1.5":
+			return "2010/08/03";
+		case "ejabberd 2.1.9":
+			return "2011/10/3";
+		case "ejabberd 2.1.10":
+		case "ejabberd 2.1.10 Jabbim I need Holidays Edition":
 			return "2011/12/24";
 		case "ejabberd 2.1.11":
 			return "2012/05/04";
 		case "ejabberd 2.1.12":
 			return "2013/02/05";
 		case "ejabberd 2.1.13":
-            return "2013/06/28";
-        
-        case "jabberd 2.2.14":
-            return "2011/05/31";
+			return "2013/06/28";
+		
+		case "jabberd 2.2.14":
+			return "2011/05/31";
 		case "jabberd 2.2.16":
-            return "2012/05/04";
-        case "jabberd 2.2.17":
-        	return "2012/08/26";
+			return "2012/05/04";
+		case "jabberd 2.2.17":
+			return "2012/08/26";
 
-        
-        case "Prosody 0.8.0":
-            return "2011/04/07";
-        case "Prosody hg:6f4c8af128e2":
-            return "2013/09/06";
+		
+		case "Prosody 0.8.0":
+			return "2011/04/07";
+		case "Prosody hg:6f4c8af128e2":
+			return "2013/09/06";
 		case "Prosody 0.9.1":
 			return "2013/09/10";
 		
