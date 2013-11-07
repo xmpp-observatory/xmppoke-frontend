@@ -85,6 +85,8 @@ function released($software) {
 		case "Openfire 3.8.2":
 			return "2013/05/28";
 
+		case "ejabberd 2.0.5":
+			return "2009/04/03";
 		case "ejabberd 2.1.2":
 			return "2010/01/18";
 		case "ejabberd 2.1.5":
