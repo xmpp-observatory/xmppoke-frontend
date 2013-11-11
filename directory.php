@@ -67,12 +67,12 @@ if (!$list) {
 			<thead>
 				<tr>
 					<th data-defaultsort="asc">Domain</th>
-					<th>Founded</th>
+					<th>Year founded</th>
 					<th>Country</th>
-					<th>Certificate Authority</th>
+					<th>Certificate Authority (untrusted certificates in red text)</th>
 					<th>Software</th>
-					<th>Grade client-to-server</th>
-					<th>Grade server-to-server</th>
+					<th>Security grade client-to-server</th>
+					<th>Security grade server-to-server</th>
 				</tr>
 			</thead>
 			<tbody>
