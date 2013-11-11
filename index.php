@@ -61,7 +61,8 @@ common_header("");
 							</div><!-- /btn-group -->
 					</div><!-- /input-group -->
 				</form>
-				<p class="text-muted">Submit a publicly accessible XMPP server for testing. This test will take around 8-15 minutes.</p>
+				<br>
+				<small class="text-muted">Submit a publicly accessible XMPP server for testing. This test will make a large number of connections to the server and will take around 8-15 minutes. You can test either the client-to-server encryption or the server-to-server encryption.</small>
 
 				<br>
 
