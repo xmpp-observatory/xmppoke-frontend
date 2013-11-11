@@ -61,6 +61,7 @@ common_header("");
 							</div><!-- /btn-group -->
 					</div><!-- /input-group -->
 				</form>
+				<p class="text-muted">Submit a publicly accessible XMPP server for testing. This test will take around 8-15 minutes.</p>
 
 				<br>
 

@@ -69,10 +69,10 @@ if (!$list) {
 					<th data-defaultsort="asc">Domain</th>
 					<th>Founded</th>
 					<th>Country</th>
-					<th>CA</th>
+					<th>Certificate Authority</th>
 					<th>Software</th>
-					<th>Grade c2s</th>
-					<th>Grade s2s</th>
+					<th>Grade client-to-server</th>
+					<th>Grade server-to-server</th>
 				</tr>
 			</thead>
 			<tbody>
