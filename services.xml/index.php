@@ -14,7 +14,7 @@ $list = pg_fetch_all($res);
 
 foreach ($list as $result) {
 ?>
-	<item jid='<?= $res ?>'/>
+	<item jid='<?= $result ?>'/>
 <?php
 }
 
