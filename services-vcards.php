@@ -57,6 +57,7 @@ foreach ($list as $result) {
   <impp>
     <uri><?= $result["admin"] ?></uri>
   </impp>
+  <?= $result["vcard_rest"] ?>
 </vcard>
 <?php
 }
