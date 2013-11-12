@@ -1,10 +1,10 @@
 <?php
-echo "<?xml version='1.0'?>";
+echo "<?xml version='1.0'?>\n";
 ?>
 <query xmlns:reg="urn:xmpp:vcard:registration:1">
 <?php
 
-include("../common.php");
+include("common.php");
 
 pg_prepare($dbconn, "list_server", "SELECT server_name FROM public_servers ORDER BY server_name;");
 
