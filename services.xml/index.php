@@ -1,4 +1,6 @@
-<?xml version="1.0"?>
+<?php
+echo "<?xml version='1.0'?>";
+?>
 <query xmlns:reg="urn:xmpp:vcard:registration:1">
 <?php
 
