@@ -35,9 +35,6 @@ foreach ($list as $result) {
   <fn>
     <text><?= $result["server_name"] ?></text>
   </fn>
-  <kind>
-    <text>application</text>
-  </kind>
   <url>
     <uri><?= $result["url"] ?></uri>
   </url>
