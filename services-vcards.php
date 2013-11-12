@@ -44,9 +44,6 @@ foreach ($list as $result) {
   <note>
     <text><?= $result["description"] ?></text>
   </note>
-  <registration xmlns="urn:xmpp:vcard:registration:1">
-    <uri>https://register.jabber.org/</uri>
-  </registration>
   <bday>
     <date><?= $result["founded"] ?></date>
   </bday>
