@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: text/xml");
 echo "<?xml version='1.0'?>\n";
 ?>
 <query xmlns:reg="urn:xmpp:vcard:registration:1">
