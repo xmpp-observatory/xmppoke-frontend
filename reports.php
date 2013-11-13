@@ -438,15 +438,13 @@ foreach ($reorders_ciphers as $result) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>Target</th>
-						<th>Type</th>
 						<th>SHA256(SPKI)</th>
 					</tr>
 <?php
 foreach ($shares_private_keys as $result) {
 ?>
 					<tr>
-						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
-						<td><?= $result["type"] ?> to server</td>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a> <span class="text-muted"><?= $result["type"][0] ?>2s</span></td>
 						<td><?= fp($result["subject_key_info_sha256"]) ?></td>
 					</tr>
 <?php
