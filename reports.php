@@ -435,15 +435,22 @@ foreach ($reorders_ciphers as $result) {
 
 				<h3 id="sharesprivatekeys">Servers sharing private keys <small class="text-muted"><?= count($shares_private_keys) ?> results</small></h3>
 
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered">
 					<tr>
 						<th>Target</th>
 						<th>SHA256(SPKI)</th>
 					</tr>
 <?php
+$i = 0;
+$prev = NULL;
 foreach ($shares_private_keys as $result) {
+	if ($prev !== $result["subject_key_info_sha256"]) {
+		$i = 1 - $i;
+	}
+	
+	$prev = $result["subject_key_info_sha256"];
 ?>
-					<tr>
+					<tr<?= $i === 0 ? " class='active'" : ""?>>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a> <span class="text-muted"><?= $result["type"][0] ?>2s</span></td>
 						<td><?= fp($result["subject_key_info_sha256"]) ?></td>
 					</tr>
