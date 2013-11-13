@@ -91,10 +91,6 @@ function color_bitsize($size) {
 	return "label-danger";
 }
 
-function fp($x) {
-	return strtoupper(join(':', str_split($x, 2)));
-}
-
 function grade($score) {
 	if ($score >= 80) return "A";
 	if ($score >= 65) return "B";

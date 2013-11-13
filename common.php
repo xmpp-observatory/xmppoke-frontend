@@ -7,6 +7,10 @@ setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");
 
 $dbconn = pg_connect("port=$dbport host=$dbhost dbname=$dbname user=$dbuser password=$dbpass") or die('Could not connect: ' . pg_last_error());
 
+function fp($x) {
+	return strtoupper(join(':', str_split($x, 2)));
+}
+
 function color_label_text_grade($score) {
 	switch ($score) {
 		case 'A':
