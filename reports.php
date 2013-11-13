@@ -139,6 +139,14 @@ $res = pg_execute($dbconn, "reorders_ciphers", array());
 
 $reorders_ciphers = pg_fetch_all($res);
 
+
+pg_prepare($dbconn, "shares_private_keys", "select results.server_name, results.type, results.test_id, subject_key_info_sha256 from (select distinct on (server_name, type) * from test_results order by server_name, type, test_date desc) as results, srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and certificates.subject_key_info_sha256 in (select subject_key_info_sha256 from (select distinct on (server_name) * from test_results order by server_name, test_date desc) as results, (select distinct on (srv_results.test_id, certificates.certificate_id) * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = results.test_id group by subject_key_info_sha256 having count(*) > 1) order by subject_key_info_sha256;");
+
+$res = pg_execute($dbconn, "shares_private_keys", array());
+
+$shares_private_keys = pg_fetch_all($res);
+
+
 common_header();
 
 ?>
@@ -399,6 +407,27 @@ foreach ($reorders_ciphers as $result) {
 				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
 				<td><?= $result["type"] ?> to server</td>
 				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+			</tr>
+<?php
+}
+?>
+		</table>
+
+		<h3 id="sharesprivatekeys">Servers sharing private keys <small class="text-muted"><?= count($shares_private_keys) ?> results</small></h3>
+
+		<table class="table table-bordered table-striped">
+			<tr>
+				<th>Target</th>
+				<th>Type</th>
+				<th>SHA256(SPKI)</th>
+			</tr>
+<?php
+foreach ($shares_private_keys as $result) {
+?>
+			<tr>
+				<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+				<td><?= $result["type"] ?> to server</td>
+				<td><?= $result["subject_key_info_sha256"] ?></td>
 			</tr>
 <?php
 }
