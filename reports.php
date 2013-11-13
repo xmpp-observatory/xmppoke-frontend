@@ -150,7 +150,7 @@ $shares_private_keys = pg_fetch_all($res);
 common_header();
 
 ?>
-	<body>
+	<body data-spy="scroll" data-target="#sidebar">
 
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -181,6 +181,14 @@ common_header();
 					<ul class="nav">
 						<li class="active"><a href="#tls">TLS versions</a></li>
 						<li><a href="#grades">Grades</a></li>
+						<li><a href="#rsa">RSA key sizes for domain certificates</a></li>
+						<li><a href="#starttls">StartTLS</a></li>
+						<li><a href="#trust">Trust</a></li>
+						<li><a href="#sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0</a></li>
+						<li><a href="#sslv2wallofshame">Servers supporting SSL 2</a></li>
+						<li><a href="#dnssecsrv">Servers with DNSSEC signed SRV records</a></li>
+						<li><a href="#reordersciphers">Servers that pick their own cipher order</a></li>
+						<li><a href="#sharesprivatekeys">Servers sharing private keys</a></li>
 					</ul>
 				</div>
 			</div>
