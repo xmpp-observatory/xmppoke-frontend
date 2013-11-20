@@ -6,7 +6,7 @@ include("common.php");
 $since = 365 * 1000;
 
 if (isset($_GET["since"])) {
-	$since = intval($_GET["since"];
+	$since = intval($_GET["since"]);
 }
 
 $since = $since * 24 * 60 * 60;
