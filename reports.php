@@ -206,6 +206,8 @@ common_header();
 
 				<h1>Various reports of all servers tested</h1>
 
+				<a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
+
 		        <h3 id="tls">TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
 				<table class="table table-bordered table-striped">
