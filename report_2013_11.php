@@ -150,6 +150,11 @@ common_header("");
         var options = {
                 title: 'RSA key size',
                 legend: { position: "none" },
+                slices: {
+                  1: { color: 'red' },
+                  2: { color: 'orange' },
+                  7: { offset: 0.2, color: 'green' }
+                }
         };
 
         new google.visualization.PieChart(document.getElementById('chart3')).
