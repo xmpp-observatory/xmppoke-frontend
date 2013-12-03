@@ -29,7 +29,11 @@ common_header("");
 
   <div class="container">
 
-    <div class="row">
+
+
+    <div class="col-md-9">
+      <h1>Stats for November 2013</h1>
+
       <p>Statistics for reports generated during november 2013. Only the last test during november per server counts.</p>
     </div>
 
