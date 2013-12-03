@@ -269,6 +269,13 @@ if ($i === 0) {
 					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha256"]) ?>'>SHA-256 hash</option>
 					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= fp($cert["digest_sha512"]) ?>'>SHA-512 hash</option>
 					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= $cert["subject_key_info"] ?>'>Public key</option>
+<?php
+if ($cert["private_key"] !== NULL) {
+?>
+					<option data-hash-taget="#hashfield<?= $i ?>" data-hash='<?= $cert["private_key"] ?>'>Private key</option>
+<?php
+}
+?>
 				</select>
 			</dt>
 			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
