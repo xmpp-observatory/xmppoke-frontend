@@ -232,6 +232,14 @@ foreach ($errors as $error) {
 
 <?php
 }
+
+if ($cert["private_key"] !== NULL) {
+?>
+			<div class="alert alert-block alert-danger">
+				<strong>Error:</strong> This certificate’s private key is publicly available. The server can be impersonated and traffic can be decrypted when forward-secrecy is not used.
+			</div>
+<?php
+}
 ?>
 		<dl class="dl-horizontal">
 			<dt>Signature algorithm</dt>
