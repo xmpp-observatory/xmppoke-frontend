@@ -77,6 +77,15 @@ common_header("");
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart9" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart10" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
+
     <div class="footer">
       <p>Some rights reserved.</p>
     </div>
@@ -213,6 +222,40 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
+                ['c2s StartTLS', 'Count'],
+                ['Required', 375],
+                ['Allowed', 765],
+        ]);
+
+        var options = {
+                title: 'c2s StartTLS',
+                legend: { position: "none" },
+                slices: {  0: {offset: 0.2, color: 'green'},
+                           1: {color: 'grey'} }
+        };
+
+        new google.visualization.PieChart(document.getElementById('chart7')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
+                ['s2s StartTLS', 'Count'],
+                ['Required', 42],
+                ['Allowed', 549],
+        ]);
+
+        var options = {
+                title: 's2s StartTLS',
+                legend: { position: "none" },
+                slices: {  0: {offset: 0.2, color: 'green'},
+                           1: {color: 'grey'} }
+        };
+
+        new google.visualization.PieChart(document.getElementById('chart8')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
                 ['Trust', 'Count'],
                 ['Trusted, Valid', 950],
                 ['Trusted, Invalid', 197],
@@ -229,7 +272,7 @@ common_header("");
                            3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart7')).
+        new google.visualization.PieChart(document.getElementById('chart9')).
                             draw(data, options);
       });
     </script>
