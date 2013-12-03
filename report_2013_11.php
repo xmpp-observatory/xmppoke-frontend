@@ -149,7 +149,6 @@ common_header("");
 
         var options = {
                 title: 'RSA key size',
-                legend: { position: "none" },
                 slices: {
                   1: { color: 'red' },
                   2: { color: 'orange' },
