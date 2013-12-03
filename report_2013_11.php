@@ -29,11 +29,14 @@ common_header("");
 
   <div class="container">
 
-    <p>Statistics for reports generated during november 2013. Only the last test during november per server counts.</p>
+    <div class="row">
+      <p>Statistics for reports generated during november 2013. Only the last test during november per server counts.</p>
+    </div>
 
     <div class="row">
       <div class="col-md-6">
         <div id="chart1" style="width: 500px; height: 300px;"></div>
+        <p class="text-muted">Untrusted certificates and servers supporting SSL 2 are not capped to F here.</p>
       </div>
       <div class="col-md-6">
         <div id="chart2" style="width: 500px; height: 300px;"></div>
@@ -46,15 +49,18 @@ common_header("");
       </div>
       <div class="col-md-6">
         <div id="chart4" style="width: 500px; height: 300px;"></div>
+        <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
         <div id="chart5" style="width: 500px; height: 300px;"></div>
+        <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
       <div class="col-md-6">
         <div id="chart6" style="width: 500px; height: 300px;"></div>
+        <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
     </div>
 
