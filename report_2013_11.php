@@ -26,13 +26,37 @@ common_header("");
       </div>
     </div>
   </div>
-  <body>
-    <div id="chart1" style="width: 500px; height: 300px;"></div>
-    <div id="chart2" style="width: 500px; height: 300px;"></div>
-    <div id="chart3" style="width: 500px; height: 300px;"></div>
-    <div id="chart4" style="width: 500px; height: 300px;"></div>
-    <div id="chart5" style="width: 500px; height: 300px;"></div>
-    <div id="chart6" style="width: 500px; height: 300px;"></div>
+
+  <div class="container">
+
+    <p>Statistics for reports generated during november 2013. Only the last test during november per server counts.</p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart1" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart2" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart3" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart4" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart5" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart6" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
 
     <div class="footer">
       <p>Some rights reserved.</p>
