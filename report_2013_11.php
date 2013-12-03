@@ -220,9 +220,9 @@ common_header("");
                 title: 'Trust',
                 legend: { position: "none" },
                 slices: {  0: {offset: 0.2, color: 'green'},
-                           1: {color: 'red'},
-                           2: {color: 'red'},
-                           3: {color: 'red'} }
+                           1: {color: 'grey'},
+                           2: {color: 'grey'},
+                           3: {color: 'grey'} }
         };
 
         new google.visualization.PieChart(document.getElementById('chart7')).
