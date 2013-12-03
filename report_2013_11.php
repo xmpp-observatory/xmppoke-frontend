@@ -68,6 +68,15 @@ common_header("");
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart7" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart8" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
+
     <div class="footer">
       <p>Some rights reserved.</p>
     </div>
@@ -196,6 +205,27 @@ common_header("");
         };
 
         new google.visualization.PieChart(document.getElementById('chart6')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
+                ['Trust', 'Count'],
+                ['Trusted, Valid', 950],
+                ['Trusted, Invalid', 197],
+                ['Untrusted, Valid', 302],
+                ['Untrusted, Invalid', 368],
+        ]);
+
+        var options = {
+                title: 'Trust',
+                legend: { position: "none" },
+                slices: {  0: {offset: 0.2, color: 'green'},
+                           1: {color: 'red'},
+                           2: {color: 'red'},
+                           3: {color: 'red'} }
+        };
+
+        new google.visualization.PieChart(document.getElementById('chart7')).
                             draw(data, options);
       });
     </script>
