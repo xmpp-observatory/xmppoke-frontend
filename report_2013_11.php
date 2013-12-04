@@ -87,12 +87,8 @@ common_header("");
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div id="chart11" style="width: 500px; height: 300px;"></div>
-      </div>
-      <div class="col-md-6">
-        <div id="chart12" style="width: 500px; height: 300px;"></div>
-      </div>
+        <div id="chart11" style="width: 800px; height: 450px;"></div>
+        <div id="chart12" style="width: 800px; height: 450px;"></div>
     </div>
 
     <div class="footer">
@@ -265,6 +261,27 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
+                ['Trust', 'Count'],
+                ['Trusted, Valid', 950],
+                ['Trusted, Invalid', 197],
+                ['Untrusted, Valid', 302],
+                ['Untrusted, Invalid', 368],
+        ]);
+
+        var options = {
+                title: 'Trust',
+                legend: { position: "none" },
+                slices: {  0: {offset: 0.2, color: 'green'},
+                           1: {color: 'grey'},
+                           2: {color: 'grey'},
+                           3: {color: 'grey'} }
+        };
+
+        new google.visualization.PieChart(document.getElementById('chart9')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
                 ['Exact version', 'Count'],
                 ['(Undisclosed)', 422],
                 ['ejabberd 2.1.10', 270],
@@ -303,7 +320,7 @@ common_header("");
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart9')).
+        new google.visualization.ColumnChart(document.getElementById('chart11')).
                             draw(data, options);
       });
       google.setOnLoadCallback(function() {
@@ -328,28 +345,7 @@ common_header("");
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart10')).
-                            draw(data, options);
-      });
-      google.setOnLoadCallback(function() {
-        var data = google.visualization.arrayToDataTable([
-                ['Trust', 'Count'],
-                ['Trusted, Valid', 950],
-                ['Trusted, Invalid', 197],
-                ['Untrusted, Valid', 302],
-                ['Untrusted, Invalid', 368],
-        ]);
-
-        var options = {
-                title: 'Trust',
-                legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'green'},
-                           1: {color: 'grey'},
-                           2: {color: 'grey'},
-                           3: {color: 'grey'} }
-        };
-
-        new google.visualization.PieChart(document.getElementById('chart11')).
+        new google.visualization.ColumnChart(document.getElementById('chart12')).
                             draw(data, options);
       });
     </script>
