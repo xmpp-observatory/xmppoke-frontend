@@ -87,8 +87,8 @@ common_header("");
     </div>
 
     <div class="row">
-        <div id="chart11" style="width: 800px; height: 450px;"></div>
-        <div id="chart12" style="width: 800px; height: 450px;"></div>
+        <div id="chart11" style="width: 100%; height: 450px;"></div>
+        <div id="chart12" style="width: 100%; height: 450px;"></div>
     </div>
 
     <div class="footer">
