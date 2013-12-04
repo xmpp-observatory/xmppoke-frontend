@@ -86,6 +86,15 @@ common_header("");
       </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-6">
+        <div id="chart11" style="width: 500px; height: 300px;"></div>
+      </div>
+      <div class="col-md-6">
+        <div id="chart12" style="width: 500px; height: 300px;"></div>
+      </div>
+    </div>
+
     <div class="footer">
       <p>Some rights reserved.</p>
     </div>
@@ -256,6 +265,74 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
+                ['Exact version', 'Count'],
+                ['(Undisclosed)', 422],
+                ['ejabberd 2.1.10', 270],
+                ['Prosody 0.9.1', 212],
+                ['ejabberd 2.1.13', 132],
+                ['Prosody 0.8.2', 96],
+                ['ejabberd 2.1.5', 90],
+                ['ejabberd 2.1.11', 67],
+                ['Openfire 3.8.2', 61],
+                ['ejabberd 2.1.12', 20],
+                ['Prosody unknown', 18],
+                ['Prosody 0.9 nightly build 165 (2013-10-31, 1b0ac7950129)', 18],
+                ['ejabberd 2.1.10 Jabbim I need Holidays Edition', 14],
+                ['Openfire 3.7.1', 11],
+                ['Prosody 0.9.0', 10],
+                ['ejabberd 2.0.5', 10],
+                ['ejabberd 2.1.x-mh', 10],
+                ['Prosody 0.9 nightly build 155 (2013-08-09, 6ef79af0c445)', 10],
+                ['ejabberd 2.1.2', 10],
+                ['Prosody 0.7.0', 9],
+                ['ejabberd community', 9],
+                ['Openfire 3.8.1', 8],
+                ['Tigase 5.1.4-b3001', 8],
+                ['ejabberd 2.1.6', 7],
+                ['ejabberd 2.0.1', 7],
+                ['jabberd 2.2.17', 7],
+                ['Prosody 0.9 nightly build 169 (2013-11-20, f7601ce30cfc)', 6],
+                ['Prosody 0.9 nightly build 85 (2012-12-29, 5d2282a29387)', 6],
+                ['ejabberd 3.0.3-57', 6],
+                ['Metronome 3.1', 6],
+                ['ejabberd 2.1.x', 6],
+        ]);
+
+        var options = {
+                title: 'Exact version',
+                legend: { position: "none" },
+        };
+
+        new google.visualization.ColumnChart(document.getElementById('chart9')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
+                ['Version', 'Count'],
+                ['(Undisclosed)', 422],
+                ['ejabberd', 675],
+                ['Prosody', 457],
+                ['Openfire', 90],
+                ['jabberd', 44],
+                ['Metronome', 19],
+                ['Tigase', 11],
+                ['Isode M-Link', 5],
+                ['PSYC', 3],
+                ['yabberd', 3],
+                ['ESTOS UCServer', 1],
+                ['Spectrum', 1]
+        ]);
+
+        var options = {
+                title: 'Version',
+                legend: { position: "none" },
+        };
+
+        new google.visualization.ColumnChart(document.getElementById('chart10')).
+                            draw(data, options);
+      });
+      google.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([
                 ['Trust', 'Count'],
                 ['Trusted, Valid', 950],
                 ['Trusted, Invalid', 197],
@@ -272,7 +349,7 @@ common_header("");
                            3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart9')).
+        new google.visualization.PieChart(document.getElementById('chart11')).
                             draw(data, options);
       });
     </script>
