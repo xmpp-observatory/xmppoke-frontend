@@ -301,18 +301,6 @@ common_header("");
                 ['ejabberd 2.1.x-mh', 10],
                 ['Prosody 0.9 nightly build 155 (2013-08-09, 6ef79af0c445)', 10],
                 ['ejabberd 2.1.2', 10],
-                ['Prosody 0.7.0', 9],
-                ['ejabberd community', 9],
-                ['Openfire 3.8.1', 8],
-                ['Tigase 5.1.4-b3001', 8],
-                ['ejabberd 2.1.6', 7],
-                ['ejabberd 2.0.1', 7],
-                ['jabberd 2.2.17', 7],
-                ['Prosody 0.9 nightly build 169 (2013-11-20, f7601ce30cfc)', 6],
-                ['Prosody 0.9 nightly build 85 (2012-12-29, 5d2282a29387)', 6],
-                ['ejabberd 3.0.3-57', 6],
-                ['Metronome 3.1', 6],
-                ['ejabberd 2.1.x', 6],
         ]);
 
         var options = {
@@ -326,9 +314,9 @@ common_header("");
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
                 ['Version', 'Count'],
-                ['(Undisclosed)', 422],
                 ['ejabberd', 675],
                 ['Prosody', 457],
+                ['(Undisclosed)', 422],
                 ['Openfire', 90],
                 ['jabberd', 44],
                 ['Metronome', 19],
