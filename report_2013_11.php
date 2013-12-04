@@ -313,19 +313,19 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
-                ['Version', 'Count'],
-                ['ejabberd', 675],
-                ['Prosody', 457],
-                ['(Undisclosed)', 422],
-                ['Openfire', 90],
-                ['jabberd', 44],
-                ['Metronome', 19],
-                ['Tigase', 11],
-                ['Isode M-Link', 5],
-                ['PSYC', 3],
-                ['yabberd', 3],
-                ['ESTOS UCServer', 1],
-                ['Spectrum', 1]
+                ['Version', 'Count', { role: 'annotation' }],
+                ['ejabberd', 675, '39.0%'],
+                ['Prosody', 457, '26.5%'],
+                ['(Undisclosed)', 422, '24.4%'],
+                ['Openfire', 90, '5.2%'],
+                ['jabberd', 44, '2.5%'],
+                ['Metronome', 19, '1.1%'],
+                ['Tigase', 11, '0.6%'],
+                ['Isode M-Link', 5, '0.3%'],
+                ['PSYC', 3, '0.2%'],
+                ['yabberd', 3, '0.2%'],
+                ['ESTOS UCServer', 1, '0.1%'],
+                ['Spectrum', 1, '0.1%']
         ]);
 
         var options = {
