@@ -301,7 +301,7 @@ foreach ($bitsizes as $bitsize) {
 ?>
 							<tr>
 								<td><?= $bitsize["rsa_bitsize"] ?></td>
-								<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $rsa_sum) ?>%</span></td>
+								<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $rsa_sum, 1) ?>%</span></td>
 							</tr>
 <?php
 }
