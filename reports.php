@@ -208,55 +208,64 @@ common_header();
 
 				<a href="report_2013_11.php">Report for november 2013</a> | <a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
 
-		        <h3 id="tls">TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+				<div class="row">
+					<div class="col-md-6">
 
-				<table class="table table-bordered table-striped">
-					<tr>
-		                <td>SSL 2</td>
-		                <td><?= count($sslv2) ?> <span class="text-muted"><?= round(100 * count($sslv2) / $total["count"]) ?>%</span></td>
-						<td style="width: 50%;">
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<?= count($sslv2) ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * count($sslv2) / $total["count"] ?>%"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>SSL 3</td>
-		                <td><?= $sslv3["count"] ?> <span class="text-muted"><?= round(100 * $sslv3["count"] / $total["count"]) ?>%</span></td>
-						<td>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv3["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv3["count"] / $total["count"] ?>%"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>TLS 1.0</td>
-		                <td><?= $tlsv1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1["count"] / $total["count"]) ?>%</span></td>
-						<td>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1["count"] / $total["count"] ?>%"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>TLS 1.1</td>
-		                <td><?= $tlsv1_1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_1["count"] / $total["count"]) ?>%</span></td>
-						<td>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_1["count"] / $total["count"] ?>%"></div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>TLS 1.2</td>
-		                <td><?= $tlsv1_2["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_2["count"] / $total["count"]) ?>%</span></td>
-						<td>
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_2["count"] / $total["count"] ?>%"></div>
-							</div>
-						</td>
-					</tr>
-				</table>
+						<h3 id="tls">TLS versions <small class="text-muted"><?= $total["count"] ?> results</small></h3>
+
+						<table class="table table-bordered table-striped">
+							<tr>
+								<td>SSL 2</td>
+								<td><?= count($sslv2) ?> <span class="text-muted"><?= round(100 * count($sslv2) / $total["count"]) ?>%</span></td>
+								<td style="width: 50%;">
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="<?= count($sslv2) ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * count($sslv2) / $total["count"] ?>%"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>SSL 3</td>
+								<td><?= $sslv3["count"] ?> <span class="text-muted"><?= round(100 * $sslv3["count"] / $total["count"]) ?>%</span></td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="<?= $sslv3["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $sslv3["count"] / $total["count"] ?>%"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>TLS 1.0</td>
+								<td><?= $tlsv1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1["count"] / $total["count"]) ?>%</span></td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1["count"] / $total["count"] ?>%"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>TLS 1.1</td>
+								<td><?= $tlsv1_1["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_1["count"] / $total["count"]) ?>%</span></td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_1["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_1["count"] / $total["count"] ?>%"></div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>TLS 1.2</td>
+								<td><?= $tlsv1_2["count"] ?> <span class="text-muted"><?= round(100 * $tlsv1_2["count"] / $total["count"]) ?>%</span></td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="<?= $tlsv1_2["count"] ?>" aria-valuemin="0" aria-valuemax="<?= $total["count"] ?>" style="width: <?= 100 * $tlsv1_2["count"] / $total["count"] ?>%"></div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="col-md-6">
+					  <div id="chart2" style="width: 500px; height: 300px;"></div>
+					</div>
+				</div>
 
 				<h3 id="grades">Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
@@ -300,14 +309,14 @@ common_header();
 $total = 0;
 
 foreach ($bitsizes as $bitsize) {
-        $total += $bitsize["count"];
+		$total += $bitsize["count"];
 }
 
 foreach ($bitsizes as $bitsize) {
 ?>
 					<tr>
 						<td><?= $bitsize["rsa_bitsize"] ?></td>
-		                <td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $total) ?>%</span></td>
+						<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $total) ?>%</span></td>
 					</tr>
 <?php
 }
@@ -324,13 +333,13 @@ foreach ($bitsizes as $bitsize) {
 					</tr>
 					<tr>
 						<td>Client to server</td>
-		                <td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
-		                <td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
 					</tr>
 					<tr>
 						<td>Server to server</td>
-		                <td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
-		                <td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
 					</tr>
 				</table>
 
@@ -486,6 +495,27 @@ foreach ($shares_private_keys as $result) {
 	<script src="./js/bootstrap.js"></script>
 
 	<script src="./js/main.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<script type="text/javascript">
+	google.setOnLoadCallback(function() {
+		var data = google.visualization.arrayToDataTable([
+			['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
+			['SSL 2', <?= round(100 * count($sslv2) / $total["count"], 1) ?>, 'red', <?= count($sslv2) ?>],
+			['SSL 3', <?= round(100 * count($sslv3) / $total["count"], 1) ?>, 'orange', <?= count($sslv3) ?>],
+			['TLS 1.0', <?= round(100 * count($tlsv1) / $total["count"], 1) ?>, 'green', <?= count($tlsv1) ?>],
+			['TLS 1.1', <?= round(100 * count($tlsv1_1) / $total["count"], 1) ?>, 'green', <?= count($tlsv1_1) ?>],
+			['TLS 1.2', <?= round(100 * count($tlsv1_2) / $total["count"], 1) ?>, 'green', <?= count($tlsv1_2) ?>]
+		]);
+
+		var options = {
+			title: 'Protocol',
+			legend: { position: "none" },
+		};
+
+		new google.visualization.ColumnChart(document.getElementById('chart2')).draw(data, options);
+	});
+	</script>
 
 	</body>
 </html>
