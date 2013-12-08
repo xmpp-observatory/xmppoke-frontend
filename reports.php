@@ -324,13 +324,13 @@ foreach ($bitsizes as $bitsize) {
 					</tr>
 					<tr>
 						<td>Client to server</td>
-						<td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
-						<td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
+						<td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
 					</tr>
 					<tr>
 						<td>Server to server</td>
-						<td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
-						<td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"])) ?>%</span></td>
+						<td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"]), 1) ?>%</span></td>
+						<td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"]), 1) ?>%</span></td>
 					</tr>
 				</table>
 
@@ -570,7 +570,7 @@ foreach ($bitsizes as $bitsize) {
 
 		var data = google.visualization.arrayToDataTable([
 			['s2s <?= $c2s_starttls_required["count"] ?>', 'Count'],
-			['Required', 42],
+			['Required', <?= $s2s_starttls_required["count"] ?>],
 			['Allowed', <?= $s2s_starttls_allowed["count"] ?>],
 		]);
 
