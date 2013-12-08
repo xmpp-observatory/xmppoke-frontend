@@ -502,11 +502,11 @@ foreach ($shares_private_keys as $result) {
 		var data = google.visualization.arrayToDataTable([
 			['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
 			['A', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'green', <?= $score_A["count"] ?>],
-			['B', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'orange', <?= $score_B["count"] ?>],
-			['C', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_C["count"] ?>],
-			['D', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_D["count"] ?>],
-			['E', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_E["count"] ?>],
-			['F', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_F["count"] ?>]
+			['B', <?= round(100 * $score_B["count"] / $total["count"], 1) ?>, 'orange', <?= $score_B["count"] ?>],
+			['C', <?= round(100 * $score_C["count"] / $total["count"], 1) ?>, 'red', <?= $score_C["count"] ?>],
+			['D', <?= round(100 * $score_D["count"] / $total["count"], 1) ?>, 'red', <?= $score_D["count"] ?>],
+			['E', <?= round(100 * $score_E["count"] / $total["count"], 1) ?>, 'red', <?= $score_E["count"] ?>],
+			['F', <?= round(100 * $score_F["count"] / $total["count"], 1) ?>, 'red', <?= $score_F["count"] ?>]
 		]);
 
 		var options = {
