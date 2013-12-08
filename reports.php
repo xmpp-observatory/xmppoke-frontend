@@ -306,17 +306,17 @@ common_header();
 						<th>Count</th>
 					</tr>
 <?php
-$total = 0;
+$sum = 0;
 
 foreach ($bitsizes as $bitsize) {
-		$total += $bitsize["count"];
+		$sum += $bitsize["count"];
 }
 
 foreach ($bitsizes as $bitsize) {
 ?>
 					<tr>
 						<td><?= $bitsize["rsa_bitsize"] ?></td>
-						<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $total) ?>%</span></td>
+						<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $sum) ?>%</span></td>
 					</tr>
 <?php
 }
@@ -347,7 +347,7 @@ foreach ($bitsizes as $bitsize) {
 
 <?php
 
-$total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[2]["count"] + $trusted_valid[3]["count"];
+$sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[2]["count"] + $trusted_valid[3]["count"];
 
 ?>
 
@@ -359,13 +359,13 @@ $total = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_vali
 					</tr>
 					<tr>
 						<th>Valid</td>
-						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $total) ?>%</span></td>
-						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $total) ?>%</span></td>
+						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum) ?>%</span></td>
 					</tr>
 					<tr>
 						<th>Invalid</td>
-						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $total) ?>%</span></td>
-						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $total) ?>%</span></td>
+						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum) ?>%</span></td>
 					</tr>
 				</table>
 
