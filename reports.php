@@ -503,10 +503,10 @@ foreach ($shares_private_keys as $result) {
 		var data = google.visualization.arrayToDataTable([
 			['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
 			['SSL 2', <?= round(100 * count($sslv2) / $total["count"], 1) ?>, 'red', <?= count($sslv2) ?>],
-			['SSL 3', <?= round(100 * count($sslv3) / $total["count"], 1) ?>, 'orange', <?= count($sslv3) ?>],
-			['TLS 1.0', <?= round(100 * count($tlsv1) / $total["count"], 1) ?>, 'green', <?= count($tlsv1) ?>],
-			['TLS 1.1', <?= round(100 * count($tlsv1_1) / $total["count"], 1) ?>, 'green', <?= count($tlsv1_1) ?>],
-			['TLS 1.2', <?= round(100 * count($tlsv1_2) / $total["count"], 1) ?>, 'green', <?= count($tlsv1_2) ?>]
+			['SSL 3', <?= round(100 * $sslv3["count"] / $total["count"], 1) ?>, 'orange', <?= $sslv3["count"] ?>],
+			['TLS 1.0', <?= round(100 * $tlsv1["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1["count"] ?>],
+			['TLS 1.1', <?= round(100 * $tlsv1_1["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1_1["count"] ?>],
+			['TLS 1.2', <?= round(100 * $tlsv1_2["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1_2["count"] ?>]
 		]);
 
 		var options = {
