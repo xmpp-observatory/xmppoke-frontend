@@ -498,6 +498,7 @@ foreach ($shares_private_keys as $result) {
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 	<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
 	google.setOnLoadCallback(function() {
 		var data = google.visualization.arrayToDataTable([
 			['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
