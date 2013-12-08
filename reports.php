@@ -283,28 +283,36 @@ common_header();
 
 				<h3 id="rsa">RSA key sizes for domain certificates</h3>
 
-				<table class="table table-bordered table-striped">
-					<tr>
-						<th>RSA key size</th>
-						<th>Count</th>
-					</tr>
+				<div class="row">
+					<div class="col-md-6">
+						<table class="table table-bordered table-striped">
+							<tr>
+								<th>RSA key size</th>
+								<th>Count</th>
+							</tr>
 <?php
-$sum = 0;
+$rsa_sum = 0;
 
 foreach ($bitsizes as $bitsize) {
-		$sum += $bitsize["count"];
+		$rsa_sum += $bitsize["count"];
 }
 
 foreach ($bitsizes as $bitsize) {
 ?>
-					<tr>
-						<td><?= $bitsize["rsa_bitsize"] ?></td>
-						<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $sum) ?>%</span></td>
-					</tr>
+							<tr>
+								<td><?= $bitsize["rsa_bitsize"] ?></td>
+								<td><?= $bitsize["count"] ?> <span class="text-muted"><?= round(100 * $bitsize["count"] / $rsa_sum) ?>%</span></td>
+							</tr>
 <?php
 }
 ?>
-				</table>
+						</table>
+					</div>
+
+					<div class="col-md-6">
+						<div id="chart3" style="width: 500px; height: 300px;"></div>
+					</div>
+				</div>
 
 				<h3 id="starttls">StartTLS</h3>
 
@@ -510,11 +518,28 @@ foreach ($shares_private_keys as $result) {
 		]);
 
 		var options = {
-		    title: 'Grade',
-		    legend: { position: "none" },
+			title: 'Grade',
+			legend: { position: "none" },
 		};
 
 		new google.visualization.ColumnChart(document.getElementById('chart2')).draw(data, options);
+
+		var data = google.visualization.arrayToDataTable([
+				['RSA size', 'Count']
+<?php
+foreach ($bitsizes as $bitsize) {
+?>
+				, ['<?= $bitsize["rsa_bitsize"] ?>', <?= $bitsize["count"] ?>]
+<?php
+}
+?>
+		]);
+
+		var options = {
+				title: 'RSA key size'
+		};
+
+		new google.visualization.PieChart(document.getElementById('chart3')).draw(data, options);
 	});
 	</script>
 
