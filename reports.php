@@ -485,11 +485,11 @@ foreach ($shares_private_keys as $result) {
 	google.setOnLoadCallback(function() {
 		var data = google.visualization.arrayToDataTable([
 			['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-			['SSL 2', <?= round(100 * count($sslv2) / $total["count"], 1) ?>, 'red', <?= count($sslv2) ?>],
-			['SSL 3', <?= round(100 * $sslv3["count"] / $total["count"], 1) ?>, 'orange', <?= $sslv3["count"] ?>],
-			['TLS 1.0', <?= round(100 * $tlsv1["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1["count"] ?>],
-			['TLS 1.1', <?= round(100 * $tlsv1_1["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1_1["count"] ?>],
-			['TLS 1.2', <?= round(100 * $tlsv1_2["count"] / $total["count"], 1) ?>, 'green', <?= $tlsv1_2["count"] ?>]
+			['SSL 2', '<?= round(100 * count($sslv2) / $total["count"], 1) ?>', 'red', <?= count($sslv2) ?>],
+			['SSL 3', '<?= round(100 * $sslv3["count"] / $total["count"], 1) ?>', 'orange', <?= $sslv3["count"] ?>],
+			['TLS 1.0', '<?= round(100 * $tlsv1["count"] / $total["count"], 1) ?>', 'green', <?= $tlsv1["count"] ?>],
+			['TLS 1.1', '<?= round(100 * $tlsv1_1["count"] / $total["count"], 1) ?>', 'green', <?= $tlsv1_1["count"] ?>],
+			['TLS 1.2', '<?= round(100 * $tlsv1_2["count"] / $total["count"], 1) ?>', 'green', <?= $tlsv1_2["count"] ?>]
 		]);
 
 		var options = {
@@ -501,12 +501,12 @@ foreach ($shares_private_keys as $result) {
 
 		var data = google.visualization.arrayToDataTable([
 			['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-			['A', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'green', <?= $score_A["count"] ?>],
-			['B', <?= round(100 * $score_B["count"] / $total["count"], 1) ?>, 'orange', <?= $score_B["count"] ?>],
-			['C', <?= round(100 * $score_C["count"] / $total["count"], 1) ?>, 'red', <?= $score_C["count"] ?>],
-			['D', <?= round(100 * $score_D["count"] / $total["count"], 1) ?>, 'red', <?= $score_D["count"] ?>],
-			['E', <?= round(100 * $score_E["count"] / $total["count"], 1) ?>, 'red', <?= $score_E["count"] ?>],
-			['F', <?= round(100 * $score_F["count"] / $total["count"], 1) ?>, 'red', <?= $score_F["count"] ?>]
+			['A', '<?= round(100 * $score_A["count"] / $total["count"], 1) ?>', 'green', <?= $score_A["count"] ?>],
+			['B', '<?= round(100 * $score_B["count"] / $total["count"], 1) ?>', 'orange', <?= $score_B["count"] ?>],
+			['C', '<?= round(100 * $score_C["count"] / $total["count"], 1) ?>', 'red', <?= $score_C["count"] ?>],
+			['D', '<?= round(100 * $score_D["count"] / $total["count"], 1) ?>', 'red', <?= $score_D["count"] ?>],
+			['E', '<?= round(100 * $score_E["count"] / $total["count"], 1) ?>', 'red', <?= $score_E["count"] ?>],
+			['F', '<?= round(100 * $score_F["count"] / $total["count"], 1) ?>', 'red', <?= $score_F["count"] ?>]
 		]);
 
 		var options = {
