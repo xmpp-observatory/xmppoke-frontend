@@ -238,38 +238,46 @@ common_header();
 					</div>
 
 					<div class="col-md-6">
-					  <div id="chart2" style="width: 500px; height: 300px;"></div>
+						<div id="chart1" style="width: 500px; height: 300px;"></div>
 					</div>
 				</div>
 
 				<h3 id="grades">Grades <small class="text-muted"><?= $total["count"] ?> results</small></h3>
 
-				<table class="table table-bordered table-striped">
-					<tr>
-						<th>A</th>
-						<td><?= $score_A["count"] ?> <span class="text-muted"><?= round(100 * $score_A["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-					<tr>
-						<th>B</th>
-						<td><?= $score_B["count"] ?> <span class="text-muted"><?= round(100 * $score_B["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-					<tr>
-						<th>C</th>
-						<td><?= $score_C["count"] ?> <span class="text-muted"><?= round(100 * $score_C["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-					<tr>
-						<th>D</th>
-						<td><?= $score_D["count"] ?> <span class="text-muted"><?= round(100 * $score_D["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-					<tr>
-						<th>E</th>
-						<td><?= $score_E["count"] ?> <span class="text-muted"><?= round(100 * $score_E["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-					<tr>
-						<th>F</th>
-						<td><?= $score_F["count"] ?> <span class="text-muted"><?= round(100 * $score_F["count"] / $total["count"]) ?>%</span></td>
-					</tr>
-				</table>
+				<div class="row">
+					<div class="col-md-6">
+						<table class="table table-bordered table-striped">
+							<tr>
+								<th>A</th>
+								<td><?= $score_A["count"] ?> <span class="text-muted"><?= round(100 * $score_A["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+							<tr>
+								<th>B</th>
+								<td><?= $score_B["count"] ?> <span class="text-muted"><?= round(100 * $score_B["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+							<tr>
+								<th>C</th>
+								<td><?= $score_C["count"] ?> <span class="text-muted"><?= round(100 * $score_C["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+							<tr>
+								<th>D</th>
+								<td><?= $score_D["count"] ?> <span class="text-muted"><?= round(100 * $score_D["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+							<tr>
+								<th>E</th>
+								<td><?= $score_E["count"] ?> <span class="text-muted"><?= round(100 * $score_E["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+							<tr>
+								<th>F</th>
+								<td><?= $score_F["count"] ?> <span class="text-muted"><?= round(100 * $score_F["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="col-md-6">
+						<div id="chart2" style="width: 500px; height: 300px;"></div>
+					</div>
+				</div>
 
 				<span class="text-muted">Does not penalize untrusted certificates or SSLv2 support.</span>
 
@@ -487,6 +495,23 @@ foreach ($shares_private_keys as $result) {
 		var options = {
 			title: 'Protocol',
 			legend: { position: "none" },
+		};
+
+		new google.visualization.ColumnChart(document.getElementById('chart1')).draw(data, options);
+
+		var data = google.visualization.arrayToDataTable([
+			['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
+			['A', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'green', <?= $score_A["count"] ?>],
+			['B', <?= round(100 * $score_A["count"] / $total["count"], 1) ?> 'orange', <?= $score_B["count"] ?>],
+			['C', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_C["count"] ?>],
+			['D', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_D["count"] ?>],
+			['E', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_E["count"] ?>],
+			['F', <?= round(100 * $score_A["count"] / $total["count"], 1) ?>, 'red', <?= $score_F["count"] ?>]
+		]);
+
+		var options = {
+		    title: 'Grade',
+		    legend: { position: "none" },
 		};
 
 		new google.visualization.ColumnChart(document.getElementById('chart2')).draw(data, options);
