@@ -334,6 +334,16 @@ foreach ($bitsizes as $bitsize) {
 					</tr>
 				</table>
 
+				<div class="row">
+					<div class="col-md-6">
+						<div id="chart4" style="width: 500px; height: 300px;"></div>
+					</div>
+
+					<div class="col-md-6">
+						<div id="chart5" style="width: 500px; height: 300px;"></div>
+					</div>
+				</div>
+
 				<h3 id="trust">Trust</h3>
 
 <?php
@@ -540,6 +550,39 @@ foreach ($bitsizes as $bitsize) {
 		};
 
 		new google.visualization.PieChart(document.getElementById('chart3')).draw(data, options);
+
+		var data = google.visualization.arrayToDataTable([
+			['c2s StartTLS', 'Count'],
+			['Required', <?= $c2s_starttls_required["count"] ?>],
+			['Allowed', <?= $c2s_starttls_allowed["count"] ?>],
+		]);
+
+		var options = {
+			title: 'c2s StartTLS',
+			legend: { position: "none" },
+			slices: {
+				0: {offset: 0.2, color: 'green'},
+				1: {color: 'grey'}
+			}
+		};
+
+		new google.visualization.PieChart(document.getElementById('chart4')).draw(data, options);
+
+		var data = google.visualization.arrayToDataTable([
+			['s2s <?= $c2s_starttls_required["count"] ?>', 'Count'],
+			['Required', 42],
+			['Allowed', <?= $s2s_starttls_allowed["count"] ?>],
+		]);
+
+		var options = {
+			title: 's2s StartTLS',
+			legend: { position: "none" },
+			slices: {
+				0: {offset: 0.2, color: 'green'},
+				1: {color: 'grey'} }
+		};
+
+		new google.visualization.PieChart(document.getElementById('chart5')).draw(data, options);
 	});
 	</script>
 
