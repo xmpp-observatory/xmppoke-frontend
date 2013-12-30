@@ -7,8 +7,7 @@ td .label, dd .label {
 }
 
 h2[id], h3[id] {
-	margin-top: -45px;
-	padding-top: 80px;
+	padding-top: 35px;
 }
 
 @media screen and (min-width: 992px) {
