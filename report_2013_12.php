@@ -396,22 +396,41 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
+                ['Exact version', 'Percentage'],
+                ['(Undisclosed)', 27.7],
+                ['ejabberd 2.1.10', 14.0],
+                ['Prosody 0.9.1', 10.7],
+                ['ejabberd 2.1.13', 8.4],
+                ['ejabberd 2.1.5', 5.2],
+                ['Prosody 0.8.2', 4.8],
+                ['Openfire 3.8.2', 3.7],
+                ['ejabberd 2.1.11', 3.6],
+                ['ejabberd community', 2.7],
+                ['Prosody 0.9.0', 1.2],
+                ['ejabberd 2.1.10 Jabbim I need Holidays Edition', 0.9],
+                ['Openfire 3.7.1', 0.8],
+                ['ejabberd 2.1.12', 0.8],
+                ['jabberd 7.6.2.14683', 0.6],
+                ['Prosody 0.9 nightly build 155 (2013-08-09, 6ef79af0c445)', 0.6]
+        ]);
+
+        var old_data = google.visualization.arrayToDataTable([
                 ['Exact version', 'Count', { role: 'annotation' }],
-                ['(Undisclosed)', 215, '27.7%'],
-                ['ejabberd 2.1.10', 109, '14.0%'],
-                ['Prosody 0.9.1', 83, '10.7%'],
-                ['ejabberd 2.1.13', 65, '8.4%'],
-                ['ejabberd 2.1.5', 40, '5.2%'],
-                ['Prosody 0.8.2', 37, '4.8%'],
-                ['Openfire 3.8.2', 29, '3.7%'],
-                ['ejabberd 2.1.11', 28, '3.6%'],
-                ['ejabberd community', 21, '2.7%'],
-                ['Prosody 0.9.0', 9, '1.2%'],
-                ['ejabberd 2.1.10 Jabbim I need Holidays Edition', 7, '0.9%'],
-                ['Openfire 3.7.1', 6, '0.8%'],
-                ['ejabberd 2.1.12', 6, '0.8%'],
-                ['jabberd 7.6.2.14683', 5, '0.6%'],
-                ['Prosody 0.9 nightly build 155 (2013-08-09, 6ef79af0c445)', 5, '0.6%']
+                ['(Undisclosed)', 24.4],
+                ['ejabberd 2.1.10', 15.6],
+                ['Prosody 0.9.1', 12.2],
+                ['ejabberd 2.1.13', 7.6],
+                ['ejabberd 2.1.5', 5.2],
+                ['Prosody 0.8.2', 5.5],
+                ['Openfire 3.8.2', 3.5],
+                ['ejabberd 2.1.11', 3.9],
+                ['ejabberd community', 0.6],
+                ['Prosody 0.9.0', 0.6],
+                ['ejabberd 2.1.10 Jabbim I need Holidays Edition', 0.8],
+                ['Openfire 3.7.1', 0.6],
+                ['ejabberd 2.1.12', 1.2],
+                ['jabberd 7.6.2.14683', 0.2],
+                ['Prosody 0.9 nightly build 155 (2013-08-09, 6ef79af0c445)', 0.6]
         ]);
 
         var options = {
@@ -419,8 +438,11 @@ common_header("");
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart11')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart11'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
