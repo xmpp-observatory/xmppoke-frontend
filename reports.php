@@ -75,6 +75,12 @@ $res = pg_execute($dbconn, "bitsizes", array($since));
 
 $bitsizes = pg_fetch_all($res);
 
+pg_prepare($dbconn, "1024-2014", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND EXISTS (SELECT * FROM srv_certificates, certificates WHERE srv_certificates.srv_result_id = srv_results.srv_result_id AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize = 1024 AND notbefore > '2014-01-01'));");
+
+$res = pg_execute($dbconn, "1024-2014", array($since));
+
+$too_weak_1024_2014 = pg_fetch_assoc($res);
+
 
 
 pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
@@ -201,6 +207,7 @@ common_header();
 						<li><a href="#trust">Trust</a></li>
 						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
 						<li><a href="#sslv2wallofshame">SSL 2</a></li>
+						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
 						<li><a href="#reordersciphers">Cipher reordering</a></li>
@@ -408,6 +415,27 @@ foreach ($sslv3_not_tls1 as $result) {
 					</tr>
 <?php
 foreach ($sslv2 as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="1024-2014">Servers with 1024-bit RSA certificates generated after January 1st 2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($too_weak_1024_2014 as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
