@@ -23,6 +23,12 @@ $res = pg_execute($dbconn, "dnssec_srv", array($since));
 
 $dnssec_srv = pg_fetch_all($res);
 
+pg_prepare($dbconn, "dnssec_dane", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL AND tlsa_dnssec_good = 't' AND EXISTS (SELECT * FROM tlsa_records WHERE tlsa_records.srv_result_id = srv_results.srv_result_id));");
+
+$res = pg_execute($dbconn, "dnssec_dane", array($since));
+
+$dnssec_dane = pg_fetch_all($res);
+
 
 
 pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't');");
@@ -196,6 +202,7 @@ common_header();
 						<li><a href="#sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0</a></li>
 						<li><a href="#sslv2wallofshame">Servers supporting SSL 2</a></li>
 						<li><a href="#dnssecsrv">Servers with DNSSEC signed SRV records</a></li>
+						<li><a href="#dnssecdane">Servers with DNSSEC signed DANE records</a></li>
 						<li><a href="#reordersciphers">Servers that pick their own cipher order</a></li>
 						<li><a href="#sharesprivatekeys">Servers sharing private keys</a></li>
 					</ul>
@@ -422,6 +429,27 @@ foreach ($sslv2 as $result) {
 					</tr>
 <?php
 foreach ($dnssec_srv as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="dnssecdane">Servers with DNSSEC signed DANE records <small class="text-muted"><?= count($dnssec_dane) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($dnssec_dane as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
