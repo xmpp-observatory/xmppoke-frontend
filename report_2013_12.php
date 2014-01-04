@@ -158,17 +158,36 @@ common_header("");
                 ['8192', 1]
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['RSA size', 'Count'],
+                ['511', 1],
+                ['1024', 314],
+                ['2048', 960],
+                ['2432', 5],
+                ['3072', 2],
+                ['3248', 7],
+                ['3981', 2],
+                ['4096', 448],
+                ['8192', 3]
+        ]);
+
         var options = {
                 title: 'RSA key size',
                 slices: {
                   1: { color: 'red' },
                   2: { color: 'orange' },
-                  4: { offset: 0.2, color: 'green' }
+                  7: { color: 'green' }
+                  9: { color: 'red' },
+                  10: { color: 'orange' },
+                  12: { color: 'green' }
                 }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart3')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart4'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -177,15 +196,26 @@ common_header("");
                 ['No', 776 - 364],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['Forward secret', 'Count'],
+                ['Yes', 692],
+                ['No', 1731 - 692],
+        ]);
+
         var options = {
                 title: 'Forward secret (any cipher)',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'green'},
-                           1: {color: 'grey'} }
+                slices: {  0: {color: 'green'},
+                           1: {color: 'grey'},
+                           2: {color: 'green'},
+                           3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart4')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart4'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -194,15 +224,26 @@ common_header("");
                 ['No', 776 - 584],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['RC4', 'Count'],
+                ['Yes', 1315],
+                ['No', 1731 - 1315],
+        ]);
+
         var options = {
-                title: 'RC4 (any cipher)',
+                title: 'RC4 (any suite)',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'red'},
-                           1: {color: 'grey'} }
+                slices: {  0: {color: 'red'},
+                           1: {color: 'grey'},
+                           2: {color: 'red'},
+                           3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart5')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart5'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
 
       google.setOnLoadCallback(function() {
@@ -212,15 +253,26 @@ common_header("");
                 ['No', 776 - 687],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['Weak cipher', 'Count'],
+                ['Yes', 1554],
+                ['No', 1731 - 1554],
+        ]);
+
         var options = {
                 title: 'Weak cipher (<128 bits)',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'red'},
-                           1: {color: 'grey'} }
+                slices: {  0: {color: 'red'},
+                           1: {color: 'grey'},
+                           2: {color: 'red'},
+                           3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart6')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart6'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
