@@ -183,7 +183,7 @@ common_header("");
                 }
         };
 
-        var chartDiff = new google.visualization.PieChart(document.getElementById('chart4'));
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart3'));
 
         var diffData = chartDiff.computeDiff(old_data, data);
 
