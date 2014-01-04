@@ -229,15 +229,26 @@ common_header("");
                 ['Allowed', 378],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['c2s StartTLS', 'Count'],
+                ['Required', 375],
+                ['Allowed', 765],
+        ]);
+
         var options = {
                 title: 'c2s StartTLS',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'green'},
-                           1: {color: 'grey'} }
+                slices: {  0: {color: 'green'},
+                           1: {color: 'grey'},
+                           2: {color: 'green'},
+                           3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart7')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart7'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(data, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -246,15 +257,26 @@ common_header("");
                 ['Allowed', 180],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['s2s StartTLS', 'Count'],
+                ['Required', 42],
+                ['Allowed', 549],
+        ]);
+
         var options = {
                 title: 's2s StartTLS',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'green'},
-                           1: {color: 'grey'} }
+                slices: {  0: {color: 'green'},
+                           1: {color: 'grey'},
+                           2: {color: 'green'},
+                           3: {color: 'grey'} }
         };
 
-        new google.visualization.PieChart(document.getElementById('chart8')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart8'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(data, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
