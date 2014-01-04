@@ -415,7 +415,7 @@ common_header("");
         ]);
 
         var old_data = google.visualization.arrayToDataTable([
-                ['Exact version', 'Count', { role: 'annotation' }],
+                ['Exact version', 'Count'],
                 ['(Undisclosed)', 24.4],
                 ['ejabberd 2.1.10', 15.6],
                 ['Prosody 0.9.1', 12.2],
