@@ -265,6 +265,14 @@ common_header("");
                 ['Untrusted, Invalid', 179],
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+                ['Trust', 'Count'],
+                ['Trusted, Valid', 950],
+                ['Trusted, Invalid', 197],
+                ['Untrusted, Valid', 302],
+                ['Untrusted, Invalid', 368],
+        ]);
+
         var options = {
                 title: 'Trust',
                 legend: { position: "none" },
@@ -274,8 +282,10 @@ common_header("");
                            3: {color: 'grey'} }
         };
 
+        var diffData = chartDiff.computeDiff(old_data, data);
+
         new google.visualization.PieChart(document.getElementById('chart9')).
-                            draw(data, options);
+                            draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -317,7 +327,7 @@ common_header("");
                 ['Tigase', 5, '0.8%'],
                 ['Isode M-Link', 4, '0.5%'],
                 ['yabberd', 2, '0.3%'],
-                ['ESTOS UCServer', 1, '0.1%']
+                ['ESTOS UCServer', 1, '0.1%'],
                 ['MU-Conference', 1, '0.1%']
         ]);
 
