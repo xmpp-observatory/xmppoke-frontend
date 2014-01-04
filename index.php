@@ -114,25 +114,25 @@ foreach ($list as $result) {
 <?php
 pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
 
-$res = pg_execute($dbconn, "c2s_starttls_allowed");
+$res = pg_execute($dbconn, "c2s_starttls_allowed", array());
 
 $c2s_starttls_allowed = pg_fetch_assoc($res);
 
 pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
 
-$res = pg_execute($dbconn, "c2s_starttls_required");
+$res = pg_execute($dbconn, "c2s_starttls_required", array());
 
 $c2s_starttls_required = pg_fetch_assoc($res);
 
 pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
 
-$res = pg_execute($dbconn, "s2s_starttls_allowed");
+$res = pg_execute($dbconn, "s2s_starttls_allowed", array());
 
 $s2s_starttls_allowed = pg_fetch_assoc($res);
 
 pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
 
-$res = pg_execute($dbconn, "s2s_starttls_required");
+$res = pg_execute($dbconn, "s2s_starttls_required", array());
 
 $s2s_starttls_required = pg_fetch_assoc($res);
 ?>
