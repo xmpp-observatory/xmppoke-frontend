@@ -433,7 +433,7 @@ foreach ($sslv2 as $result) {
 
 				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates which expires after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
 
-				<p>As described in the <a href="https://cabforum.org/Baseline_Requirements_V1.pdf">CA/Browser Forum Baseline Requirements</a>, certificates with RSA keys with less than 2048 bits should not be issued with an notAfter date after 12-31-2013. This list lists all certificates which violate that rule.</p>
+				<p>As described in the <a href="https://cabforum.org/Baseline_Requirements_V1.pdf">CA/Browser Forum Baseline Requirements</a>, certificates with RSA keys with less than 2048 bits should not be issued with an notAfter date after 31-12-2013. This list lists all certificates which violate that rule.</p>
 
 				<table class="table table-bordered table-striped">
 					<tr>
