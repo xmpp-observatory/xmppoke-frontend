@@ -276,10 +276,14 @@ common_header("");
         var options = {
                 title: 'Trust',
                 legend: { position: "none" },
-                slices: {  0: {offset: 0.2, color: 'green'},
+                slices: {  0: {color: 'green'},
                            1: {color: 'grey'},
                            2: {color: 'grey'},
-                           3: {color: 'grey'} }
+                           3: {color: 'grey'},
+                           4: {color: 'green'},
+                           5: {color: 'grey'},
+                           6: {color: 'grey'},
+                           7: {color: 'grey'}, }
         };
 
         var chartDiff = new google.visualization.PieChart(document.getElementById('chart9'));
