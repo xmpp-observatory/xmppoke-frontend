@@ -484,7 +484,7 @@ common_header("");
                 legend: { position: "none" },
         };
 
-        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart11'));
+        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart12'));
 
         var diffData = chartDiff.computeDiff(old_data, data);
 
