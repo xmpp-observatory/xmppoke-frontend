@@ -137,7 +137,7 @@ $res = pg_execute($dbconn, "s2s_starttls_required", array());
 $s2s_starttls_required = pg_fetch_assoc($res);
 ?>
 				<p>The first encryption test day is today! Many servers will require c2s and s2s encryption today to see how the network handles it.</p>
-				<p>On the 4th of January, <?= $c2s_starttls_required["count"] ?> servers required StartTLS on c2s connections. <?= $c2s_starttls_allowed["count"] ?> servers have it optional.</p>
+				<p>Of the servers tested on the 4th of January, <?= $c2s_starttls_required["count"] ?> required StartTLS on c2s connections. <?= $c2s_starttls_allowed["count"] ?> servers have it optional.</p>
 				<p><?= $s2s_starttls_required["count"] ?> servers required StartTLS on s2s connections. <?= $s2s_starttls_allowed["count"] ?> servers have it optional.</p>
 				<p>For more information, see <a href="http://xmpp.org/2014/01/security-test-day-is-tomorrow-4-jan-2014/">http://xmpp.org/2014/01/security-test-day-is-tomorrow-4-jan-2014/</a>.</p>
 			</div> <!-- /.col-lg-6 -->

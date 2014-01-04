@@ -75,7 +75,7 @@ $res = pg_execute($dbconn, "bitsizes", array($since));
 
 $bitsizes = pg_fetch_all($res);
 
-pg_prepare($dbconn, "1024-2014", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND EXISTS (SELECT * FROM srv_certificates, certificates WHERE srv_certificates.srv_result_id = srv_results.srv_result_id AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize = 1024 AND notbefore > '2014-01-01'));");
+pg_prepare($dbconn, "1024-2014", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND EXISTS (SELECT * FROM srv_certificates, certificates WHERE srv_certificates.srv_result_id = srv_results.srv_result_id AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notbefore > '2014-01-01'));");
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
@@ -426,7 +426,7 @@ foreach ($sslv2 as $result) {
 ?>
 				</table>
 
-				<h3 id="1024-2014">Servers using 1024-bit RSA certificates with notBefore after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
+				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates with notBefore after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
 
 				<table class="table table-bordered table-striped">
 					<tr>
