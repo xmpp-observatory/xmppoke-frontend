@@ -79,7 +79,7 @@ pg_prepare($dbconn, "1024-2014", "SELECT * FROM (SELECT DISTINCT ON (server_name
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
-$too_weak_1024_2014 = pg_fetch_assoc($res);
+$too_weak_1024_2014 = pg_fetch_all($res);
 
 
 
@@ -426,7 +426,7 @@ foreach ($sslv2 as $result) {
 ?>
 				</table>
 
-				<h3 id="1024-2014">Servers with 1024-bit RSA certificates generated after January 1st 2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
+				<h3 id="1024-2014">Servers using 1024-bit RSA certificates with notBefore after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
 
 				<table class="table table-bordered table-striped">
 					<tr>
