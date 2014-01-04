@@ -17,6 +17,10 @@ $res = pg_execute($dbconn, "sslv3_not_tls1", array($since));
 
 $sslv3_not_tls1 = pg_fetch_all($res);
 
+if ($sslv3_not_tls1 === FALSE) {
+	$sslv3_not_tls1 = array();
+}
+
 pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL);");
 
 $res = pg_execute($dbconn, "dnssec_srv", array($since));
