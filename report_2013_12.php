@@ -112,28 +112,28 @@ common_header("");
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
-          ['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-          ['A', 65.2, 'green', 506],
-          ['B', 13.1, 'orange', 102],
-          ['C', 21.7, 'red', 168],
-          ['D', 0, 'red', 0],
-          ['E', 0, 'red', 0],
-          ['F', 0, 'red', 0]
+          ['Grade', 'Percentage'],
+          ['A', 65.2],
+          ['B', 13.1],
+          ['C', 21.7],
+          ['D', 0],
+          ['E', 0],
+          ['F', 0]
         ]);
 
         var old_data = google.visualization.arrayToDataTable([
-          ['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-          ['A', 64.5, 'green', 1116],
-          ['B', 18.4, 'orange', 318],
-          ['C', 17.2, 'red', 297],
-          ['D', 0, 'red', 0],
-          ['E', 0, 'red', 0],
-          ['F', 0, 'red', 0]
+          ['Grade', 'Percentage'],
+          ['A', 64.5],
+          ['B', 18.4],
+          ['C', 17.2],
+          ['D', 0],
+          ['E', 0],
+          ['F', 0]
         ]);
 
         var options = {
                 title: 'Grade',
-                legend: { position: "none" },
+                legend: { position: "none" }
         };
 
         var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart1'));
@@ -144,21 +144,21 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
-          ['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-          ['SSL 2', 9.4, 'red', 73],
-          ['SSL 3', 85.8, 'orange', 666],
-          ['TLS 1.0', 99.4, 'green', 771],
-          ['TLS 1.1', 59.7, 'green', 463],
-          ['TLS 1.2', 60.2, 'green', 467]
+          ['Protocol', 'Percentage'],
+          ['SSL 2', 9.4],
+          ['SSL 3', 85.8],
+          ['TLS 1.0', 99.4],
+          ['TLS 1.1', 59.7],
+          ['TLS 1.2', 60.2]
         ]);
 
         var old_data = google.visualization.arrayToDataTable([
-          ['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-          ['SSL 2', 9.3, 'red', 161],
-          ['SSL 3', 87.4, 'orange', 1513],
-          ['TLS 1.0', 99.7, 'green', 1725],
-          ['TLS 1.1', 57.4, 'green', 993],
-          ['TLS 1.2', 57.5, 'green', 995]
+          ['Protocol', 'Percentage'],
+          ['SSL 2', 9.3],
+          ['SSL 3', 87.4],
+          ['TLS 1.0', 99.7],
+          ['TLS 1.1', 57.4],
+          ['TLS 1.2', 57.5]
         ]);
 
         var options = {
