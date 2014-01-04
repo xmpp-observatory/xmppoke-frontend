@@ -282,10 +282,11 @@ common_header("");
                            3: {color: 'grey'} }
         };
 
+        var chartDiff = new google.visualization.PieChart(document.getElementById('chart9'));
+
         var diffData = chartDiff.computeDiff(old_data, data);
 
-        new google.visualization.PieChart(document.getElementById('chart9')).
-                            draw(diffData, options);
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
