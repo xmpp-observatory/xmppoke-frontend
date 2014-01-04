@@ -180,9 +180,9 @@ common_header("");
                   1: { color: 'red' },
                   2: { color: 'orange' },
                   7: { color: 'green' },
-                  9: { color: 'red' },
-                  10: { color: 'orange' },
-                  15: { color: 'green' }
+                  10: { color: 'red' },
+                  11: { color: 'orange' },
+                  16: { color: 'green' }
                 }
         };
 
