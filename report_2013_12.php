@@ -176,7 +176,7 @@ common_header("");
                 slices: {
                   1: { color: 'red' },
                   2: { color: 'orange' },
-                  7: { color: 'green' }
+                  7: { color: 'green' },
                   9: { color: 'red' },
                   10: { color: 'orange' },
                   12: { color: 'green' }
