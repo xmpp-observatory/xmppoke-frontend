@@ -476,7 +476,7 @@ common_header("");
                 ['ESTOS UCServer', 0.1],
                 ['MU-Conference', 0.0],
                 ['Spectrum', 0.1],
-                ['PSYC', 0.2],
+                ['PSYC', 0.2]
         ]);
 
         var options = {
