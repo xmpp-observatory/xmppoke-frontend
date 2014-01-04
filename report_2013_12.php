@@ -446,18 +446,37 @@ common_header("");
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
-                ['Version', 'Count', { role: 'annotation' }],
-                ['ejabberd', 306, '39.4%'],
-                ['(Undisclosed)', 215, '27.7%'],
-                ['Prosody', 176, '22.7%'],
-                ['Openfire', 45, '5.8%'],
-                ['jabberd', 14, '1.8%'],
-                ['Metronome', 6, '0.8%'],
-                ['Tigase', 5, '0.8%'],
-                ['Isode M-Link', 4, '0.5%'],
-                ['yabberd', 2, '0.3%'],
-                ['ESTOS UCServer', 1, '0.1%'],
-                ['MU-Conference', 1, '0.1%']
+                ['Version', 'Percentage'],
+                ['ejabberd', 39.4],
+                ['(Undisclosed)', 27.7],
+                ['Prosody', 22.7],
+                ['Openfire', 5.8],
+                ['jabberd', 1.8],
+                ['Metronome', 0.8],
+                ['Tigase', 0.8],
+                ['Isode M-Link', 0.5],
+                ['yabberd', 0.3],
+                ['ESTOS UCServer', 0.1],
+                ['MU-Conference', 0.1],
+                ['Spectrum', 0.0],
+                ['PSYC', 0.0]
+        ]);
+
+        var old_data = google.visualization.arrayToDataTable([
+                ['Version', 'Percentage'],
+                ['ejabberd', 39.0],
+                ['(Undisclosed)', 24.4],
+                ['Prosody', 26.5],
+                ['Openfire', 5.2],
+                ['jabberd', 2.5],
+                ['Metronome', 1.1],
+                ['Tigase', 0.6],
+                ['Isode M-Link', 0.3],
+                ['yabberd', 0.2],
+                ['ESTOS UCServer', 0.1],
+                ['MU-Conference', 0.0],
+                ['Spectrum', 0.1],
+                ['PSYC', 0.2],
         ]);
 
         var options = {
@@ -465,8 +484,11 @@ common_header("");
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart12')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart11'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
     </script>
 
