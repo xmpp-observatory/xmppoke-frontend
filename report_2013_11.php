@@ -132,7 +132,7 @@ common_header("");
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
           ['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-        ['SSL 2', 9.3, 'red', 161],
+          ['SSL 2', 9.3, 'red', 161],
           ['SSL 3', 87.4, 'orange', 1513],
           ['TLS 1.0', 99.7, 'green', 1725],
           ['TLS 1.1', 57.4, 'green', 993],

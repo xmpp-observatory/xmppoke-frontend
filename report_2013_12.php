@@ -121,13 +121,26 @@ common_header("");
           ['F', 0, 'red', 0]
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+          ['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
+          ['A', 64.5, 'green', 1116],
+          ['B', 18.4, 'orange', 318],
+          ['C', 17.2, 'red', 297],
+          ['D', 0, 'red', 0],
+          ['E', 0, 'red', 0],
+          ['F', 0, 'red', 0]
+        ]);
+
         var options = {
                 title: 'Grade',
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart1')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart1'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -139,13 +152,25 @@ common_header("");
           ['TLS 1.2', 60.2, 'green', 467]
         ]);
 
+        var old_data = google.visualization.arrayToDataTable([
+          ['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
+          ['SSL 2', 9.3, 'red', 161],
+          ['SSL 3', 87.4, 'orange', 1513],
+          ['TLS 1.0', 99.7, 'green', 1725],
+          ['TLS 1.1', 57.4, 'green', 993],
+          ['TLS 1.2', 57.5, 'green', 995]
+        ]);
+
         var options = {
                 title: 'Protocol',
                 legend: { position: "none" },
         };
 
-        new google.visualization.ColumnChart(document.getElementById('chart2')).
-                            draw(data, options);
+        var chartDiff = new google.visualization.ColumnChart(document.getElementById('chart2'));
+
+        var diffData = chartDiff.computeDiff(old_data, data);
+
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
