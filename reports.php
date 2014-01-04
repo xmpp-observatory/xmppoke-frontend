@@ -196,15 +196,15 @@ common_header();
 					<ul class="nav">
 						<li class="active"><a href="#tls">TLS versions</a></li>
 						<li><a href="#grades">Grades</a></li>
-						<li><a href="#rsa">RSA key sizes for domain certificates</a></li>
+						<li><a href="#rsa">RSA key sizes</a></li>
 						<li><a href="#starttls">StartTLS</a></li>
 						<li><a href="#trust">Trust</a></li>
-						<li><a href="#sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0</a></li>
-						<li><a href="#sslv2wallofshame">Servers supporting SSL 2</a></li>
-						<li><a href="#dnssecsrv">Servers with DNSSEC signed SRV records</a></li>
-						<li><a href="#dnssecdane">Servers with DNSSEC signed DANE records</a></li>
-						<li><a href="#reordersciphers">Servers that pick their own cipher order</a></li>
-						<li><a href="#sharesprivatekeys">Servers sharing private keys</a></li>
+						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
+						<li><a href="#sslv2wallofshame">SSL 2</a></li>
+						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
+						<li><a href="#dnssecdane">DANE</a></li>
+						<li><a href="#reordersciphers">Cipher reordering</a></li>
+						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
 				</div>
 			</div>
