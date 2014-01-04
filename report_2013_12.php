@@ -248,7 +248,7 @@ common_header("");
 
         var diffData = chartDiff.computeDiff(old_data, data);
 
-        chartDiff.draw(data, options);
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
@@ -276,7 +276,7 @@ common_header("");
 
         var diffData = chartDiff.computeDiff(old_data, data);
 
-        chartDiff.draw(data, options);
+        chartDiff.draw(diffData, options);
       });
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
