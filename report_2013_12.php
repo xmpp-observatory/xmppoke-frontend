@@ -33,6 +33,7 @@ common_header("");
 
     <div class="col-md-9">
       <h1>Stats for December 2013</h1>
+      <a href="report_2013_11.php">Report for november 2013</a> | <a href="reports.php">Live reports</a>
 
       <p>Statistics for reports generated during december 2013. Only the last test during december per server counts.</p>
     </div>
