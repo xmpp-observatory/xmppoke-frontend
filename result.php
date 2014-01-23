@@ -444,7 +444,7 @@ foreach ($srvs as $srv) {
 				</div>
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong><a href="#certificates">Public key score:</a></strong>
+						<strong><a href="#certificates">Key exchange score:</a></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">
