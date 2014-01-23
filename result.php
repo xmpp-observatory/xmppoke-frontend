@@ -790,7 +790,7 @@ foreach ($srvs as $srv) {
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv3 is old and not recommended. Servers <strong>should not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv3">SSLv3</abbr></td>
-						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-danger" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>">
+						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-warning" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>">
 							<?= show_bool($srv["sslv3"]) ?>
 						</span></td>
 					</tr>
