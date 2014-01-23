@@ -17,11 +17,21 @@ $res = pg_execute($dbconn, "sslv3_not_tls1", array($since));
 
 $sslv3_not_tls1 = pg_fetch_all($res);
 
+if ($sslv3_not_tls1 === FALSE) {
+	$sslv3_not_tls1 = array();
+}
+
 pg_prepare($dbconn, "dnssec_srv", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE results.srv_dnssec_good = 't' AND EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL);");
 
 $res = pg_execute($dbconn, "dnssec_srv", array($since));
 
 $dnssec_srv = pg_fetch_all($res);
+
+pg_prepare($dbconn, "dnssec_dane", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL AND tlsa_dnssec_good = 't' AND EXISTS (SELECT * FROM tlsa_records WHERE tlsa_records.srv_result_id = srv_results.srv_result_id));");
+
+$res = pg_execute($dbconn, "dnssec_dane", array($since));
+
+$dnssec_dane = pg_fetch_all($res);
 
 
 
@@ -68,6 +78,14 @@ pg_prepare($dbconn, "bitsizes", "SELECT COUNT(*), rsa_bitsize FROM (SELECT DISTI
 $res = pg_execute($dbconn, "bitsizes", array($since));
 
 $bitsizes = pg_fetch_all($res);
+
+pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
+
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+
+$res = pg_execute($dbconn, "1024-2014", array($since));
+
+$too_weak_1024_2014 = pg_fetch_all($res);
 
 
 
@@ -190,14 +208,16 @@ common_header();
 					<ul class="nav">
 						<li class="active"><a href="#tls">TLS versions</a></li>
 						<li><a href="#grades">Grades</a></li>
-						<li><a href="#rsa">RSA key sizes for domain certificates</a></li>
+						<li><a href="#rsa">RSA key sizes</a></li>
 						<li><a href="#starttls">StartTLS</a></li>
 						<li><a href="#trust">Trust</a></li>
-						<li><a href="#sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0</a></li>
-						<li><a href="#sslv2wallofshame">Servers supporting SSL 2</a></li>
-						<li><a href="#dnssecsrv">Servers with DNSSEC signed SRV records</a></li>
-						<li><a href="#reordersciphers">Servers that pick their own cipher order</a></li>
-						<li><a href="#sharesprivatekeys">Servers sharing private keys</a></li>
+						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
+						<li><a href="#sslv2wallofshame">SSL 2</a></li>
+						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
+						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
+						<li><a href="#dnssecdane">DANE</a></li>
+						<li><a href="#reordersciphers">Cipher reordering</a></li>
+						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -206,7 +226,7 @@ common_header();
 
 				<h1>Various reports of all servers tested</h1>
 
-				<a href="report_2013_11.php">Report for november 2013</a> | <a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
+				<a href="report_2013_12.php">Report for december 2013</a> | <a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
 
 				<div class="row">
 					<div class="col-md-6">
@@ -351,6 +371,7 @@ foreach ($bitsizes as $bitsize) {
 $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[2]["count"] + $trusted_valid[3]["count"];
 
 ?>
+				<p>To do authenticated encryption, a certificate needs to be both trusted and valid. Trusted means it is issued by a well-known CA and valid means it is valid for the domain we want to connect to.</p>
 
 				<table class="table table-bordered table-striped">
 					<tr>
@@ -371,6 +392,8 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 				</table>
 
 				<h3 id="sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
+
+				<p>SSL 3 and TLS 1.0 are very similar, but TLS 1.0 has some small improvements. This table is meant to help judge whether SSL 3 can be disabled by listing the servers that do support SSL 3, but not TLS 1.0.</p>
 
 				<table class="table table-bordered table-striped">
 					<tr>
@@ -393,6 +416,8 @@ foreach ($sslv3_not_tls1 as $result) {
 
 				<h3 id="sslv2wallofshame">Servers supporting SSL 2 <small class="text-muted"><?= count($sslv2) ?> results</small></h3>
 
+				<p>SSL 2 is broken and insecure. It is <b>not</b> required for compatibility and servers should disable it.</p>
+
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>Target</th>
@@ -412,6 +437,34 @@ foreach ($sslv2 as $result) {
 ?>
 				</table>
 
+				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates which expires after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
+
+				<p>As described in the <a href="https://cabforum.org/Baseline_Requirements_V1.pdf">CA/Browser Forum Baseline Requirements</a>, certificates with RSA keys with less than 2048 bits should not be issued with an notAfter date after 31-12-2013. This list lists all certificates which violate that rule.</p>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+						<th>Issuer</th>
+					</tr>
+<?php
+foreach ($too_weak_1024_2014 as $result) {
+	$res = pg_execute($dbconn, "find_cn", array($result["signed_by_id"]));
+
+	$issuer = pg_fetch_assoc($res);
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+						<td><span<?= ($result["trusted"] === 'f' || $result["valid_identity"] === 'f') ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
 				<h3 id="dnssecsrv">Servers with DNSSEC signed SRV records <small class="text-muted"><?= count($dnssec_srv) ?> results</small></h3>
 
 				<table class="table table-bordered table-striped">
@@ -422,6 +475,27 @@ foreach ($sslv2 as $result) {
 					</tr>
 <?php
 foreach ($dnssec_srv as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="dnssecdane">Servers with DNSSEC signed DANE records <small class="text-muted"><?= count($dnssec_dane) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($dnssec_dane as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>

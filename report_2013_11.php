@@ -113,7 +113,7 @@ common_header("");
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
           ['Grade', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-        ['A', 64.5, 'green', 1116],
+          ['A', 64.5, 'green', 1116],
           ['B', 18.4, 'orange', 318],
           ['C', 17.2, 'red', 297],
           ['D', 0, 'red', 0],
@@ -132,7 +132,7 @@ common_header("");
       google.setOnLoadCallback(function() {
         var data = google.visualization.arrayToDataTable([
           ['Protocol', 'Percentage', { role: 'style' }, { role: 'annotation' }],
-        ['SSL 2', 9.3, 'red', 161],
+          ['SSL 2', 9.3, 'red', 161],
           ['SSL 3', 87.4, 'orange', 1513],
           ['TLS 1.0', 99.7, 'green', 1725],
           ['TLS 1.1', 57.4, 'green', 993],
