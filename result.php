@@ -147,6 +147,8 @@ function help($str) {
 			return "Advanced Encryption Standard using Galois/Counter Mode is an authenticated symmetric key encryption algorithm using 128 or 256 bit keys. This is more efficient and faster compared to normal AES, which uses Cipher-block chaining (CBC).";
 		case "AEAD":
 			return "Authenticated Encryption with Associated Data algorithms do not require a separate hash function.";
+		case "None":
+			return "This cipher suite uses no encryption. Server's MUST NOT allow this cipher to be used.";
 		default:
 			return "...";
 	}
