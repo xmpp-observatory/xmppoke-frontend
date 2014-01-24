@@ -148,7 +148,7 @@ function help($str) {
 		case "AEAD":
 			return "Authenticated Encryption with Associated Data algorithms do not require a separate hash function.";
 		case "None":
-			return "This cipher suite uses no encryption. Server's MUST NOT allow this cipher to be used.";
+			return "This cipher suite uses no encryption, only authentication. Servers MUST NOT allow this cipher to be used.";
 		default:
 			return "...";
 	}
