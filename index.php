@@ -6,9 +6,15 @@ pg_prepare($dbconn, "list_results", "SELECT * FROM (SELECT DISTINCT ON (server_n
 
 pg_prepare($dbconn, "find_score", "SELECT DISTINCT ON (grade) grade, total_score FROM srv_results WHERE test_id = $1;");
 
+pg_prepare($dbconn, "find_news", "SELECT * FROM news_posts ORDER BY post_date DESC LIMIT 1;");
+
 $res = pg_execute($dbconn, "list_results", array());
 
 $list = pg_fetch_all($res);
+
+$res = pg_execute($dbconn, "find_news", array());
+
+$news = pg_fetch_object($res);
 
 common_header("");
 
@@ -110,36 +116,8 @@ foreach ($list as $result) {
 
 				<br>
 				<h3>Latest news</h3>
-				<small class="text-muted">January 4, 2014</small>
-<?php
-pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
-
-$res = pg_execute($dbconn, "c2s_starttls_allowed", array());
-
-$c2s_starttls_allowed = pg_fetch_assoc($res);
-
-pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
-
-$res = pg_execute($dbconn, "c2s_starttls_required", array());
-
-$c2s_starttls_required = pg_fetch_assoc($res);
-
-pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
-
-$res = pg_execute($dbconn, "s2s_starttls_allowed", array());
-
-$s2s_starttls_allowed = pg_fetch_assoc($res);
-
-pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date >= '2014-01-04' AND test_date < '2014-01-05' AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
-
-$res = pg_execute($dbconn, "s2s_starttls_required", array());
-
-$s2s_starttls_required = pg_fetch_assoc($res);
-?>
-				<p>The first encryption test day is today! Many servers will require c2s and s2s encryption today to see how the network handles it.</p>
-				<p>Of the servers tested on the 4th of January, <?= $c2s_starttls_required["count"] ?> required StartTLS on c2s connections. <?= $c2s_starttls_allowed["count"] ?> servers have it optional.</p>
-				<p><?= $s2s_starttls_required["count"] ?> servers required StartTLS on s2s connections. <?= $s2s_starttls_allowed["count"] ?> servers have it optional.</p>
-				<p>For more information, see <a href="http://xmpp.org/2014/01/security-test-day-is-tomorrow-4-jan-2014/">http://xmpp.org/2014/01/security-test-day-is-tomorrow-4-jan-2014/</a>.</p>
+				<small class="text-muted"><?= $news->post_date ?></small>
+				<?= $news->message ?>
 			</div> <!-- /.col-lg-6 -->
 		</div> <!-- /.row -->
 
