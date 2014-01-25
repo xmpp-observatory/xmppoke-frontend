@@ -77,6 +77,8 @@ function released($software) {
 			return "2013/10/29";
 		case "Metronome 3.0.6":
 			return "2013/11/05";
+		case "Metronome 3.3.3":
+			return "2014/01/14";
 		
 		case "Openfire 3.6.4":
 			return "2009/05/01";
@@ -134,6 +136,8 @@ function released($software) {
 			return "2013/08/20";
 		case "Prosody 0.9.1":
 			return "2013/09/10";
+		case "Prosody 0.9.2":
+			return "2014/01/07";
 		
 		case "Tigase 5.1.4-b3001":
 			return "2013/01/14";
