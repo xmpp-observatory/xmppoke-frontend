@@ -12,6 +12,9 @@ function fp($x) {
 }
 
 function grade($srv) {
+	if ($srv["done"] === "f") {
+		return NULL;
+	}
 	if ($srv["certificate_score"] === "0") {
 		return "F";
 	}
