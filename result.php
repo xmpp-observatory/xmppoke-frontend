@@ -613,6 +613,9 @@ foreach ($srvs as $srv) {
 	}
 ?>
 		</dl>
+<?php
+	if ($result_type === "client") {
+?>
 		<h4>SASL</h4>
 		<h5>Pre-TLS</h5>
 
@@ -674,6 +677,7 @@ foreach ($srvs as $srv) {
 		</div>
 <?php
 	}
+}
 ?>
 		<br>
 
