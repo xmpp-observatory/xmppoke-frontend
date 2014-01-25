@@ -116,7 +116,7 @@ foreach ($list as $result) {
 
 				<br>
 				<h3>Latest news</h3>
-				<small class="text-muted"><?= $news->post_date ?></small>
+				<time class="text-muted timeago" datetime="<?= date("c", strtotime($news->post_date)) ?>"></time>
 				<?= $news->message ?>
 			</div> <!-- /.col-lg-6 -->
 		</div> <!-- /.row -->
