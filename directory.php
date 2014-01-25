@@ -63,6 +63,8 @@ if (!$list) {
 
 		<h1>Public XMPP Server Directory</h1>
 
+		<p>This is a list of servers with public registration, anyone can sign up for free. Follow the links to the website to sign up, or use a client that supports in-band registration.</p>
+
 		<table class="table table-bordered table-striped sortable">
 			<thead>
 				<tr>
