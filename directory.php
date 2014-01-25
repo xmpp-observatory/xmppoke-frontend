@@ -4,15 +4,15 @@ include("common.php");
 
 pg_prepare($dbconn, "list_server", "SELECT * FROM public_servers ORDER BY server_name;");
 
-pg_prepare($dbconn, "find_s2s", "SELECT * FROM test_results WHERE server_name = $1 AND type = 'server' ORDER BY test_date DESC LIMIT 1;");
+pg_prepare($dbconn, "find_s2s", "SELECT test_id FROM test_results WHERE server_name = $1 AND type = 'server' ORDER BY test_date DESC LIMIT 1;");
 
-pg_prepare($dbconn, "find_c2s", "SELECT * FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
+pg_prepare($dbconn, "find_c2s", "SELECT test_id FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
 
-pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
+pg_prepare($dbconn, "find_srvs", "SELECT srv_result_id, certificate_score FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
 
-pg_prepare($dbconn, "find_cert", "SELECT * FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1;");
+pg_prepare($dbconn, "find_cert", "SELECT signed_by_id, certificates.certificate_id FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1;");
 
-pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
+pg_prepare($dbconn, "find_cn", "SELECT value FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
 pg_prepare($dbconn, "find_score", "SELECT DISTINCT ON (grade) grade, total_score, certificate_score, done, error FROM srv_results WHERE test_id = $1;");
 
