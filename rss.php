@@ -26,7 +26,7 @@ foreach ($news as $new) {
 ?>
 <item>
 		<title><?= $new["title"] ?></title>
-		<description><![CDATA[[[<?= $new["message"] ?>]]></description>
+		<description><![CDATA[<?= $new["message"] ?>]]></description>
 		<link>https://xmpp.net/</link>
 		<guid>https://xmpp.net/news.php?id=<?= $new["post_id"] ?></guid>
 		<pubDate><?= date("D, d M Y H:i:s O", strtotime($new["post_date"])) ?></pubDate>
