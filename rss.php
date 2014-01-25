@@ -2,7 +2,7 @@
 
 include("common.php");
 
-header("Content-Type: application/xml; charset=UTF8");
+header("Content-Type: application/xml; charset=UTF-8");
 
 pg_prepare($dbconn, "find_news", "SELECT * FROM news_posts ORDER BY post_date DESC;");
 
@@ -26,12 +26,11 @@ foreach ($news as $new) {
 ?>
 <item>
 		<title><?= $new["title"] ?></title>
-		<description><?= $new["message"] ?></description>
+		<description><![CDATA[[[<?= $new["message"] ?>]]></description>
 		<link>https://xmpp.net/</link>
-		<guid><?= $new["post_date"] ?>-<?= $new["title"] ?></guid>
+		<guid><?= $new["post_id"] ?></guid>
 		<pubDate><?= $new["post_date"] ?></pubDate>
 	</item>
-
 <?php
 }
 ?>
