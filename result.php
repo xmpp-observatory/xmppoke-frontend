@@ -149,9 +149,9 @@ function help($str) {
 			return "This authentication mechanism transfers your password in plain. Servers <strong>must not</strong> offer this pre-TLS.";
 		case "DIGEST-MD5":
 			return "This is a hashed authentication mechanism. However, the server can only offer this when the server has your password stored in plain.";
-		case "SCRAM-SHA1":
+		case "SCRAM-SHA-1":
 			return "This is a hashed authentication mechanism which can also allow the server to store the password in hashed form.";
-		case "SCRAM-SHA1-PLUS":
+		case "SCRAM-SHA-1-PLUS":
 			return "This is a hashed authentication mechanism which can also allow the server to store the password in hashed form. It also uses channel-binding, which can protect you from man-in-the-middle attacks.";
 		default:
 			return "...";
@@ -631,18 +631,20 @@ foreach ($srvs as $srv) {
 <?php
 	} else {
 ?>
-		<div class="col-md-5">
-			<table class="table table-bordered table-striped">
+		<div class="row">
+			<div class="col-md-5">
+				<table class="table table-bordered table-striped">
 <?php
 		foreach ($mechanisms as $mechanism) {
 ?>
-				<tr>
-					<td><span class="my-popover" title="" data-content="<?= help($mechanism["mechanism"]) ?>" data-toggle="popover" data-original-title="<?= $mechanism["mechanism"] ?>"><?= $mechanism["mechanism"] ?></span></td>
-				</tr>
+					<tr>
+						<td><span class="my-popover" title="" data-content="<?= help($mechanism["mechanism"]) ?>" data-toggle="popover" data-original-title="<?= $mechanism["mechanism"] ?>"><?= $mechanism["mechanism"] ?></span></td>
+					</tr>
 <?php
 		}
 ?>
-			</table>
+				</table>
+			</div>
 		</div>
 <?php
 	}
@@ -662,18 +664,20 @@ foreach ($srvs as $srv) {
 <?php
 	} else {
 ?>
-		<div class="col-md-5">
-			<table class="table table-bordered table-striped">
+		<div class="row">
+			<div class="col-md-5">
+				<table class="table table-bordered table-striped">
 <?php
 		foreach ($mechanisms as $mechanism) {
 ?>
-				<tr>
-					<td><span class="my-popover" title="" data-content="<?= help($mechanism["mechanism"]) ?>" data-toggle="popover" data-original-title="<?= $mechanism["mechanism"] ?>"><?= $mechanism["mechanism"] ?></span></td>
-				</tr>
+					<tr>
+						<td><span class="my-popover" title="" data-content="<?= help($mechanism["mechanism"]) ?>" data-toggle="popover" data-original-title="<?= $mechanism["mechanism"] ?>"><?= $mechanism["mechanism"] ?></span></td>
+					</tr>
 <?php
 		}
 ?>
-			</table>
+				</table>
+			</div>
 		</div>
 <?php
 	}
