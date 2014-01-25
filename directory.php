@@ -123,14 +123,14 @@ foreach ($list as $result) {
 	$c2s_final_score = NULL;
 	$s2s_final_score = NULL;
 
-	foreach ($c2s_scores as $score) {
-		if ($score["grade"] && (!$c2s_final_score || $score["grade"] < $c2s_final_score)) {
-			$c2s_final_score = $score["grade"];
+	foreach ($s2s_scores as $score) {
+		if (grade($score) && (!$c2s_final_score || grade($score) < $c2s_final_score)) {
+			$c2s_final_score = grade($score);
 		}
 	}
 	foreach ($s2s_scores as $score) {
-		if ($score["grade"] && (!$s2s_final_score || $score["grade"] < $s2s_final_score)) {
-			$s2s_final_score = $score["grade"];
+		if (grade($score) && (!$s2s_final_score || grade($score) < $s2s_final_score)) {
+			$s2s_final_score = grade($score);
 		}
 	}
 ?>
