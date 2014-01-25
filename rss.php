@@ -25,11 +25,11 @@ echo '<?xml version="1.0" encoding="UTF-8" ?>';
 foreach ($news as $new) {
 ?>
 <item>
-		<title><?= $new->title ?></title>
-		<description><?= $new->message ?></description>
+		<title><?= $new["title"] ?></title>
+		<description><?= $new["message"] ?></description>
 		<link>https://xmpp.net/</link>
-		<guid><?= $new->post_date ?>-<?= $new->title ?></guid>
-		<pubDate><?= $new->post_date ?></pubDate>
+		<guid><?= $new["post_date"] ?>-<?= $new["title"] ?></guid>
+		<pubDate><?= $new["post_date"] ?></pubDate>
 	</item>
 
 <?php
