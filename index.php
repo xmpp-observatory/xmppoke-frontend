@@ -92,7 +92,7 @@ foreach ($list as $result) {
 		}
 	}
 ?>
-							<td><span class="<?= color_label_text_grade($scores[0]["grade"]) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
+							<td><span class="<?= color_label_text_grade(grade($scores[0])) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
 						</tr>
 <?php
 }

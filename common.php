@@ -11,6 +11,13 @@ function fp($x) {
 	return strtoupper(join(':', str_split($x, 2)));
 }
 
+function grade($srv) {
+	if ($srv["certificate_score"] === 0) {
+		return "F";
+	}
+	return $srv["grade"];
+}
+
 function color_label_text_grade($score) {
 	switch ($score) {
 		case 'A':

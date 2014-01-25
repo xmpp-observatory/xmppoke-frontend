@@ -93,15 +93,6 @@ function color_bitsize($size) {
 	return "label-danger";
 }
 
-function grade($score) {
-	if ($score >= 80) return "A";
-	if ($score >= 65) return "B";
-	if ($score >= 50) return "C";
-	if ($score >= 35) return "D";
-	if ($score >= 20) return "E";
-	return "F";
-}
-
 function show_bool($b) {
 	if ($b === 't') {
 		return "Yes";
@@ -501,7 +492,7 @@ foreach ($srvs as $srv) {
 			<div class="col-md-2 text-center">
 				<strong>Grade:</strong>
 				<div>
-					<p class="<?= color_text_score($srv["grade"]) ?>" style="font-size: 1000%; line-height: 100px;"><?= $srv["grade"] ?></p>
+					<p class="<?= color_text_score(grade($srv)) ?>" style="font-size: 1000%; line-height: 100px;"><?= grade($srv) ?></p>
 				</div>
 			</div>
 		</div>
@@ -510,7 +501,7 @@ foreach ($srvs as $srv) {
 	if ($srv["certificate_score"] === '0' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
-					Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
+					Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["grade"] ?></strong>.
 				</div>
 <?php
 	}
