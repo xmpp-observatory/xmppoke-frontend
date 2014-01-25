@@ -613,11 +613,23 @@ foreach ($srvs as $srv) {
 
 	$mechanisms = pg_fetch_all($res);
 
-	foreach ($mechanisms as $mechanism) {
+	if (pg_num_rows($res) == 0) {
 ?>
-		<tr>
-			<td><?= $mechanism["mechanism"] ?></td>
-		</tr>
+		<p class="text-muted">None</p>
+<?php
+	} else {
+?>
+		<table class="table table-bordered table-striped">
+<?php
+		foreach ($mechanisms as $mechanism) {
+?>
+			<tr>
+				<td><?= $mechanism["mechanism"] ?></td>
+			</tr>
+<?php
+		}
+?>
+		</table>
 <?php
 	}
 ?>
@@ -625,21 +637,31 @@ foreach ($srvs as $srv) {
 
 		<h5>Post-TLS</h5>
 
-		<table class="table table-bordered table-striped">
 <?php
 	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], TRUE));
 
 	$mechanisms = pg_fetch_all($res);
 
-	foreach ($mechanisms as $mechanism) {
+	if (pg_num_rows($res) == 0) {
 ?>
-		<tr>
-			<td><?= $mechanism["mechanism"] ?></td>
-		</tr>
+		<p class="text-muted">None</p>
+<?php
+	} else {
+?>
+		<table class="table table-bordered table-striped">
+<?php
+		foreach ($mechanisms as $mechanism) {
+?>
+			<tr>
+				<td><?= $mechanism["mechanism"] ?></td>
+			</tr>
+<?php
+		}
+?>
+		</table>
 <?php
 	}
 ?>
-		</table>
 		<br>
 
 		<?php
