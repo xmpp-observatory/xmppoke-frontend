@@ -73,6 +73,7 @@ if (!$list) {
 					<th>Country</th>
 					<th>Certificate Authority (untrusted certificates in red text)</th>
 					<th>Software</th>
+					<th>Software release date</th>
 					<th>Security grade client-to-server</th>
 					<th>Security grade server-to-server</th>
 				</tr>
@@ -149,10 +150,11 @@ foreach ($list as $result) {
 				<td>
 					<span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
 				</td>
-				<td data-value="<?= released($c2s["version"]) ?>">
-					<span class="my-popover" title="" <?= released($c2s["version"]) === "" ? "" : "data-content='<strong>" . $c2s["version"] . "</strong> was released on " . released($c2s["version"]) . "'" ?> data-toggle="popover" data-original-title="<?= $c2s["version"] ?>">
-						<?= htmlspecialchars($c2s["version"]) ?>
-					</span>
+				<td>
+					<?= htmlspecialchars($c2s["version"]) ?>
+				</td>
+				<td>
+					<?= released($c2s["version"]) ?>
 				</td>
 				<td data-value="<?= $c2s_final_score ? $c2s_final_score : "G" ?>">
 					<a class="label <?= color_label_text_grade($c2s_final_score) ?>" href="result.php?domain=<?= $result["server_name"] ?>&amp;type=client">
