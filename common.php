@@ -171,6 +171,8 @@ function common_header($head) {
 
 		<link rel="shortcut icon" href="./ico/favicon.png">
 
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="https://xmpp.net/rss.php">
+
 		<?= $head ? $head : "" ?>
 
 	</head>
