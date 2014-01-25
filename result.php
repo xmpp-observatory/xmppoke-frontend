@@ -261,7 +261,7 @@ if ($cert["private_key"] !== NULL) {
 if (isset($cert["crl_url"])) {
 ?>
 			<dt>CRL</dt>
-			<dd><a href="<?= urlencode($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
+			<dd><a href="<?= htmlspecialchars($cert["crl_url"]) ?>"><?= htmlspecialchars($cert["crl_url"]) ?></a></dd>
 <?php
 }
 ?>
@@ -269,7 +269,7 @@ if (isset($cert["crl_url"])) {
 if (isset($cert["ocsp_url"])) {
 ?>
 						<dt>OCSP</dt>
-						<dd><a href="<?= urlencode($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
+						<dd><a href="<?= htmlspecialchars($cert["ocsp_url"]) ?>"><?= htmlspecialchars($cert["ocsp_url"]) ?></a></dd>
 <?php
 }
 
@@ -633,7 +633,7 @@ foreach ($srvs as $srv) {
 ?>
 		<div class="row">
 			<div class="col-md-5">
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered">
 <?php
 		foreach ($mechanisms as $mechanism) {
 ?>
@@ -666,7 +666,7 @@ foreach ($srvs as $srv) {
 ?>
 		<div class="row">
 			<div class="col-md-5">
-				<table class="table table-bordered table-striped">
+				<table class="table table-bordered">
 <?php
 		foreach ($mechanisms as $mechanism) {
 ?>
