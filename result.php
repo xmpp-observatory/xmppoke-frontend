@@ -147,6 +147,7 @@ function help($str) {
 		case "PLAIN":
 		case "LOGIN":
 			return "This authentication mechanism transfers your password in plain. Servers <strong>must not</strong> offer this pre-TLS.";
+		case "CRAM-MD5":
 		case "DIGEST-MD5":
 			return "This is a hashed authentication mechanism. However, the server can only offer this when the server has your password stored in plain.";
 		case "SCRAM-SHA-1":
@@ -618,7 +619,7 @@ foreach ($srvs as $srv) {
 ?>
 		<h4>SASL</h4>
 		<h5>Pre-TLS</h5>
-		
+
 <?php
 	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], '0'));
 
