@@ -12,7 +12,7 @@ function fp($x) {
 }
 
 function grade($srv) {
-	if ($srv === NULL || $srv["done"] !== "t") {
+	if ($srv === NULL || $srv["done"] !== "t" || $srv["error"] !== NULL) {
 		return NULL;
 	}
 	if ($srv["certificate_score"] === "0") {
