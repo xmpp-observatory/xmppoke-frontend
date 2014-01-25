@@ -14,7 +14,7 @@ pg_prepare($dbconn, "find_cert", "SELECT * FROM srv_certificates, certificates W
 
 pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
-pg_prepare($dbconn, "find_score", "SELECT DISTINCT ON (grade) grade, total_score, certificate_score FROM srv_results WHERE test_id = $1;");
+pg_prepare($dbconn, "find_score", "SELECT DISTINCT ON (grade) grade, total_score, certificate_score, done FROM srv_results WHERE test_id = $1;");
 
 $res = pg_execute($dbconn, "list_server", array());
 
