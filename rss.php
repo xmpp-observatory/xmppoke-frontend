@@ -10,8 +10,8 @@ $res = pg_execute($dbconn, "find_news", array());
 
 $news = pg_fetch_all($res);
 
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
 ?>
-<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
 	<title>IM Observatory news</title>
@@ -23,7 +23,6 @@ $news = pg_fetch_all($res);
 <?php
 
 foreach ($news as $new) {
-
 ?>
 <item>
 		<title><?= $new->title ?></title>
