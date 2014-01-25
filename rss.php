@@ -28,8 +28,8 @@ foreach ($news as $new) {
 		<title><?= $new["title"] ?></title>
 		<description><![CDATA[[[<?= $new["message"] ?>]]></description>
 		<link>https://xmpp.net/</link>
-		<guid><?= $new["post_id"] ?></guid>
-		<pubDate><?= date("D, d M y H:i:s O", strtotime($new["post_date"])) ?></pubDate>
+		<guid isPermaLink="false"><?= $new["post_id"] ?></guid>
+		<pubDate><?= date("D, d M Y H:i:s O", strtotime($new["post_date"])) ?></pubDate>
 	</item>
 <?php
 }
