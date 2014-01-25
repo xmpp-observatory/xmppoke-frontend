@@ -507,7 +507,7 @@ foreach ($srvs as $srv) {
 		</div>
 
 <?php
-	if ($srv["certificate_score"] === '0' && $srv["done"] === 't') {
+	if ($srv["certificate_score"] === '0' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
@@ -534,7 +534,7 @@ foreach ($srvs as $srv) {
 					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
 				</div>
 <?php
-	} else if ($cert->rsa_bitsize < 2048 && $srv["done"] === 't') {
+	} else if ($cert->rsa_bitsize < 2048 && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
