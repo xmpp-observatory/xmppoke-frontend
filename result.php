@@ -7,16 +7,16 @@ $result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'], "utf8")));
 $result_type = $_GET['type'];
 
 if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
-	
-	if (isset($result_id)) {	
+
+	if (isset($result_id)) {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE test_id = $1");
-	
+
 		$res = pg_execute($dbconn, "find_result", array($result_id));
 
-        $result = pg_fetch_object($res);
+		$result = pg_fetch_object($res);
 
-        $result_domain = $result->server_name;
-        $result_type = $result->type;
+		$result_domain = $result->server_name;
+		$result_type = $result->type;
 	} else {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
@@ -38,6 +38,8 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 	pg_prepare($dbconn, "find_and_sort_ciphers", "SELECT * FROM srv_ciphers, ciphers WHERE srv_ciphers.srv_result_id = $1 AND srv_ciphers.cipher_id = ciphers.cipher_id ORDER BY bitsize DESC, forward_secret DESC, export DESC, ciphers.cipher_id DESC;");
 
 	pg_prepare($dbconn, "find_certs", "SELECT * FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1 ORDER BY chain_index;");
+
+	pg_prepare($dbconn, "find_domain_cert", "SELECT * FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1 AND chain_index = '0';");
 
 	pg_prepare($dbconn, "find_cert", "SELECT * FROM certificates WHERE certificates.certificate_id = $1;");
 
@@ -178,7 +180,7 @@ function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $s
 			}
 		}
 	}
-	
+
 
 	?>
 		<h4 class="page-header"><?= $cert["chain_index"] !== NULL ? "#" . $cert["chain_index"] : "" ?> <?= htmlspecialchars($name) ?></h4>
@@ -189,7 +191,7 @@ function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $s
 <?php
 
 foreach ($subjects as $subject) {
-		
+
 ?>
 			<dt><?= $subject["name"] ? htmlspecialchars($subject["name"]) : $subject["oid"] ?></dt>
 			<dd><?= htmlspecialchars($subject["value"]) ?></dd>
@@ -396,7 +398,7 @@ if (!$result) {
 		<h1>IM Observatory <?= $result->type ?> report for <?= htmlspecialchars($result->server_name) ?></h1>
 		<p>Test started <?= date('Y-m-d H:i:s T', strtotime($result->test_date)) ?> <span class="text-muted"><time class="timeago" datetime="<?= date("c", strtotime($result->test_date)) ?>"></time></span>.</p>
 
-        <a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
+		<a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
 
 		<h2 class="page-header" id="score">Score</h2>
 <?php
@@ -413,6 +415,10 @@ foreach ($srvs as $srv) {
 
 		<h5 title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= htmlspecialchars($srv["port"]) ?></h5>
 <?php
+	$res = pg_execute($dbconn, "find_domain_cert", array($srv["srv_result_id"]));
+
+	$cert = pg_fetch_object($res);
+
 	if ($srv["done"] === 'f') {
 		if (time() - strtotime($result->test_date) < 60 * 30) {
 ?>
@@ -428,12 +434,19 @@ foreach ($srvs as $srv) {
 <?php
 		}
 	}
+	if ($srv["error"] !== NULL) {
+?>
+		<div class="alert alert-block alert-danger">
+			<strong>Error:</strong> <?= $srv["error"] ?>
+		</div>
+<?php
+	}
 ?>
 		<div class="row">
 			<div class="col-md-10">
 				<div class="row">
 					<div class="col-md-3 text-right">
-						<strong><a href="#certificates">Certificate score:<a/></strong>
+						<strong><a href="#certificates">Certificate score:</a></strong>
 					</div>
 					<div class="col-md-6">
 						<div class="progress">
@@ -497,14 +510,48 @@ foreach ($srvs as $srv) {
 	if ($srv["certificate_score"] === '0' && $srv["done"] === 't') {
 ?>
 				<div class="alert alert-block alert-danger">
-						Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
+					Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["sslv2"] === 't' ? "F" : grade($srv["total_score"]) ?></strong>.
 				</div>
 <?php
 	}
 	if ($srv["sslv2"] === 't' && $srv["done"] === 't') {
 ?>
 				<div class="alert alert-block alert-danger">
-						Server allows SSLv2, which is obsolete and insecure. Grade capped to <strong>F</strong>.
+					Server allows SSLv2, which is obsolete and insecure. Grade capped to <strong>F</strong>.
+				</div>
+<?php
+	}
+	if ($srv["tlsv1_2"] === 'f' && $srv["done"] === 't') {
+?>
+				<div class="alert alert-block alert-danger">
+					Server does not support the newest version, TLS 1.2. Grade capped to <strong>B</strong>.
+				</div>
+<?php
+	}
+	if ($cert->rsa_bitsize < 1024 && $srv["done"] === 't') {
+?>
+				<div class="alert alert-block alert-danger">
+					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
+				</div>
+<?php
+	} else if ($cert->rsa_bitsize < 2048 && $srv["done"] === 't') {
+?>
+				<div class="alert alert-block alert-danger">
+						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
+				</div>
+<?php
+	}
+	if ($cert->sign_algorithm === "md5WithRSAEncryption" && $srv["done"] === 't') {
+?>
+				<div class="alert alert-block alert-danger">
+					Server uses an MD5 signature. Grade capped to <strong>B</strong>.
+				</div>
+<?php
+	}
+	if ($srv["warn_rc4_tls11"] === 't' && $srv["done"] === 't') {
+?>
+				 <div class="alert alert-block alert-warning">
+					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2.
 				</div>
 <?php
 	}
@@ -611,7 +658,7 @@ foreach ($srvs as $srv) {
 				</table>
 			</div>
 		</div>
-	
+
 		<h3 id="tlsa">TLSA records</h3>
 <?php
 
@@ -679,7 +726,7 @@ if (count($srvs) > 1) {
 <?php
 }
 ?>
-		
+
 		<h2 class="page-header" id="tls">TLS</h2>
 <?php
 
@@ -692,7 +739,7 @@ foreach ($srvs as $srv) {
 			<div class="collapse" id="collapse-certs">
 <?php
 	}
-?>		
+?>
 		<h3 class="page-header" title="<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>:<?= $srv["port"] ?>"><?= htmlspecialchars($srv["target"]) ?>:<?= htmlspecialchars($srv["port"]) ?></h3>
 
 <?php
@@ -754,13 +801,13 @@ foreach ($srvs as $srv) {
 			if (!$cert) {
 				// First, we look if the certificate was in our trust store, maybe under a different ID.
 				$res = pg_execute($dbconn, "find_root", array($prev_signed_by_id));
-			
+
 				$cert = pg_fetch_assoc($res);
 
 				// If not, just grab the certificate that we think signed it.
 				if (!$cert) {
 					$res = pg_execute($dbconn, "find_cert", array($prev_signed_by_id));
-			
+
 					$cert = pg_fetch_assoc($res);
 				} else {
 					$prev_signed_by_id = $cert["certificate_id"];
