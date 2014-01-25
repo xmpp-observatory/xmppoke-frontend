@@ -299,7 +299,7 @@ common_header();
 					</div>
 				</div>
 
-				<span class="text-muted">Does not penalize untrusted certificates or SSLv2 support.</span>
+				<span class="text-muted">Does not penalize untrusted certificates.</span>
 
 				<h3 id="rsa">RSA key sizes for domain certificates</h3>
 
