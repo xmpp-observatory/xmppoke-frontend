@@ -87,12 +87,12 @@ foreach ($list as $result) {
 	$final_score = NULL;
 
 	foreach ($scores as $score) {
-		if ($score["grade"] && (!$final_score || $score["grade"] < $final_score)) {
-			$final_score = $score["grade"];
+		if (grade($score) && (!$final_score || grade($score) < $final_score)) {
+			$final_score = grade($score);
 		}
 	}
 ?>
-							<td><span class="<?= color_label_text_grade(grade($scores[0])) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
+							<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
 						</tr>
 <?php
 }
