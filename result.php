@@ -621,7 +621,7 @@ foreach ($srvs as $srv) {
 
 		<table class="table table-bordered table-striped">
 <?php
-	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], FALSE));
+	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], '0'));
 
 	$mechanisms = pg_fetch_all($res);
 
@@ -654,7 +654,7 @@ foreach ($srvs as $srv) {
 		<h5>Post-TLS</h5>
 
 <?php
-	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], TRUE));
+	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], '1'));
 
 	$mechanisms = pg_fetch_all($res);
 
