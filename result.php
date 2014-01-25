@@ -528,7 +528,7 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
-	if ($cert->rsa_bitsize < 1024 && $srv["done"] === 't') {
+	if ($cert->rsa_bitsize < 1024 && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
