@@ -6,7 +6,7 @@ pg_prepare($dbconn, "list_server", "SELECT * FROM public_servers ORDER BY server
 
 pg_prepare($dbconn, "find_s2s", "SELECT test_id FROM test_results WHERE server_name = $1 AND type = 'server' ORDER BY test_date DESC LIMIT 1;");
 
-pg_prepare($dbconn, "find_c2s", "SELECT test_id FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
+pg_prepare($dbconn, "find_c2s", "SELECT test_id, version FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
 
 pg_prepare($dbconn, "find_srvs", "SELECT srv_result_id, certificate_score FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
 
