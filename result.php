@@ -618,8 +618,7 @@ foreach ($srvs as $srv) {
 ?>
 		<h4>SASL</h4>
 		<h5>Pre-TLS</h5>
-
-		<table class="table table-bordered table-striped">
+		
 <?php
 	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], '0'));
 
