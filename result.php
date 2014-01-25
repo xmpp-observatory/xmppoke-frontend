@@ -50,6 +50,8 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 	pg_prepare($dbconn, "find_subjects", "SELECT * FROM certificate_subjects WHERE certificate_id = $1 ORDER BY name;");
 
 	pg_prepare($dbconn, "find_tlsas", "SELECT * FROM tlsa_records WHERE srv_result_id = $1 ORDER BY tlsa_record_id;");
+
+	pg_prepare($dbconn, "find_mechanisms", "SELECT * FROM srv_mechanisms WHERE srv_result_id = $1 AND after_tls = $2 ORDER BY mechanism;");
 }
 
 function tlsa_usage($usage) {
@@ -602,6 +604,42 @@ foreach ($srvs as $srv) {
 	}
 ?>
 		</dl>
+		<h4>SASL</h4>
+		<h5>Pre-TLS</h5>
+
+		<table class="table table-bordered table-striped">
+<?php
+	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], FALSE));
+
+	$mechanisms = pg_fetch_all($res);
+
+	foreach ($mechanisms as $mechanism) {
+?>
+		<tr>
+			<td><?= $mechanism["mechanism"] ?></td>
+		</tr>
+<?php
+	}
+?>
+		</table>
+
+		<h5>Post-TLS</h5>
+
+		<table class="table table-bordered table-striped">
+<?php
+	$res = pg_execute($dbconn, "find_mechanisms", array($srv["srv_result_id"], TRUE));
+
+	$mechanisms = pg_fetch_all($res);
+
+	foreach ($mechanisms as $mechanism) {
+?>
+		<tr>
+			<td><?= $mechanism["mechanism"] ?></td>
+		</tr>
+<?php
+	}
+?>
+		</table>
 		<br>
 
 		<?php
