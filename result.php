@@ -154,6 +154,10 @@ function help($str) {
 			return "This is a hashed authentication mechanism which can also allow the server to store the password in hashed form.";
 		case "SCRAM-SHA-1-PLUS":
 			return "This is a hashed authentication mechanism which can also allow the server to store the password in hashed form. It also uses channel-binding, which can protect you from man-in-the-middle attacks.";
+		case "EXTERNAL":
+			return "This authentication mechanism indicates the server can already authenticate the client, for example based on a TLS client side certificate or based on IP address.";
+		case "ANONYMOUS":
+			return "The client does not authenticate to the server, but uses a temporary guest account instead.";
 		default:
 			return "...";
 	}
