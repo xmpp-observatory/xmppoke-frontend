@@ -510,7 +510,7 @@ foreach ($srvs as $srv) {
 		</div>
 
 <?php
-	if ($srv["certificate_score"] === '0' && $srv["done"] === 't' && $srv["error"] === NULL) {
+	if ($srv["certificate_score"] == 0 && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Certificate is <strong>not trusted</strong>, grade capped to <strong>F</strong>. Ignoring trust: <strong><?= $srv["grade"] ?></strong>.
