@@ -8,13 +8,11 @@ pg_prepare($dbconn, "find_s2s", "SELECT test_id FROM test_results WHERE server_n
 
 pg_prepare($dbconn, "find_c2s", "SELECT test_id, version FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
 
-pg_prepare($dbconn, "find_srvs", "SELECT srv_result_id, certificate_score FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
+pg_prepare($dbconn, "find_srvs", "SELECT grade, total_score, certificate_score, done, error, srv_result_id, certificate_score FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
 
 pg_prepare($dbconn, "find_cert", "SELECT signed_by_id, certificates.certificate_id FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1;");
 
 pg_prepare($dbconn, "find_cn", "SELECT value FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
-
-pg_prepare($dbconn, "find_score", "SELECT grade, total_score, certificate_score, done, error FROM srv_results WHERE test_id = $1;");
 
 $res = pg_execute($dbconn, "list_server", array());
 
@@ -89,7 +87,7 @@ foreach ($list as $result) {
 
 	$s2s = pg_fetch_assoc($res);
 
-	$res = pg_execute($dbconn, "find_score", array($s2s["test_id"]));
+	$res = pg_execute($dbconn, "find_srvs", array($s2s["test_id"]));
 
 	$s2s_scores = pg_fetch_all($res);
 
@@ -97,16 +95,12 @@ foreach ($list as $result) {
 
 	$c2s = pg_fetch_assoc($res);
 
-	$res = pg_execute($dbconn, "find_score", array($c2s["test_id"]));
+	$res = pg_execute($dbconn, "find_srvs", array($c2s["test_id"]));
 
 	$c2s_scores = pg_fetch_all($res);
 
-	$res = pg_execute($dbconn, "find_srvs", array($c2s["test_id"]));
-
-	$srvs = pg_fetch_all($res);
-
 	if (pg_num_rows($res) > 0) {
-		$res = pg_execute($dbconn, "find_cert", array($srvs[0]["srv_result_id"]));
+		$res = pg_execute($dbconn, "find_cert", array($c2s_scores[0]["srv_result_id"]));
 
 		$cert = pg_fetch_assoc($res);
 
@@ -148,7 +142,7 @@ foreach ($list as $result) {
 					<?= $result["country"] ?>
 				</td>
 				<td>
-					<span<?= $srvs[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
+					<span<?= $c2s_scores[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
 				</td>
 				<td>
 					<?= htmlspecialchars($c2s["version"]) ?>
