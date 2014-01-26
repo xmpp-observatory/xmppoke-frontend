@@ -116,8 +116,8 @@ foreach ($list as $result) {
 
 				<br>
 				<h3>Latest news</h3>
+				<h4><?= $news->title ?></h4>
 				<time class="text-muted timeago" datetime="<?= date("c", strtotime($news->post_date)) ?>"></time>
-				<h5><?= $news->title ?></h5>
 				<?= $news->message ?>
 				<a href="/rss.php">RSS feed</a>
 			</div> <!-- /.col-lg-6 -->
