@@ -457,7 +457,7 @@ foreach ($srvs as $srv) {
 						</div>
 					</div>
 					<div class="col-md-1">
-						<strong class="<?= color_score_text($srv["certificate_score"]) ?>"><?= $srv["certificate_score"] ?></strong>
+						<strong class="<?= color_score_text($srv["certificate_score"]) ?>"><?= round($srv["certificate_score"]) ?></strong>
 					</div>
 				</div>
 				<div class="row">
@@ -470,7 +470,7 @@ foreach ($srvs as $srv) {
 						</div>
 					</div>
 					<div class="col-md-1">
-						<strong class="<?= color_score_text($srv["keysize_score"]) ?>"><?= $srv["keysize_score"]?></strong>
+						<strong class="<?= color_score_text($srv["keysize_score"]) ?>"><?= round($srv["keysize_score"]) ?></strong>
 					</div>
 				</div>
 				<div class="row">
@@ -483,7 +483,7 @@ foreach ($srvs as $srv) {
 						</div>
 					</div>
 					<div class="col-md-1">
-						<strong class="<?= color_score_text($srv["protocol_score"]) ?>"><?= $srv["protocol_score"]?></strong>
+						<strong class="<?= color_score_text($srv["protocol_score"]) ?>"><?= round($srv["protocol_score"]) ?></strong>
 					</div>
 				</div>
 				<div class="row">
@@ -496,7 +496,7 @@ foreach ($srvs as $srv) {
 						</div>
 					</div>
 					<div class="col-md-1">
-						<strong class="<?= color_score_text($srv["cipher_score"]) ?>"><?= $srv["cipher_score"]?></strong>
+						<strong class="<?= color_score_text($srv["cipher_score"]) ?>"><?= round($srv["cipher_score"]) ?></strong>
 					</div>
 				</div>
 			</div>
