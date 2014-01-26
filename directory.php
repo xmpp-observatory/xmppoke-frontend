@@ -142,7 +142,7 @@ foreach ($list as $result) {
 					<?= $result["country"] ?>
 				</td>
 				<td>
-					<span<?= $c2s_scores[0]["certificate_score"] !== '100' ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
+					<span<?= $c2s_scores[0]["certificate_score"] != 100 ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span>
 				</td>
 				<td>
 					<?= htmlspecialchars($c2s["version"]) ?>
