@@ -2,7 +2,7 @@
 
 include("common.php");
 
-pg_prepare($dbconn, "list_server", "SELECT * FROM public_servers ORDER BY server_name;");
+pg_prepare($dbconn, "list_server", "SELECT server_name, founded, country, url, description FROM public_servers ORDER BY server_name;");
 
 pg_prepare($dbconn, "find_s2s", "SELECT test_id FROM test_results WHERE server_name = $1 AND type = 'server' ORDER BY test_date DESC LIMIT 1;");
 
