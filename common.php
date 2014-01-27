@@ -2,6 +2,8 @@
 
 include("secrets.php");
 
+header("Content-Security-Policy: default-src 'self'");
+
 date_default_timezone_set('UTC');
 setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");
 

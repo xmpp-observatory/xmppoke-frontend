@@ -73,7 +73,7 @@ common_header("");
 				<br>
 
 				<h3>Recent results</h3>
-					<table class="table" style="width: 80%;">
+					<table class="table recent-results">
 <?php
 
 foreach ($list as $result) {

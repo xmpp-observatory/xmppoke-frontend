@@ -258,7 +258,7 @@ common_header();
 					</div>
 
 					<div class="col-md-6">
-						<div id="chart1" style="width: 500px; height: 300px;"></div>
+						<div id="chart1" class="chart"></div>
 					</div>
 				</div>
 
@@ -295,7 +295,7 @@ common_header();
 					</div>
 
 					<div class="col-md-6">
-						<div id="chart2" style="width: 500px; height: 300px;"></div>
+						<div id="chart2" class="chart"></div>
 					</div>
 				</div>
 
@@ -330,7 +330,7 @@ foreach ($bitsizes as $bitsize) {
 					</div>
 
 					<div class="col-md-6">
-						<div id="chart3" style="width: 500px; height: 300px;"></div>
+						<div id="chart3" class="chart"></div>
 					</div>
 				</div>
 
@@ -356,11 +356,11 @@ foreach ($bitsizes as $bitsize) {
 
 				<div class="row">
 					<div class="col-md-6">
-						<div id="chart4" style="width: 500px; height: 300px;"></div>
+						<div id="chart4" class="chart"></div>
 					</div>
 
 					<div class="col-md-6">
-						<div id="chart5" style="width: 500px; height: 300px;"></div>
+						<div id="chart5" class="chart"></div>
 					</div>
 				</div>
 
