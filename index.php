@@ -62,7 +62,7 @@ common_header("");
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type" value="client">c2s <span class="caret"></span></button>
 								<ul class="dropdown-menu pull-right" id="type-select">
 									<li class="active"><a href="#" data-type="c2s">c2s</a></li>
-									<li><a href="#" onclick='' data-type="s2s">s2s</a></li>
+									<li><a href="#" data-type="s2s">s2s</a></li>
 								</ul>
 							</div><!-- /btn-group -->
 					</div><!-- /input-group -->
