@@ -5,7 +5,7 @@ include("common.php");
 // Different policy for the charts API
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com");
 
-$since = time() - strtotime("2014-01-25");
+$since = time() - strtotime("2014-01-25 17:00:00 GMT");
 
 if (isset($_GET["since"])) {
 	$since = intval($_GET["since"]) * 24 * 60 * 60;
@@ -227,6 +227,8 @@ common_header();
 				<h1>Various reports of all servers tested</h1>
 
 				<a href="report_2013_12.php">Report for december 2013</a> | <a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
+
+				<br>
 
 				<div class="alert alert-block alert-warning">
 					<strong>Warning:</strong> On January 25th 2014 the test was updated, so results prior to this are not taken into account.
