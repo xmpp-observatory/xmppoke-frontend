@@ -3,7 +3,7 @@
 include("common.php");
 
 // Different policy for the charts API
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline'; style-src https://www.google.com");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline'; style-src 'self' https://www.google.com");
 
 common_header("");
 
