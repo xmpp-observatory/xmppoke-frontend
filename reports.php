@@ -115,7 +115,7 @@ $s2s_starttls_required = pg_fetch_assoc($res);
 
 
 
-pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND error IS NULL AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
+pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND srv_results.error IS NULL AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
 
 $res = pg_execute($dbconn, "trusted_valid", array($since));
 
@@ -227,6 +227,10 @@ common_header();
 				<h1>Various reports of all servers tested</h1>
 
 				<a href="report_2013_12.php">Report for december 2013</a> | <a href="reports.php?since=1">Results of the last day</a> | <a href="reports.php?since=7">Results of the last week</a> | <a href="reports.php?since=30">Results of the last month</a>
+
+				<div class="alert alert-block alert-warning">
+					<strong>Warning:</strong> On January 25th 2014 the test was updated, so results prior to this are not taken into account.
+				</div>
 
 				<div class="row">
 					<div class="col-md-6">
