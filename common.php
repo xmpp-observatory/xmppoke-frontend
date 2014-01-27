@@ -9,6 +9,10 @@ setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");
 
 $dbconn = pg_connect("port=$dbport host=$dbhost dbname=$dbname user=$dbuser password=$dbpass") or die('Could not connect: ' . pg_last_error());
 
+pg_prepare($dbconn, "timezone", "SET timezone = 'UTC'");
+
+pg_execute($dbconn, "timezone", array());
+
 function fp($x) {
 	return strtoupper(join(':', str_split($x, 2)));
 }
