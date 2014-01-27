@@ -1,6 +1,10 @@
 <?php
 
 include("common.php");
+
+// Different policy for the charts API
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com");
+
 common_header("");
 
 ?>

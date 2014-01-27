@@ -2,6 +2,9 @@
 
 include("common.php");
 
+// Different policy for the charts API
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com");
+
 // Update in the year 3013
 $since = 365 * 1000;
 
@@ -35,37 +38,37 @@ $dnssec_dane = pg_fetch_all($res);
 
 
 
-pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't');");
+pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL);");
 
 $res = pg_execute($dbconn, "total", array($since));
 
 $total = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv2 = 't');");
+pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND sslv2 = 't');");
 
 $res = pg_execute($dbconn, "sslv2", array($since));
 
 $sslv2 = pg_fetch_all($res);
 
-pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND sslv3 = 't');");
+pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND sslv3 = 't');");
 
 $res = pg_execute($dbconn, "sslv3", array($since));
 
 $sslv3 = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "tlsv1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1 = 't');");
+pg_prepare($dbconn, "tlsv1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND tlsv1 = 't');");
 
 $res = pg_execute($dbconn, "tlsv1", array($since));
 
 $tlsv1 = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "tlsv1_1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1_1 = 't');");
+pg_prepare($dbconn, "tlsv1_1", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND tlsv1_1 = 't');");
 
 $res = pg_execute($dbconn, "tlsv1_1", array($since));
 
 $tlsv1_1 = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "tlsv1_2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND tlsv1_2 = 't');");
+pg_prepare($dbconn, "tlsv1_2", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND tlsv1_2 = 't');");
 
 $res = pg_execute($dbconn, "tlsv1_2", array($since));
 
@@ -81,7 +84,7 @@ $bitsizes = pg_fetch_all($res);
 
 pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
-pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND error = NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
@@ -89,25 +92,25 @@ $too_weak_1024_2014 = pg_fetch_all($res);
 
 
 
-pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
+pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error = NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "c2s_starttls_allowed", array($since));
 
 $c2s_starttls_allowed = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
+pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error = NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "c2s_starttls_required", array($since));
 
 $c2s_starttls_required = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND test_id = results.test_id);");
+pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error = NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "s2s_starttls_allowed", array($since));
 
 $s2s_starttls_allowed = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND test_id = results.test_id);");
+pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error = NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "s2s_starttls_required", array($since));
 
@@ -115,7 +118,7 @@ $s2s_starttls_required = pg_fetch_assoc($res);
 
 
 
-pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
+pg_prepare($dbconn, "trusted_valid", "SELECT COUNT(*), trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results WHERE done = 't' AND error = NULL AND results.test_id = srv_results.test_id GROUP BY trusted, valid_identity ORDER BY trusted, valid_identity;");
 
 $res = pg_execute($dbconn, "trusted_valid", array($since));
 
@@ -123,44 +126,44 @@ $trusted_valid = pg_fetch_all($res);
 
 
 
-pg_prepare($dbconn, "score_A", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score >= '80');");
+pg_prepare($dbconn, "score_A", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score >= '80');");
 
 $res = pg_execute($dbconn, "score_A", array($since));
 
 $score_A = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "score_B", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '80' AND total_score >= '65');");
+pg_prepare($dbconn, "score_B", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score < '80' AND total_score >= '65');");
 
 $res = pg_execute($dbconn, "score_B", array($since));
 
 $score_B = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "score_C", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '65' AND total_score >= '50');");
+pg_prepare($dbconn, "score_C", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score < '65' AND total_score >= '50');");
 
 $res = pg_execute($dbconn, "score_C", array($since));
 
 $score_C = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "score_D", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '50' AND total_score >= '35');");
+pg_prepare($dbconn, "score_D", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score < '50' AND total_score >= '35');");
 
 $res = pg_execute($dbconn, "score_D", array($since));
 
 $score_D = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "score_E", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '35' AND total_score >= '20');");
+pg_prepare($dbconn, "score_E", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score < '35' AND total_score >= '20');");
 
 $res = pg_execute($dbconn, "score_E", array($since));
 
 $score_E = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "score_F", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND total_score < '20');");
+pg_prepare($dbconn, "score_F", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND total_score < '20');");
 
 $res = pg_execute($dbconn, "score_F", array($since));
 
 $score_F = pg_fetch_assoc($res);
 
 
-pg_prepare($dbconn, "reorders_ciphers", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND reorders_ciphers = 't');");
+pg_prepare($dbconn, "reorders_ciphers", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT * FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = NULL AND reorders_ciphers = 't');");
 
 $res = pg_execute($dbconn, "reorders_ciphers", array($since));
 
