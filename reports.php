@@ -8,10 +8,8 @@ header("Content-Security-Policy: default-src 'self'; script-src 'self' https://w
 $since = time() - strtotime("2014-01-25");
 
 if (isset($_GET["since"])) {
-	$since = intval($_GET["since"]);
+	$since = intval($_GET["since"]) * 24 * 60 * 60;
 }
-
-$since = $since * 24 * 60 * 60;
 
 pg_prepare($dbconn, "sslv3_not_tls1", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND sslv3 = 't' AND tlsv1 = 'f');");
 
