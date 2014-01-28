@@ -174,7 +174,17 @@ $res = pg_execute($dbconn, "shares_private_keys", array($since));
 $shares_private_keys = pg_fetch_all($res);
 
 
-common_header();
+pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism;");
+
+$res = pg_execute($dbconn, "mechanisms", array($since, 0));
+
+$pre_tls_mechanisms = pg_fetch_all($res);
+
+$res = pg_execute($dbconn, "mechanisms", array($since, 1));
+
+$post_tls_mechanisms = pg_fetch_all($res);
+
+common_header("");
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
@@ -395,6 +405,36 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum) ?>%</span></td>
 						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum) ?>%</span></td>
 					</tr>
+				</table>
+
+				<h3 id="saslmechanisms">SASL mechanisms</h3>
+
+				<h5>Pre-TLS</h5>
+				<table class="table table-bordered">
+<?php
+foreach ($pre_tls_mechanisms as $mechanism) {
+?>
+					<tr>
+						<td><?= $mechanism["mechanism"]?></td>
+						<td><?= $mechanism["count"]?></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h5>Post-TLS</h5>
+				<table class="table table-bordered">
+<?php
+foreach ($post_tls_mechanisms as $mechanism) {
+?>
+					<tr>
+						<td><?= $mechanism["mechanism"]?></td>
+						<td><?= $mechanism["count"]?></td>
+					</tr>
+<?php
+}
+?>
 				</table>
 
 				<h3 id="sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
