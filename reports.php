@@ -410,34 +410,38 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 
 				<h3 id="saslmechanisms">SASL mechanisms</h3>
 
+<?php
+$both_mechanisms = array();
+foreach ($pre_tls_mechanisms as $mechanism) {
+	if ($both_mechanisms[$mechanism["mechanism"]] == NULL) {
+		$both_mechanisms[$mechanism["mechanism"]] = array();
+	}
+	$both_mechanisms[$mechanism["mechanism"]]["pre"] = $mechanism["count"];
+}
+foreach ($post_tls_mechanisms as $mechanism) {
+	if ($both_mechanisms[$mechanism["mechanism"]] == NULL) {
+		$both_mechanisms[$mechanism["mechanism"]] = array();
+	}
+	$both_mechanisms[$mechanism["mechanism"]]["post"] = $mechanism["count"];
+}
+?>
+
 				<h5>Pre-TLS</h5>
 				<div class="row">
 					<div class="col-md-6">
 						<table class="table table-bordered">
-<?php
-foreach ($pre_tls_mechanisms as $mechanism) {
-?>
 							<tr>
-								<td><?= $mechanism["mechanism"]?></td>
-								<td><?= $mechanism["count"]?> <span class="text-muted"><?= round(100 * $mechanism["count"] / $total["count"], 1) ?>%</span></td>
+								<th>Mechanism</th>
+								<th># times offered before TLS</th>
+								<th># times offered after TLS</th>
 							</tr>
 <?php
-}
-?>
-						</table>
-					</div>
-				</div>
-
-				<h5>Post-TLS</h5>
-				<div class="row">
-					<div class="col-md-6">
-						<table class="table table-bordered">
-<?php
-foreach ($post_tls_mechanisms as $mechanism) {
+foreach ($both_mechanisms as $mechanism => $v) {
 ?>
 							<tr>
-								<td><?= $mechanism["mechanism"]?></td>
-								<td><?= $mechanism["count"]?> <span class="text-muted"><?= round(100 * $mechanism["count"] / $total["count"], 1) ?>%</span></td>
+								<td><?= $mechanism ?></td>
+								<td><?= $v["pre"]?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
+								<td><?= $v["post"]?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
 							</tr>
 <?php
 }
