@@ -411,32 +411,40 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 				<h3 id="saslmechanisms">SASL mechanisms</h3>
 
 				<h5>Pre-TLS</h5>
-				<table class="table table-bordered">
+				<div class="row">
+					<div class="col-md-6">
+						<table class="table table-bordered">
 <?php
 foreach ($pre_tls_mechanisms as $mechanism) {
 ?>
-					<tr>
-						<td><?= $mechanism["mechanism"]?></td>
-						<td><?= $mechanism["count"]?></td>
-					</tr>
+							<tr>
+								<td><?= $mechanism["mechanism"]?></td>
+								<td><?= $mechanism["count"]?> <span class="text-muted"><?= round(100 * $mechanism["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
 <?php
 }
 ?>
-				</table>
+						</table>
+					</div>
+				</div>
 
 				<h5>Post-TLS</h5>
-				<table class="table table-bordered">
+				<div class="row">
+					<div class="col-md-6">
+						<table class="table table-bordered">
 <?php
 foreach ($post_tls_mechanisms as $mechanism) {
 ?>
-					<tr>
-						<td><?= $mechanism["mechanism"]?></td>
-						<td><?= $mechanism["count"]?></td>
-					</tr>
+							<tr>
+								<td><?= $mechanism["mechanism"]?></td>
+								<td><?= $mechanism["count"]?> <span class="text-muted"><?= round(100 * $mechanism["count"] / $total["count"], 1) ?>%</span></td>
+							</tr>
 <?php
 }
 ?>
-				</table>
+						</table>
+					</div>
+				</div>
 
 				<h3 id="sslv3butnottls1">Servers supporting SSL 3, but not TLS 1.0 <small class="text-muted"><?= count($sslv3_not_tls1) ?> results</small></h3>
 
