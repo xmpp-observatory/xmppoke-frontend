@@ -174,7 +174,7 @@ $res = pg_execute($dbconn, "shares_private_keys", array($since));
 $shares_private_keys = pg_fetch_all($res);
 
 
-pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism ORDER BY mechanism;");
+pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism ORDER BY count;");
 
 $res = pg_execute($dbconn, "mechanisms", array($since, 0));
 
@@ -429,7 +429,7 @@ foreach ($post_tls_mechanisms as $mechanism) {
 				<h5>Pre-TLS</h5>
 				<div class="row">
 					<div class="col-md-6">
-						<table class="table table-bordered">
+						<table class="table table-bordered table-striped">
 							<tr>
 								<th>Mechanism</th>
 								<th># times offered before TLS</th>
@@ -440,8 +440,8 @@ foreach ($both_mechanisms as $mechanism => $v) {
 ?>
 							<tr>
 								<td><?= $mechanism ?></td>
-								<td><?= $v["pre"]?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
-								<td><?= $v["post"]?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
+								<td><?= $v["pre"] ?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
+								<td><?= $v["post"] ?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
 							</tr>
 <?php
 }
