@@ -440,8 +440,8 @@ foreach ($both_mechanisms as $mechanism => $v) {
 ?>
 							<tr>
 								<td><?= $mechanism ?></td>
-								<td><?= $v["pre"] ?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
-								<td><?= $v["post"] ?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
+								<td><?= (int)$v["pre"] ?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
+								<td><?= (int)$v["post"] ?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
 							</tr>
 <?php
 }
