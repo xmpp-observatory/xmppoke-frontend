@@ -221,6 +221,7 @@ common_header("");
 						<li><a href="#rsa">RSA key sizes</a></li>
 						<li><a href="#starttls">StartTLS</a></li>
 						<li><a href="#trust">Trust</a></li>
+						<li><a href="#saslmechanisms">SASL</a></li>
 						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
 						<li><a href="#sslv2wallofshame">SSL 2</a></li>
 						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
