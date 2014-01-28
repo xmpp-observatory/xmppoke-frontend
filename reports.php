@@ -174,7 +174,7 @@ $res = pg_execute($dbconn, "shares_private_keys", array($since));
 $shares_private_keys = pg_fetch_all($res);
 
 
-pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism;");
+pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism ORDER BY mechanism;");
 
 $res = pg_execute($dbconn, "mechanisms", array($since, 0));
 
