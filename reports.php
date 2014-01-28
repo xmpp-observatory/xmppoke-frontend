@@ -43,6 +43,14 @@ $res = pg_execute($dbconn, "total", array($since));
 
 $total = pg_fetch_assoc($res);
 
+pg_prepare($dbconn, "c2s_total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL);");
+
+$res = pg_execute($dbconn, "c2s_total", array($since));
+
+$c2s_total = pg_fetch_assoc($res);
+
+
+
 pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND sslv2 = 't');");
 
 $res = pg_execute($dbconn, "sslv2", array($since));
@@ -408,7 +416,7 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 					</tr>
 				</table>
 
-				<h3 id="saslmechanisms">SASL mechanisms</h3>
+				<h3 id="saslmechanisms">SASL mechanisms <small class="text-muted"><?= $c2s_total["count"] ?> results</small></h3>
 
 <?php
 $both_mechanisms = array();
@@ -438,8 +446,8 @@ foreach ($both_mechanisms as $mechanism => $v) {
 ?>
 							<tr>
 								<td><?= $mechanism ?></td>
-								<td><?= (int)$v["pre"] ?> <span class="text-muted"><?= round(100 * $v["pre"] / $total["count"], 1) ?>%</span></td>
-								<td><?= (int)$v["post"] ?> <span class="text-muted"><?= round(100 * $v["post"] / $total["count"], 1) ?>%</span></td>
+								<td><?= (int)$v["pre"] ?> <span class="text-muted"><?= round(100 * $v["pre"] / $c2s_total["count"], 1) ?>%</span></td>
+								<td><?= (int)$v["post"] ?> <span class="text-muted"><?= round(100 * $v["post"] / $c2s_total["count"], 1) ?>%</span></td>
 							</tr>
 <?php
 }
