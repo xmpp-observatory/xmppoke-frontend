@@ -5,6 +5,8 @@ include("common.php");
 // Different policy for the charts API
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com");
 
+common_header("");
+
 $since = time() - strtotime("2014-01-25 17:00:00 GMT");
 
 if (isset($_GET["since"])) {
@@ -183,8 +185,6 @@ $pre_tls_mechanisms = pg_fetch_all($res);
 $res = pg_execute($dbconn, "mechanisms", array($since, 1));
 
 $post_tls_mechanisms = pg_fetch_all($res);
-
-common_header("");
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
@@ -425,8 +425,6 @@ foreach ($pre_tls_mechanisms as $mechanism) {
 	$both_mechanisms[$mechanism["mechanism"]]["pre"] = $mechanism["count"];
 }
 ?>
-
-				<h5>Pre-TLS</h5>
 				<div class="row">
 					<div class="col-md-6">
 						<table class="table table-bordered table-striped">
