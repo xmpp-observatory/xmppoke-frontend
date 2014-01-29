@@ -24,6 +24,9 @@ function grade($srv) {
 	if ($srv["certificate_score"] == 0) {
 		return "F";
 	}
+	if ($srv["warn_rc4_tls11"] === 't' && $srv["grade"] === "A") {
+		return "A-";
+	}
 	return $srv["grade"];
 }
 
