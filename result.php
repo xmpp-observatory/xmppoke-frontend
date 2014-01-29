@@ -560,7 +560,7 @@ foreach ($srvs as $srv) {
 	if ($srv["warn_rc4_tls11"] === 't' && $srv["done"] === 't') {
 ?>
 				 <div class="alert alert-block alert-warning">
-					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2.
+					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2. Grade capped to <strong>A<sup>-</sup></strong>.
 				</div>
 <?php
 	}
