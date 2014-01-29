@@ -25,7 +25,7 @@ function grade($srv) {
 		return "F";
 	}
 	if ($srv["warn_rc4_tls11"] === 't' && $srv["grade"] === "A") {
-		return "A-";
+		return "A<sup>-<sup>";
 	}
 	return $srv["grade"];
 }
@@ -33,7 +33,7 @@ function grade($srv) {
 function color_label_text_grade($score) {
 	switch ($score) {
 		case 'A':
-		case 'A-':
+		case 'A<sup>-<sup>':
 			return "label-success";
 		case 'B':
 		case 'C':
@@ -48,7 +48,7 @@ function color_label_text_grade($score) {
 function color_text_grade($score) {
 	switch ($score) {
 		case 'A':
-		case 'A-':
+		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':
@@ -63,7 +63,7 @@ function color_text_grade($score) {
 function color_text_score($score) {
 	switch ($score) {
 		case 'A':
-		case 'A-':
+		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':
