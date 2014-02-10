@@ -135,6 +135,8 @@ function released($software) {
 		
 		case "jabberd2 2.2.1":
 			return "2008/07/30";
+		case "jabberd2 2.2.8":
+			return "2009/04/24";
 		case "jabberd 2.2.13":
 			return "2011/02/23";
 		case "jabberd 2.2.14":
