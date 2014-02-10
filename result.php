@@ -27,7 +27,7 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 		$result_id = $result->test_id;
 	}
 
-	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY priority, weight DESC, port, target");
+	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY done DESC, priority, weight DESC, port, target");
 
 	$res = pg_execute($dbconn, "find_srvs", array($result_id));
 
