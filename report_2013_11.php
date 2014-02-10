@@ -1,6 +1,10 @@
 <?php
 
 include("common.php");
+
+// Different policy for the charts API
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://www.google.com https://ajax.googleapis.com");
+
 common_header("");
 
 ?>
@@ -39,56 +43,56 @@ common_header("");
 
     <div class="row">
       <div class="col-md-6">
-        <div id="chart1" style="width: 500px; height: 300px;"></div>
+        <div id="chart1" class="chart"></div>
         <p class="text-muted">Untrusted certificates and servers supporting SSL 2 are not capped to F here.</p>
       </div>
       <div class="col-md-6">
-        <div id="chart2" style="width: 500px; height: 300px;"></div>
+        <div id="chart2" class="chart"></div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <div id="chart3" style="width: 500px; height: 300px;"></div>
+        <div id="chart3" class="chart"></div>
       </div>
       <div class="col-md-6">
-        <div id="chart4" style="width: 500px; height: 300px;"></div>
+        <div id="chart4" class="chart"></div>
         <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <div id="chart5" style="width: 500px; height: 300px;"></div>
+        <div id="chart5" class="chart"></div>
         <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
       <div class="col-md-6">
-        <div id="chart6" style="width: 500px; height: 300px;"></div>
+        <div id="chart6" class="chart"></div>
         <p class="text-muted">The cipher may not be selected by all clients, or even any at all.</p>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <div id="chart7" style="width: 500px; height: 300px;"></div>
+        <div id="chart7" class="chart"></div>
       </div>
       <div class="col-md-6">
-        <div id="chart8" style="width: 500px; height: 300px;"></div>
+        <div id="chart8" class="chart"></div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-6">
-        <div id="chart9" style="width: 500px; height: 300px;"></div>
+        <div id="chart9" class="chart"></div>
       </div>
       <div class="col-md-6">
-        <div id="chart10" style="width: 500px; height: 300px;"></div>
+        <div id="chart10" class="chart"></div>
       </div>
     </div>
 
     <div class="row">
-        <div id="chart11" style="width: 100%; height: 450px;"></div>
-        <div id="chart12" style="width: 100%; height: 450px;"></div>
+        <div id="chart11" ></div>
+        <div id="chart12" class="large-chart"></div>
     </div>
 
     <div class="footer">

@@ -4,7 +4,7 @@ include("common.php");
 
 pg_prepare($dbconn, "list_results", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results ORDER BY test_date DESC LIMIT 10;");
 
-pg_prepare($dbconn, "find_score", "SELECT grade, total_score, certificate_score, done, error FROM srv_results WHERE test_id = $1;");
+pg_prepare($dbconn, "find_score", "SELECT grade, total_score, certificate_score, done, error, warn_rc4_tls11 FROM srv_results WHERE test_id = $1;");
 
 pg_prepare($dbconn, "find_news", "SELECT * FROM news_posts ORDER BY post_date DESC LIMIT 1;");
 
@@ -62,7 +62,7 @@ common_header("");
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type" value="client">c2s <span class="caret"></span></button>
 								<ul class="dropdown-menu pull-right" id="type-select">
 									<li class="active"><a href="#" data-type="c2s">c2s</a></li>
-									<li><a href="#" onclick='' data-type="s2s">s2s</a></li>
+									<li><a href="#" data-type="s2s">s2s</a></li>
 								</ul>
 							</div><!-- /btn-group -->
 					</div><!-- /input-group -->
@@ -73,7 +73,7 @@ common_header("");
 				<br>
 
 				<h3>Recent results</h3>
-					<table class="table" style="width: 80%;">
+					<table class="table recent-results">
 <?php
 
 foreach ($list as $result) {

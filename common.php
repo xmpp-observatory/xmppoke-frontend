@@ -2,10 +2,16 @@
 
 include("secrets.php");
 
+header("Content-Security-Policy: default-src 'self'");
+
 date_default_timezone_set('UTC');
 setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");
 
 $dbconn = pg_connect("port=$dbport host=$dbhost dbname=$dbname user=$dbuser password=$dbpass") or die('Could not connect: ' . pg_last_error());
+
+pg_prepare($dbconn, "timezone", "SET timezone = 'UTC'");
+
+pg_execute($dbconn, "timezone", array());
 
 function fp($x) {
 	return strtoupper(join(':', str_split($x, 2)));
@@ -18,12 +24,16 @@ function grade($srv) {
 	if ($srv["certificate_score"] == 0) {
 		return "F";
 	}
+	if ($srv["warn_rc4_tls11"] === 't' && $srv["grade"] === "A") {
+		return "A<sup>-<sup>";
+	}
 	return $srv["grade"];
 }
 
 function color_label_text_grade($score) {
 	switch ($score) {
 		case 'A':
+		case 'A<sup>-<sup>':
 			return "label-success";
 		case 'B':
 		case 'C':
@@ -38,6 +48,7 @@ function color_label_text_grade($score) {
 function color_text_grade($score) {
 	switch ($score) {
 		case 'A':
+		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':
@@ -52,6 +63,7 @@ function color_text_grade($score) {
 function color_text_score($score) {
 	switch ($score) {
 		case 'A':
+		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':

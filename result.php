@@ -2,6 +2,8 @@
 
 include("common.php");
 
+header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
+
 $result_id = $_GET['id'];
 $result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'], "utf8")));
 $result_type = $_GET['type'];
@@ -508,7 +510,7 @@ foreach ($srvs as $srv) {
 			<div class="col-md-2 text-center">
 				<strong>Grade:</strong>
 				<div>
-					<p class="<?= color_text_score(grade($srv)) ?>" style="font-size: 1000%; line-height: 100px;"><?= grade($srv) ?></p>
+					<p class="<?= color_text_score(grade($srv)) ?> grade"><?= grade($srv) ?></p>
 				</div>
 			</div>
 		</div>
@@ -558,7 +560,7 @@ foreach ($srvs as $srv) {
 	if ($srv["warn_rc4_tls11"] === 't' && $srv["done"] === 't') {
 ?>
 				 <div class="alert alert-block alert-warning">
-					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2.
+					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2. Grade capped to <strong>A<sup>-</sup></strong>.
 				</div>
 <?php
 	}
