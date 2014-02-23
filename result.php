@@ -5,7 +5,7 @@ include("common.php");
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
 
 $result_id = $_GET['id'];
-$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'], "utf8")));
+$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
 $result_type = $_GET['type'];
 
 if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
@@ -705,7 +705,7 @@ if (count($srvs) > 1) {
 
 		<h2 class="page-header" id="dns">DNS</h2>
 		<h3 id="srv">SRV records
-			<small title="_xmpp-<?= $result->type ?>._tcp.<?= htmlspecialchars($result->server_name) ?>">_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name, "UTF-8") ?>
+			<small title="_xmpp-<?= $result->type ?>._tcp.<?= htmlspecialchars($result->server_name) ?>">_xmpp-<?= $result->type ?>._tcp.<?= idn_to_ascii($result->server_name) ?>
 				<span class="label <?= $result->srv_dnssec_good === 't' ? "label-success" : ($result->srv_dnssec_bogus === 't' ? "label-warning" : "label-default")?>"><?= $result->srv_dnssec_good === 't' ? "" : ($result->srv_dnssec_bogus === 't' ? "BOGUS " : "NO ")?>DNSSEC</span>
 			</small>
 		</h3>

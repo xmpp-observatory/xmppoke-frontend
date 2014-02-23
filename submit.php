@@ -2,7 +2,7 @@
 
 include("common.php");
 
-$domain = idn_to_utf8(strtolower(idn_to_ascii($_POST["domain"], "utf8")));
+$domain = idn_to_utf8(strtolower(idn_to_ascii($_POST["domain"])));
 $type = $_POST["mode"];
 
 $error = NULL;
