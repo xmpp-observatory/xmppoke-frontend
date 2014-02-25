@@ -199,7 +199,7 @@ pg_prepare($dbconn, "onions", "SELECT * FROM (SELECT DISTINCT ON (server_name, t
 
 $res = pg_execute($dbconn, "onions", array($since));
 
-$onions = pg_fetch_assoc($res);
+$onions = pg_fetch_all($res);
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
