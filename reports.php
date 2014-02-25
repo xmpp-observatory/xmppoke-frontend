@@ -242,6 +242,7 @@ $onions = pg_fetch_assoc($res);
 						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
+						<li><a href="#onions">Tor hidden services</a></li>
 						<li><a href="#reordersciphers">Cipher reordering</a></li>
 						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
