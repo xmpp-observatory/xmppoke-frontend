@@ -194,6 +194,13 @@ $res = pg_execute($dbconn, "mechanisms", array($since, 1));
 
 $post_tls_mechanisms = pg_fetch_all($res);
 
+
+pg_prepare($dbconn, "onions", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND target like '%.onion');");
+
+$res = pg_execute($dbconn, "onions", array($since));
+
+$onions = pg_fetch_assoc($res);
+
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
 
@@ -561,6 +568,27 @@ foreach ($dnssec_srv as $result) {
 					</tr>
 <?php
 foreach ($dnssec_dane as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="onions">Servers with a hidden service <small class="text-muted"><?= count($onions) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($onions as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
