@@ -523,14 +523,14 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
-	if ($srv["sslv2"] === 't' && $srv["done"] === 't' && $srv["error"] === NUL) {
+	if ($srv["sslv2"] === 't' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server allows SSLv2, which is obsolete and insecure. Grade capped to <strong>F</strong>.
 				</div>
 <?php
 	}
-	if ($srv["tlsv1_2"] === 'f' && $srv["done"] === 't' && $srv["error"] === NUL) {
+	if ($srv["tlsv1_2"] === 'f' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server does not support the newest version, TLS 1.2. Grade capped to <strong>B</strong>.
