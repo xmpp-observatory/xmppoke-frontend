@@ -553,7 +553,7 @@ foreach ($srvs as $srv) {
 	if ($cert->sign_algorithm === "md5WithRSAEncryption" && $srv["done"] === 't') {
 ?>
 				<div class="alert alert-block alert-danger">
-					Server uses an MD5 signature. Grade capped to <strong>B</strong>.
+					Server uses an MD5 signature. Grade capped to <strong>F</strong>.
 				</div>
 <?php
 	}
