@@ -91,7 +91,7 @@ $bitsizes = pg_fetch_all($res);
 
 pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
-pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
@@ -194,6 +194,13 @@ $res = pg_execute($dbconn, "mechanisms", array($since, 1));
 
 $post_tls_mechanisms = pg_fetch_all($res);
 
+
+pg_prepare($dbconn, "onions", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND target like '%.onion');");
+
+$res = pg_execute($dbconn, "onions", array($since));
+
+$onions = pg_fetch_all($res);
+
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
 
@@ -235,6 +242,7 @@ $post_tls_mechanisms = pg_fetch_all($res);
 						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
+						<li><a href="#onions">Tor hidden services</a></li>
 						<li><a href="#reordersciphers">Cipher reordering</a></li>
 						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
@@ -561,6 +569,27 @@ foreach ($dnssec_srv as $result) {
 					</tr>
 <?php
 foreach ($dnssec_dane as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="onions">Servers with a hidden service <small class="text-muted"><?= count($onions) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($onions as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
