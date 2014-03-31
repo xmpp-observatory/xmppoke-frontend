@@ -108,6 +108,10 @@ $res = pg_execute($dbconn, "1024-2014", array($since));
 
 $too_weak_1024_2014 = pg_fetch_all($res);
 
+if ($too_weak_1024_2014 === FALSE) {
+	$too_weak_1024_2014 = array();
+}
+
 
 
 pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
@@ -187,12 +191,19 @@ $res = pg_execute($dbconn, "reorders_ciphers", array($since));
 
 $reorders_ciphers = pg_fetch_all($res);
 
+if ($reorders_ciphers === FALSE) {
+	$reorders_ciphers = array();
+}
 
 pg_prepare($dbconn, "shares_private_keys", "select distinct on (results.server_name, results.type, results.test_id, subject_key_info_sha256) results.server_name, results.type, results.test_id, subject_key_info_sha256 from (select distinct on (server_name, type) * from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, type, test_date desc) as results, srv_results, srv_certificates, certificates as c where chain_index = 0 and srv_certificates.certificate_id = c.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and exists (select 1 from (select distinct on (server_name) test_id, server_name from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, test_date desc) as r, (select * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = r.test_id and results.server_name != r.server_name and certificates.subject_key_info_sha256 = c.subject_key_info_sha256) order by subject_key_info_sha256, server_name, type;");
 
 $res = pg_execute($dbconn, "shares_private_keys", array($since));
 
 $shares_private_keys = pg_fetch_all($res);
+
+if ($shares_private_keys === FALSE) {
+	$shares_private_keys = array();
+}
 
 
 pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism FROM srv_mechanisms) AS mechanisms, (SELECT DISTINCT ON (server_name) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND EXISTS (SELECT 1 FROM srv_mechanisms WHERE srv_result_id = srv_results.srv_result_id AND after_tls = $2 AND mechanism = mechanisms.mechanism)) GROUP BY mechanism ORDER BY count DESC;");
@@ -221,6 +232,11 @@ pg_prepare($dbconn, "unencrypted", "SELECT * FROM (SELECT DISTINCT ON (server_na
 $res = pg_execute($dbconn, "unencrypted", array($since));
 
 $unencrypted = pg_fetch_all($res);
+
+if ($unencrypted === FALSE) {
+	$unencrypted = array();
+}
+
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
