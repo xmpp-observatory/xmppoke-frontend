@@ -29,12 +29,19 @@ $res = pg_execute($dbconn, "dnssec_srv", array($since));
 
 $dnssec_srv = pg_fetch_all($res);
 
+if ($dnssec_srv === FALSE) {
+	$dnssec_srv = array();
+}
+
 pg_prepare($dbconn, "dnssec_dane", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL AND tlsa_dnssec_good = 't' AND EXISTS (SELECT * FROM tlsa_records WHERE tlsa_records.srv_result_id = srv_results.srv_result_id));");
 
 $res = pg_execute($dbconn, "dnssec_dane", array($since));
 
 $dnssec_dane = pg_fetch_all($res);
 
+if ($dnssec_dane === FALSE) {
+	$dnssec_dane = array();
+}
 
 
 pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL);");
@@ -56,6 +63,10 @@ pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, ty
 $res = pg_execute($dbconn, "sslv2", array($since));
 
 $sslv2 = pg_fetch_all($res);
+
+if ($sslv2 === FALSE) {
+	$sslv2 = array();
+}
 
 pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND sslv3 = 't');");
 
@@ -200,6 +211,10 @@ pg_prepare($dbconn, "onions", "SELECT * FROM (SELECT DISTINCT ON (server_name, t
 $res = pg_execute($dbconn, "onions", array($since));
 
 $onions = pg_fetch_all($res);
+
+if ($onions === FALSE) {
+	$onions = array();
+}
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
@@ -414,13 +429,13 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 					</tr>
 					<tr>
 						<th>Valid</td>
-						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum) ?>%</span></td>
-						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum, 1) ?>%</span></td>
+						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
 					<tr>
 						<th>Invalid</td>
-						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum) ?>%</span></td>
-						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum, 1) ?>%</span></td>
+						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
 				</table>
 
