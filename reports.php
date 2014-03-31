@@ -216,6 +216,12 @@ if ($onions === FALSE) {
 	$onions = array();
 }
 
+pg_prepare($dbconn, "unencrypted", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = 'Server does not support encryption.');");
+
+$res = pg_execute($dbconn, "unencrypted", array($since));
+
+$unencrypted = pg_fetch_all($res);
+
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
 
@@ -258,6 +264,7 @@ if ($onions === FALSE) {
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
 						<li><a href="#onions">Tor hidden services</a></li>
+						<li><a href="#unencrypted">Servers not offering encryption</a></li>
 						<li><a href="#reordersciphers">Cipher reordering</a></li>
 						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
@@ -605,6 +612,27 @@ foreach ($dnssec_dane as $result) {
 					</tr>
 <?php
 foreach ($onions as $result) {
+?>
+					<tr>
+						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
+						<td><?= $result["type"] ?> to server</td>
+						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
+					</tr>
+<?php
+}
+?>
+				</table>
+
+				<h3 id="unencrypted">Servers not offering encryption <small class="text-muted"><?= count($unencrypted) ?> results</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Target</th>
+						<th>Type</th>
+						<th>When</th>
+					</tr>
+<?php
+foreach ($unencrypted as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
