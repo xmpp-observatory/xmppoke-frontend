@@ -571,7 +571,7 @@ foreach ($cas as $result) {
 ?>
 					<tr>
 						<td><?= $result["certificate_name"] === NULL ? "(Unknown)" : $result["certificate_name"] ?></td>
-						<td><?= $result["digest_sha1"] ?></td>
+						<td><?= fp($result["digest_sha1"]) ?></td>
 						<td><?= $result["c"] ?></td>
 <?php
 }
