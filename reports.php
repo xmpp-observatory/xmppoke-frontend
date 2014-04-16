@@ -100,9 +100,8 @@ $res = pg_execute($dbconn, "bitsizes", array($since));
 
 $bitsizes = pg_fetch_all($res);
 
-pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
-pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificate_name(certificates.signed_by_id) AS issuer_certificate_name, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
@@ -591,15 +590,12 @@ foreach ($cas as $result) {
 					</tr>
 <?php
 foreach ($too_weak_1024_2014 as $result) {
-	$res = pg_execute($dbconn, "find_cn", array($result["signed_by_id"]));
-
-	$issuer = pg_fetch_assoc($res);
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
 						<td><?= $result["type"] ?> to server</td>
 						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
-						<td><span<?= ($result["trusted"] === 'f' || $result["valid_identity"] === 'f') ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
+						<td><span<?= ($result["trusted"] === 'f' || $result["valid_identity"] === 'f') ? " class='text-danger'" : ""?>><?= htmlspecialchars($result["issuer_certificate_name"]) ?></span></td>
 					</tr>
 <?php
 }
