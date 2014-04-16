@@ -237,7 +237,7 @@ if ($unencrypted === FALSE) {
 }
 
 
-pg_prepare($dbconn, "cas", "SELECT signed_by_id, certificate_name(signed_by_id), count(*) AS c FROM certificates WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY signed_by_id ORDER BY c DESC LIMIT 30;");
+pg_prepare($dbconn, "cas", "SELECT certificate_name(certificates.signed_by_id), issuer.digest_sha1, count(*) AS c FROM certificates, certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
 
 $res = pg_execute($dbconn, "cas", array($since));
 
@@ -563,6 +563,7 @@ foreach ($sslv2 as $result) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>Name/Organization</th>
+						<th>SHA1</th>
 						<th>Count</th>
 					</tr>
 <?php
@@ -570,6 +571,7 @@ foreach ($cas as $result) {
 ?>
 					<tr>
 						<td><?= $result["certificate_name"] === NULL ? "(Unknown)" : $result["certificate_name"] ?></td>
+						<td><?= $result["digest_sha1"] ?></td>
 						<td><?= $result["c"] ?></td>
 <?php
 }
