@@ -238,7 +238,7 @@ if ($unencrypted === FALSE) {
 }
 
 
-pg_prepare($dbconn, "cas", "SELECT signed_by_id, certificate_name(signed_by_id), count(*) AS c FROM certificates WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id WHERE extract(epoch from age(now(), test_date)) < $1 FROM test_results) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY signed_by_id ORDER BY c DESC LIMIT 30;");
+pg_prepare($dbconn, "cas", "SELECT signed_by_id, certificate_name(signed_by_id), count(*) AS c FROM certificates WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY signed_by_id ORDER BY c DESC LIMIT 30;");
 
 $res = pg_execute($dbconn, "cas", array($since));
 
