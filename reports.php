@@ -238,6 +238,16 @@ if ($unencrypted === FALSE) {
 }
 
 
+pg_prepare($dbconn, "cas", "SELECT signed_by_id, certificate_name(signed_by_id), count(*) AS c FROM certificates WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id WHERE extract(epoch from age(now(), test_date)) < $1 FROM test_results) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY signed_by_id ORDER BY c DESC LIMIT 30;");
+
+$res = pg_execute($dbconn, "cas", array($since));
+
+$cas = pg_fetch_all($res);
+
+if ($cas === FALSE) {
+	$cas = array();
+}
+
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
 
@@ -276,6 +286,7 @@ if ($unencrypted === FALSE) {
 						<li><a href="#saslmechanisms">SASL</a></li>
 						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
 						<li><a href="#sslv2wallofshame">SSL 2</a></li>
+						<li><a href="#cas">CAs</a></li>
 						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
@@ -546,6 +557,25 @@ foreach ($sslv2 as $result) {
 <?php
 }
 ?>
+				</table>
+
+				<h3 id="cas">CAs used <small class="text-muted">Top 30</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Name/Organization</th>
+						<th>Count</th>
+					</tr>
+<?php
+foreach ($cas as $result) {
+?>
+					<tr>
+						<td><?= $result["certificate_name"] ?></td>
+						<td><?= $result["c"] ?></td>
+<?php
+}
+?>
+					</tr>
 				</table>
 
 				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates which expires after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
