@@ -29,12 +29,19 @@ $res = pg_execute($dbconn, "dnssec_srv", array($since));
 
 $dnssec_srv = pg_fetch_all($res);
 
+if ($dnssec_srv === FALSE) {
+	$dnssec_srv = array();
+}
+
 pg_prepare($dbconn, "dnssec_dane", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND priority IS NOT NULL AND tlsa_dnssec_good = 't' AND EXISTS (SELECT * FROM tlsa_records WHERE tlsa_records.srv_result_id = srv_results.srv_result_id));");
 
 $res = pg_execute($dbconn, "dnssec_dane", array($since));
 
 $dnssec_dane = pg_fetch_all($res);
 
+if ($dnssec_dane === FALSE) {
+	$dnssec_dane = array();
+}
 
 
 pg_prepare($dbconn, "total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL);");
@@ -56,6 +63,10 @@ pg_prepare($dbconn, "sslv2", "SELECT * FROM (SELECT DISTINCT ON (server_name, ty
 $res = pg_execute($dbconn, "sslv2", array($since));
 
 $sslv2 = pg_fetch_all($res);
+
+if ($sslv2 === FALSE) {
+	$sslv2 = array();
+}
 
 pg_prepare($dbconn, "sslv3", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND sslv3 = 't');");
 
@@ -89,13 +100,16 @@ $res = pg_execute($dbconn, "bitsizes", array($since));
 
 $bitsizes = pg_fetch_all($res);
 
-pg_prepare($dbconn, "find_cn", "SELECT * FROM certificate_subjects WHERE certificate_subjects.certificate_id = $1 AND (certificate_subjects.name = 'commonName' OR certificate_subjects.name = 'organizationName') ORDER BY certificate_subjects.name LIMIT 1;");
 
-pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificates.signed_by_id, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificate_name(certificates.signed_by_id) AS issuer_certificate_name, trusted, valid_identity FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND rsa_bitsize < 2048 AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
 
 $res = pg_execute($dbconn, "1024-2014", array($since));
 
 $too_weak_1024_2014 = pg_fetch_all($res);
+
+if ($too_weak_1024_2014 === FALSE) {
+	$too_weak_1024_2014 = array();
+}
 
 
 
@@ -176,12 +190,19 @@ $res = pg_execute($dbconn, "reorders_ciphers", array($since));
 
 $reorders_ciphers = pg_fetch_all($res);
 
+if ($reorders_ciphers === FALSE) {
+	$reorders_ciphers = array();
+}
 
 pg_prepare($dbconn, "shares_private_keys", "select distinct on (results.server_name, results.type, results.test_id, subject_key_info_sha256) results.server_name, results.type, results.test_id, subject_key_info_sha256 from (select distinct on (server_name, type) * from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, type, test_date desc) as results, srv_results, srv_certificates, certificates as c where chain_index = 0 and srv_certificates.certificate_id = c.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and exists (select 1 from (select distinct on (server_name) test_id, server_name from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, test_date desc) as r, (select * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = r.test_id and results.server_name != r.server_name and certificates.subject_key_info_sha256 = c.subject_key_info_sha256) order by subject_key_info_sha256, server_name, type;");
 
 $res = pg_execute($dbconn, "shares_private_keys", array($since));
 
 $shares_private_keys = pg_fetch_all($res);
+
+if ($shares_private_keys === FALSE) {
+	$shares_private_keys = array();
+}
 
 
 pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM srv_mechanisms, srv_results WHERE srv_mechanisms.srv_result_id = srv_results.srv_result_id AND srv_results.test_id IN (SELECT DISTINCT ON (server_name) test_id FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 AND type = 'client' AND error IS NULL ORDER BY server_name, type, test_date DESC) AND srv_results.done = 't' AND srv_results.error IS NULL AND after_tls = $2 GROUP BY mechanism ORDER BY count DESC;");
@@ -201,12 +222,30 @@ $res = pg_execute($dbconn, "onions", array($since));
 
 $onions = pg_fetch_all($res);
 
+if ($onions === FALSE) {
+	$onions = array();
+}
 
 pg_prepare($dbconn, "unencrypted", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error = 'Server does not support encryption.');");
 
 $res = pg_execute($dbconn, "unencrypted", array($since));
 
 $unencrypted = pg_fetch_all($res);
+
+if ($unencrypted === FALSE) {
+	$unencrypted = array();
+}
+
+
+pg_prepare($dbconn, "cas", "SELECT certificate_name(certificates.signed_by_id), issuer.digest_sha1, count(*) AS c FROM certificates, certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
+
+$res = pg_execute($dbconn, "cas", array($since));
+
+$cas = pg_fetch_all($res);
+
+if ($cas === FALSE) {
+	$cas = array();
+}
 
 ?>
 	<body data-spy="scroll" data-target="#sidebar">
@@ -246,6 +285,7 @@ $unencrypted = pg_fetch_all($res);
 						<li><a href="#saslmechanisms">SASL</a></li>
 						<li><a href="#sslv3butnottls1">SSL 3, but not TLS 1.0</a></li>
 						<li><a href="#sslv2wallofshame">SSL 2</a></li>
+						<li><a href="#cas">CAs</a></li>
 						<li><a href="#1024-2014">1024-bit RSA after 2014</a></li>
 						<li><a href="#dnssecsrv">DNSSEC signed SRV</a></li>
 						<li><a href="#dnssecdane">DANE</a></li>
@@ -422,13 +462,13 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 					</tr>
 					<tr>
 						<th>Valid</td>
-						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum) ?>%</span></td>
-						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum, 1) ?>%</span></td>
+						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
 					<tr>
 						<th>Invalid</td>
-						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum) ?>%</span></td>
-						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum) ?>%</span></td>
+						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum, 1) ?>%</span></td>
+						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
 				</table>
 
@@ -518,6 +558,27 @@ foreach ($sslv2 as $result) {
 ?>
 				</table>
 
+				<h3 id="cas">CAs used <small class="text-muted">Top 30</small></h3>
+
+				<table class="table table-bordered table-striped">
+					<tr>
+						<th>Name/Organization</th>
+						<th>SHA1</th>
+						<th>Count</th>
+					</tr>
+<?php
+foreach ($cas as $result) {
+?>
+					<tr>
+						<td><?= $result["certificate_name"] === NULL ? "(Unknown)" : $result["certificate_name"] ?></td>
+						<td><?= fp($result["digest_sha1"]) ?></td>
+						<td><?= $result["c"] ?></td>
+<?php
+}
+?>
+					</tr>
+				</table>
+
 				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates which expires after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
 
 				<p>As described in the <a href="https://cabforum.org/Baseline_Requirements_V1.pdf">CA/Browser Forum Baseline Requirements</a>, certificates with RSA keys with less than 2048 bits should not be issued with an notAfter date after 31-12-2013. This list lists all certificates which violate that rule.</p>
@@ -531,15 +592,12 @@ foreach ($sslv2 as $result) {
 					</tr>
 <?php
 foreach ($too_weak_1024_2014 as $result) {
-	$res = pg_execute($dbconn, "find_cn", array($result["signed_by_id"]));
-
-	$issuer = pg_fetch_assoc($res);
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
 						<td><?= $result["type"] ?> to server</td>
 						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
-						<td><span<?= ($result["trusted"] === 'f' || $result["valid_identity"] === 'f') ? " class='text-danger'" : ""?>><?= htmlspecialchars($issuer["value"]) ?></span></td>
+						<td><span<?= ($result["trusted"] === 'f' || $result["valid_identity"] === 'f') ? " class='text-danger'" : ""?>><?= htmlspecialchars($result["issuer_certificate_name"]) ?></span></td>
 					</tr>
 <?php
 }

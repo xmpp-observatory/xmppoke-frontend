@@ -212,13 +212,6 @@ foreach ($subjects as $subject) {
 		<h5>Details</h5>
 
 <?php
-if ($cert["trusted_root"] === 't' && $cert["chain_index"] !== NULL) {
-?>
-		<div class="alert alert-block alert-warning">
-			<strong>Warning:</strong> Trusted root certificate is included in the chain.
-		</div>
-<?php
-}
 if ($cert["trusted_root"] === 'f' && $cert["chain_index"] === NULL && $cert["signed_by_id"] !== $cert["certificate_id"]) {
 ?>
 		<div class="alert alert-block alert-danger">
