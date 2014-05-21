@@ -420,18 +420,18 @@ foreach ($bitsizes as $bitsize) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>Type</th>
-						<th>Required</th>
-						<th>Allowed</th>
-					</tr>
-					<tr>
 						<td>Client to server</td>
-						<td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
-						<td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
+						<td>Server to client</td>
 					</tr>
 					<tr>
-						<td>Server to server</td>
-						<td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"]), 1) ?>%</span></td>
+						<td>Allowed</td>
+						<td><?= $c2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_allowed["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
 						<td><?= $s2s_starttls_allowed["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_allowed["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"]), 1) ?>%</span></td>
+					</tr>
+					<tr>
+						<td>Required</td>
+						<td><?= $c2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $c2s_starttls_required["count"] / ($c2s_starttls_required["count"] + $c2s_starttls_allowed["count"]), 1) ?>%</span></td>
+						<td><?= $s2s_starttls_required["count"] ?> <span class="text-muted"><?= round(100 * $s2s_starttls_required["count"] / ($s2s_starttls_required["count"] + $s2s_starttls_allowed["count"]), 1) ?>%</span></td>
 					</tr>
 				</table>
 
