@@ -301,13 +301,21 @@ if ($cert["private_key"] !== NULL) {
 			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
 		</dl>
 
+<?php
+if (count($sans) > 0) {
+?>
 		<h5>Subject Alternative Names</h5>
 
+		<dl class="dl-horizontal">
 <?php
 foreach ($sans as $san) {
 ?>
-		<dt><?= $san["san_type"] ?></dt>
-		<dd><?= $san["san_value"] ?></dd>
+			<dt><?= $san["san_type"] ?></dt>
+			<dd><?= $san["san_value"] ?></dd>
+<?php
+}
+?>
+		</dl>
 <?php
 }
 ?>
