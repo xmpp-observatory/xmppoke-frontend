@@ -56,7 +56,7 @@ common_header("");
 				<form id="test-server" action="submit.php" method="post">
 					<div class="input-group">
 							<input type="text" class="form-control" name="domain" placeholder="jabber.org">
-							<input type="hidden" name="mode" id="mode" form="test-server" value="c2s">
+							<input type="hidden" name="type" id="type" form="test-server" value="c2s">
 							<div class="input-group-btn">
 								<button type="submit" class="btn btn-default">Check!</button>
 								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type" value="client">c2s <span class="caret"></span></button>

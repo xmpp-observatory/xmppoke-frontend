@@ -3,7 +3,7 @@
 include("common.php");
 
 $domain = idn_to_utf8(strtolower(idn_to_ascii($_REQUEST["domain"])));
-$type = $_REQUEST["mode"];
+$type = $_REQUEST["type"];
 
 $error = NULL;
 
