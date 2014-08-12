@@ -94,11 +94,15 @@ echo '<?xml version="1.0" standalone="no"?>';
 	<path fill="<?= svg_color($s2s_final_score) ?>" d="M130 0h4v18h-4z"/>
 	<rect rx="4" width="161" height="18" fill="url(#a)"/>
 	<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
-		<text x="50.5" y="14" fill="#010101" fill-opacity=".3">xmpp.net score</text>
-		<text x="50.5" y="13">xmpp.net score</text>
-		<text x="113.5" y="14" fill="#010101" fill-opacity=".3"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
-		<text x="113.5" y="13"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
-		<text x="144.5" y="14" fill="#010101" fill-opacity=".3"><?= $s2s_final_score ? $s2s_final_score : "-" ?></text>
-		<text x="144.5" y="13"><?= $s2s_final_score ? $s2s_final_score : "-"  ?></text>
+		<a xlink:href="https://xmpp.net/result.php?domain=<?= $result_domain ?>&amp;type=client">
+			<text x="50.5" y="14" fill="#010101" fill-opacity=".3">xmpp.net score</text>
+			<text x="50.5" y="13">xmpp.net score</text>
+			<text x="113.5" y="14" fill="#010101" fill-opacity=".3"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
+			<text x="113.5" y="13"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
+		</a>
+		<a xlink:href="https://xmpp.net/result.php?domain=<?= $result_domain ?>&amp;type=server">
+			<text x="144.5" y="14" fill="#010101" fill-opacity=".3"><?= $s2s_final_score ? $s2s_final_score : "-" ?></text>
+			<text x="144.5" y="13"><?= $s2s_final_score ? $s2s_final_score : "-"  ?></text>
+		</a>
 	</g>
 </svg>
