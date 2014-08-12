@@ -1023,15 +1023,15 @@ if (count($srvs) > 1) {
 }
 ?>
 			</div>
+
+			<h3>Badge</h3>
+
+			<a href='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'><img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' width='161' height='18' alt='xmpp.net score' /></a>
+
+			<p>Want to show this result on your webpage? Add this:</p>
+
+			<pre>&lt;a href='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>&lt;img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' width='161' height='18' alt='xmpp.net score' /></a></pre>
 		</div> <!-- /row -->
-
-		<h3>Badge</h3>
-
-		<img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' />
-
-		<p>Want to show this result on your webpage? Add this:</p>
-
-		<pre>&lt;img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' /&gt;</pre>
 
 		<div class="footer">
 			<p>Some rights reserved.</p>
