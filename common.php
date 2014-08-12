@@ -31,9 +31,8 @@ function grade($srv) {
 }
 
 function color_label_text_grade($score) {
-	switch ($score) {
+	switch ($score[0]) {
 		case 'A':
-		case 'A<sup>-<sup>':
 			return "label-success";
 		case 'B':
 		case 'C':
@@ -46,9 +45,8 @@ function color_label_text_grade($score) {
 }
 
 function color_text_grade($score) {
-	switch ($score) {
+	switch ($score[0]) {
 		case 'A':
-		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':
@@ -61,9 +59,8 @@ function color_text_grade($score) {
 }
 
 function color_text_score($score) {
-	switch ($score) {
+	switch ($score[0]) {
 		case 'A':
-		case 'A<sup>-<sup>':
 			return "text-success";
 		case 'B':
 		case 'C':

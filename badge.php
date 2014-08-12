@@ -61,13 +61,13 @@ foreach ($srvs as $srv) {
 
 function svg_color($score) {
 	switch ($score[0]) {
-		case 'A': return "#4c1";
+		case 'A': return "#5CB85C";
 		case 'B':
-		case 'C': return "#97CA00";
-		case 'D':
-		case 'E': return "#dfb317";
+		case 'C':
+		case 'D': return "#EC971F";
+		case 'E':
 		case 'F':
-		default: return "#e05d44";
+		default: return "#C9302C";
 	}
 }
 
