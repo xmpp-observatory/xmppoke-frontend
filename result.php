@@ -251,7 +251,7 @@ if ($cert["private_key"] !== NULL) {
 			<dt>Signature algorithm</dt>
 			<dd><?= $cert["sign_algorithm"] ?><?= $cert["sign_algorithm"] === "md5WithRSAEncryption" && $cert["trusted_root"] !== 't' ? " <span class='label label-danger'>INSECURE</span>" : "" ?></dd>
 			<dt>Key size</dt>
-			<dd><?= $cert["rsa_bitsize"] ?><?= $cert["rsa_bitsize"] < 2048 ? " <span class='label label-warning'>WEAK</span>" : "" ?></dd>
+			<dd><?= $cert["pubkey_bitsize"] ?><?= $cert["pubkey_bitsize"] < 2048 ? " <span class='label label-warning'>WEAK</span>" : "" ?></dd>
 			<dt>Valid from</dt>
 			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-danger" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
 			<dt>Valid to</dt>
@@ -530,13 +530,13 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
-	if ($cert->rsa_bitsize < 1024 && $srv["done"] === 't' && $srv["error"] === NULL) {
+	if ($cert->pubkey_bitsize < 1024 && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
 				</div>
 <?php
-	} else if ($cert->rsa_bitsize < 2048 && $srv["done"] === 't' && $srv["error"] === NULL) {
+	} else if ($cert->pubkey_bitsize < 2048 && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
