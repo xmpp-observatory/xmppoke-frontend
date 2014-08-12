@@ -251,7 +251,7 @@ if ($cert["private_key"] !== NULL) {
 			<dt>Signature algorithm</dt>
 			<dd><?= $cert["sign_algorithm"] ?><?= $cert["sign_algorithm"] === "md5WithRSAEncryption" && $cert["trusted_root"] !== 't' ? " <span class='label label-danger'>INSECURE</span>" : "" ?></dd>
 			<dt>Key size</dt>
-			<dd><?= $cert["pubkey_bitsize"] ?><?= $cert["pubkey_bitsize"] < 2048 ? " <span class='label label-warning'>WEAK</span>" : "" ?></dd>
+			<dd><?= $cert["pubkey_bitsize"] ?><?= ($cert["pubkey_bitsize"] < 2048 && ($cert["pubkey_type"] === "RSA" || $cert["pubkey_type"] === "DSA")) ? " <span class='label label-warning'>WEAK</span>" : "" ?></dd>
 			<dt>Valid from</dt>
 			<dd><?= $cert["notbefore"] ?> UTC <time class="<?= strtotime($cert["notbefore"]) > strtotime("now") ? "text-danger" : "text-muted" ?> timeago" datetime="<?= date("c", strtotime($cert["notbefore"])) ?>"></time></dd>
 			<dt>Valid to</dt>
