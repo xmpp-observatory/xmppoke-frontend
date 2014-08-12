@@ -302,7 +302,7 @@ if ($cert["private_key"] !== NULL) {
 		</dl>
 
 <?php
-if (count($sans) > 0) {
+if ($sans !== FALSE && count($sans) > 0) {
 ?>
 		<h5>Subject Alternative Names</h5>
 
