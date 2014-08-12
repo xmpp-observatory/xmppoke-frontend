@@ -51,6 +51,8 @@ if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
 
 	pg_prepare($dbconn, "find_subjects", "SELECT * FROM certificate_subjects WHERE certificate_id = $1 ORDER BY name;");
 
+	pg_prepare($dbconn, "find_sans", "SELECT * FROM certificate_sans WHERE certificate_id = $1 ORDER BY san_type;");
+
 	pg_prepare($dbconn, "find_tlsas", "SELECT * FROM tlsa_records WHERE srv_result_id = $1 ORDER BY tlsa_record_id;");
 
 	pg_prepare($dbconn, "find_mechanisms", "SELECT * FROM srv_mechanisms WHERE srv_result_id = $1 AND after_tls = $2 ORDER BY mechanism;");
@@ -171,6 +173,10 @@ function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $s
 	$res = pg_execute($dbconn, "find_subjects", array($cert["certificate_id"]));
 
 	$subjects = pg_fetch_all($res);
+
+	$res = pg_execute($dbconn, "find_sans", array($cert["certificate_id"]));
+
+	$sans = pg_fetch_all($res);
 
 	$name = "";
 
@@ -294,6 +300,17 @@ if ($cert["private_key"] !== NULL) {
 			</dt>
 			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
 		</dl>
+
+		<h5>Subject Alternative Names</h5>
+
+<?php
+foreach ($sans as $san) {
+?>
+		<dt><?= $san["san_type"] ?></dt>
+		<dd><?= $san["san_value"] ?></dd>
+<?php
+}
+?>
 
 
 		<button class="btn btn-default pem" data-sha-digest="<?= $cert["digest_sha256"] ?>">Show PEM <span class="glyphicon glyphicon-new-window"></span></button>
