@@ -1025,6 +1025,14 @@ if (count($srvs) > 1) {
 			</div>
 		</div> <!-- /row -->
 
+		<h3>Badge</h3>
+
+		<img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' />
+
+		<p>Want to show this result on your webpage? Add this:</p>
+
+		<pre>&lt;img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' /&gt;</pre>
+
 		<div class="footer">
 			<p>Some rights reserved.</p>
 		</div>
