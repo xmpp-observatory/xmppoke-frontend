@@ -88,9 +88,9 @@ function svg_color($score) {
 	<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
 		<text x="50.5" y="14" fill="#010101" fill-opacity=".3">xmpp.net score</text>
 		<text x="50.5" y="13">xmpp.net score</text>
-		<text x="113.5" y="14" fill="#010101" fill-opacity=".3"><?= $c2s_final_score ?></text>
-		<text x="113.5" y="13"><?= $c2s_final_score ?></text>
-		<text x="144.5" y="14" fill="#010101" fill-opacity=".3"><?= $s2s_final_score ?></text>
-		<text x="144.5" y="13"><?= $s2s_final_score ?></text>
+		<text x="113.5" y="14" fill="#010101" fill-opacity=".3"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
+		<text x="113.5" y="13"><?= $c2s_final_score ? $c2s_final_score : "-"  ?></text>
+		<text x="144.5" y="14" fill="#010101" fill-opacity=".3"><?= $s2s_final_score ? $s2s_final_score : "-" ?></text>
+		<text x="144.5" y="13"><?= $s2s_final_score ? $s2s_final_score : "-"  ?></text>
 	</g>
 </svg>
