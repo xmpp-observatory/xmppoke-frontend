@@ -94,7 +94,7 @@ $tlsv1_2 = pg_fetch_assoc($res);
 
 
 
-pg_prepare($dbconn, "bitsizes", "SELECT COUNT(*), pubkey_bitsize FROM (SELECT DISTINCT ON (results.test_id, pubkey_bitsize) pubkey_bitsize FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE results.test_id = srv_results.test_id AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0 AND certificates.certificate_id = srv_certificates.certificate_id) AS bitsizes GROUP BY pubkey_bitsize ORDER BY pubkey_bitsize;");
+pg_prepare($dbconn, "bitsizes", "SELECT COUNT(*), pubkey_bitsize FROM (SELECT DISTINCT ON (results.test_id, pubkey_bitsize) pubkey_bitsize FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results, srv_results, srv_certificates, certificates WHERE results.test_id = srv_results.test_id AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0 AND certificates.certificate_id = srv_certificates.certificate_id AND (certificates.pubkey_type = 'RSA' OR certificates.pubkey_type = 'DSA')) AS bitsizes GROUP BY pubkey_bitsize ORDER BY pubkey_bitsize;");
 
 $res = pg_execute($dbconn, "bitsizes", array($since));
 
