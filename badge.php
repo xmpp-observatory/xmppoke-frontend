@@ -72,16 +72,20 @@ function svg_color($score) {
 }
 
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" width="161" height="18">
+<svg xmlns="http://www.w3.org/2000/svg" width="161" height="18" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<linearGradient id="a" x2="0" y2="100%">
 		<stop offset="0" stop-color="#fff" stop-opacity=".7"/>
 		<stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
 		<stop offset=".9" stop-opacity=".3"/>
 		<stop offset="1" stop-opacity=".5"/>
 	</linearGradient>
-	<rect rx="4" width="161" height="18" fill="#555"/>
-	<rect x="99" width="31" height="18" fill="<?= svg_color($c2s_final_score) ?>"/>
-	<rect rx="4" x="130" width="31" height="18" fill="<?= svg_color($s2s_final_score) ?>"/>
+	<a xlink:href="https://xmpp.net/result.php?domain=<?= $result_domain ?>&amp;type=client">
+		<rect rx="4" width="161" height="18" fill="#555"/>
+		<rect x="99" width="31" height="18" fill="<?= svg_color($c2s_final_score) ?>"/>
+	</a>
+	<a xlink:href="https://xmpp.net/result.php?domain=<?= $result_domain ?>&amp;type=server">
+		<rect rx="4" x="130" width="31" height="18" fill="<?= svg_color($s2s_final_score) ?>"/>
+	</a>
 	<path fill="<?= svg_color($c2s_final_score) ?>" d="M99 0h4v18h-4z"/>
 	<path fill="<?= svg_color($s2s_final_score) ?>" d="M130 0h4v18h-4z"/>
 	<rect rx="4" width="161" height="18" fill="url(#a)"/>
