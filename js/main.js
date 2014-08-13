@@ -22,7 +22,7 @@ $(document).ready(function () {
 
     $('#type-select a').click(function (e) {
         var name = $(this).data("type");
-        $("#type").html(name + " <span class='caret'>");
+        $("#type-button").html(name + " <span class='caret'>");
         $("#type-select .active").removeClass("active");
         $(this).parent().addClass("active");
         $("#type").attr("value", name);

@@ -59,7 +59,7 @@ common_header("");
 							<input type="hidden" name="type" id="type" form="test-server" value="c2s">
 							<div class="input-group-btn">
 								<button type="submit" class="btn btn-default">Check!</button>
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type" value="client">c2s <span class="caret"></span></button>
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="type-button" value="client">c2s <span class="caret"></span></button>
 								<ul class="dropdown-menu pull-right" id="type-select">
 									<li class="active"><a href="#" data-type="c2s">c2s</a></li>
 									<li><a href="#" data-type="s2s">s2s</a></li>
