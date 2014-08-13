@@ -25,7 +25,7 @@ $(document).ready(function () {
         $("#type").html(name + " <span class='caret'>");
         $("#type-select .active").removeClass("active");
         $(this).parent().addClass("active");
-        $("#mode").attr("value", name);
+        $("#type").attr("value", name);
         e.preventDefault();
     });
 });
