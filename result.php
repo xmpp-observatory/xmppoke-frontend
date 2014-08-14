@@ -168,7 +168,7 @@ function help($str) {
 
 }
 
-function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $srv, $i) {
+function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $srv, $i, $result_type) {
 
 	$res = pg_execute($dbconn, "find_subjects", array($cert["certificate_id"]));
 
@@ -310,34 +310,34 @@ if ($sans !== FALSE && count($sans) > 0) {
 <?php
 
 foreach ($sans as $san) {
-    $san_valid = "";
-    if ($i === 0) {
-	    switch ($san["san_type"]) {
-	    case "DNSName":
-	        $san_valid = idn_to_ascii($server_name);
-	        break;
-	    case "SRVName":
-	        $san_valid = "_xmpp-" . $result_type . ".". idn_to_ascii($server_name);
-	        break;
-	    case "XMPPAddr":
-	        $san_valid = $server_name;
-	        break;
-            // Others?
+	$san_valid = "";
+	if ($i === 0) {
+		switch ($san["san_type"]) {
+		case "DNSName":
+			$san_valid = idn_to_ascii($server_name);
+			break;
+		case "SRVName":
+			$san_valid = "_xmpp-" . $result_type . ".". idn_to_ascii($server_name);
+			break;
+		case "XMPPAddr":
+			$san_valid = $server_name;
+			break;
+			// Others?
 		}
 
 		if($san_valid == $san["san_value"]) {
-		    $san_valid = ' <span class="label label-success">Matches</span>';
+			$san_valid = ' <span class="label label-success">Matches</span>';
 		} else {
-		    $san_valid = "";
+			$sans_valid = "";
 		}
 	}
 ?>
-            <dt><?= $san["san_type"] ?></dt>
-            <dd><?= $san["san_value"] . $san_valid ?> </dd>
+			<dt><?= $san["san_type"] ?></dt>
+			<dd><?= $san["san_value"] . $san_valid ?> </dd>
 <?php
 }
 ?>
-        </dl>
+		</dl>
 <?php
 }
 ?>
@@ -895,7 +895,7 @@ foreach ($srvs as $srv) {
 
 			$errors = pg_fetch_all($res);
 
-			show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i);
+			show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i, $result_type);
 
 			$prev_signed_by_id = $cert["signed_by_id"];
 
