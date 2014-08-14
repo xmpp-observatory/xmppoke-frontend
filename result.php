@@ -946,14 +946,13 @@ foreach ($srvs as $srv) {
 		}
 
 		foreach ($certs as $k => $cert) {
-			if ($cert["found"] !== TRUE) {
+			if ($cert["used"] !== TRUE) {
 				
 				$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
 
 				$errors = pg_fetch_all($res);
 
 				show_cert($dbconn, $cert, $errors ? $errors : array(), NULL, $result->server_name, $srv, NULL, $result_type);
-				break;
 			}
 		}
 ?>
