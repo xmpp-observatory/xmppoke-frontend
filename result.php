@@ -868,6 +868,8 @@ foreach ($srvs as $srv) {
 
 	$cert = $certs[0];
 
+	$used = array(0 => TRUE);
+
 	if (!$cert) {
 ?>
 		<div class="alert alert-block alert-danger">
@@ -883,8 +885,6 @@ foreach ($srvs as $srv) {
 		while (true) {
 
 			$index = NULL;
-
-			$cert["used"] = TRUE;
 
 			foreach ($certs as $k => $v) {
 				if ($v["digest_sha512"] === $cert["digest_sha512"]) {
@@ -914,6 +914,7 @@ foreach ($srvs as $srv) {
 			foreach ($certs as $k => $v) {
 				if ($v["certificate_id"] === $prev_signed_by_id) {
 					$cert = $v;
+					$used[$k] = TRUE;
 					break;
 				}
 			}
@@ -946,7 +947,7 @@ foreach ($srvs as $srv) {
 		}
 
 		foreach ($certs as $k => $cert) {
-			if ($cert["used"] !== TRUE) {
+			if (!$used[$cert["certificate_id"]]) {
 				
 				$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
 
