@@ -947,7 +947,7 @@ foreach ($srvs as $srv) {
 		}
 
 		foreach ($certs as $k => $cert) {
-			if (!$used[$cert["certificate_id"]]) {
+			if (!$used[$k]) {
 				
 				$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
 
