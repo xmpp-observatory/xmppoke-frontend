@@ -310,31 +310,34 @@ if ($sans !== FALSE && count($sans) > 0) {
 <?php
 
 foreach ($sans as $san) {
-	$san_valid = "";
-	switch ($san["san_type"]) {
-	case "DNSName":
-		$san_valid = idn_to_ascii($result->server_name);
-		break;
-	case "SRVName":
-		$san_valid = "_xmpp-" . $result->type . ".". idn_to_ascii($result->server_name);
-		break;
-	case "XMPPAddr":
-		$san_valid = $result->server_name;
-		break;
-			// Others?
-}
-if($san_valid == $san["san_value"]) {
-	$san_valid = '<span class="label label-success">matches</span>';
-} else {
-	$san_valid = "";
-}
+    $san_valid = "";
+    if ($i === 0) {
+	    switch ($san["san_type"]) {
+	    case "DNSName":
+	        $san_valid = idn_to_ascii($server_name);
+	        break;
+	    case "SRVName":
+	        $san_valid = "_xmpp-" . $result_type . ".". idn_to_ascii($server_name);
+	        break;
+	    case "XMPPAddr":
+	        $san_valid = $server_name;
+	        break;
+            // Others?
+		}
+
+		if($san_valid == $san["san_value"]) {
+		    $san_valid = ' <span class="label label-success">Matches</span>';
+		} else {
+		    $san_valid = "";
+		}
+	}
 ?>
-			<dt><?= $san["san_type"] ?></dt>
-			<dd><?= $san["san_value"] . $san_valid ?> </dd>
+            <dt><?= $san["san_type"] ?></dt>
+            <dd><?= $san["san_value"] . $san_valid ?> </dd>
 <?php
 }
 ?>
-		</dl>
+        </dl>
 <?php
 }
 ?>
