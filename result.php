@@ -328,7 +328,7 @@ foreach ($sans as $san) {
 		if($san_valid == $san["san_value"]) {
 			$san_valid = ' <span class="label label-success">Matches</span>';
 		} else {
-			$sans_valid = "";
+			$san_valid = "";
 		}
 	}
 ?>
