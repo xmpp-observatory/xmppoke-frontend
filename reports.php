@@ -183,17 +183,6 @@ $res = pg_execute($dbconn, "score_F", array($since));
 
 $score_F = pg_fetch_assoc($res);
 
-
-pg_prepare($dbconn, "reorders_ciphers", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE extract(epoch from age(now(), test_date)) < $1 ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL AND reorders_ciphers = 't');");
-
-$res = pg_execute($dbconn, "reorders_ciphers", array($since));
-
-$reorders_ciphers = pg_fetch_all($res);
-
-if ($reorders_ciphers === FALSE) {
-	$reorders_ciphers = array();
-}
-
 pg_prepare($dbconn, "shares_private_keys", "select distinct on (results.server_name, results.type, results.test_id, subject_key_info_sha256) results.server_name, results.type, results.test_id, subject_key_info_sha256 from (select distinct on (server_name, type) * from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, type, test_date desc) as results, srv_results, srv_certificates, certificates as c where chain_index = 0 and srv_certificates.certificate_id = c.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and exists (select 1 from (select distinct on (server_name) test_id, server_name from test_results WHERE extract(epoch from age(now(), test_date)) < $1 order by server_name, test_date desc) as r, (select * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = r.test_id and results.server_name != r.server_name and certificates.subject_key_info_sha256 = c.subject_key_info_sha256) order by subject_key_info_sha256, server_name, type;");
 
 $res = pg_execute($dbconn, "shares_private_keys", array($since));
@@ -291,7 +280,6 @@ if ($cas === FALSE) {
 						<li><a href="#dnssecdane">DANE</a></li>
 						<li><a href="#onions">Tor hidden services</a></li>
 						<li><a href="#unencrypted">Servers not offering encryption</a></li>
-						<li><a href="#reordersciphers">Cipher reordering</a></li>
 						<li><a href="#sharesprivatekeys">Private key sharing</a></li>
 					</ul>
 				</div>
@@ -677,27 +665,6 @@ foreach ($onions as $result) {
 					</tr>
 <?php
 foreach ($unencrypted as $result) {
-?>
-					<tr>
-						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
-						<td><?= $result["type"] ?> to server</td>
-						<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
-					</tr>
-<?php
-}
-?>
-				</table>
-
-				<h3 id="reordersciphers">Servers that pick their own cipher order <small class="text-muted"><?= count($reorders_ciphers) ?> results</small></h3>
-
-				<table class="table table-bordered table-striped">
-					<tr>
-						<th>Target</th>
-						<th>Type</th>
-						<th>When</th>
-					</tr>
-<?php
-foreach ($reorders_ciphers as $result) {
 ?>
 					<tr>
 						<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a></td>
