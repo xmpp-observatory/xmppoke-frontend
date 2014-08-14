@@ -577,13 +577,13 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
-	if ($cert->pubkey_bitsize < 1024 && $srv["done"] === 't' && $srv["error"] === NULL) {
+	if ($cert->pubkey_bitsize < 1024 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
 				</div>
 <?php
-	} else if ($cert->pubkey_bitsize < 2048 && $srv["done"] === 't' && $srv["error"] === NULL) {
+	} else if ($cert->pubkey_bitsize < 2048 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
