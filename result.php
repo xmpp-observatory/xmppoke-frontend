@@ -884,6 +884,8 @@ foreach ($srvs as $srv) {
 
 			$index = NULL;
 
+			$cert["used"] = TRUE;
+
 			foreach ($certs as $k => $v) {
 				if ($v["digest_sha512"] === $cert["digest_sha512"]) {
 					$index = $k;
@@ -939,6 +941,18 @@ foreach ($srvs as $srv) {
 			$i = $i + 1;
 
 			if ($i > 10) {
+				break;
+			}
+		}
+
+		foreach ($certs as $k => $cert) {
+			if ($cert["found"] !== TRUE) {
+				
+				$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
+
+				$errors = pg_fetch_all($res);
+
+				show_cert($dbconn, $cert, $errors ? $errors : array(), NULL, $result->server_name, $srv, NULL, $result_type);
 				break;
 			}
 		}
