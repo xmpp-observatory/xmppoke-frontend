@@ -315,7 +315,7 @@ foreach ($sans as $san) {
 	case "DNSName":
 		$san_valid = idn_to_ascii($result->server_name);
 		break;
-	case: "SRVName":
+	case "SRVName":
 		$san_valid = "_xmpp-" . $result->type . ".". idn_to_ascii($result->server_name);
 		break;
 	case "XMPPAddr":
