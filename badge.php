@@ -64,6 +64,7 @@ function svg_color($score) {
 		case 'A': return "#5CB85C";
 		case 'B':
 		case 'C':
+		case 'T':
 		case 'D': return "#EC971F";
 		case 'E':
 		case 'F':
