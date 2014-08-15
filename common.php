@@ -21,13 +21,20 @@ function grade($srv) {
 	if ($srv === NULL || $srv["done"] !== "t" || $srv["error"] !== NULL) {
 		return NULL;
 	}
-	if ($srv["certificate_score"] == 0) {
-		return "F";
+
+	$grade = $srv["grade"];
+
+	if ($srv["warn_rc4_tls11"] === 't' && $grade === "A") {
+		$grade = "A⁻";
 	}
-	if ($srv["warn_rc4_tls11"] === 't' && $srv["grade"] === "A") {
-		return "A⁻";
+
+	if ($srv["certificate_score"] == 0 && $grade === "A") {
+		$grade = "T";
+	} elseif ($srv["certificate_score"] == 0) {
+		$grade = "F"
 	}
-	return $srv["grade"];
+
+	return $grade;
 }
 
 function color_label_text_grade($score) {
@@ -36,6 +43,7 @@ function color_label_text_grade($score) {
 			return "label-success";
 		case 'B':
 		case 'C':
+		case 'T':
 			return "label-warning";
 		case NULL:
 			return "label-default";
@@ -50,6 +58,7 @@ function color_text_grade($score) {
 			return "text-success";
 		case 'B':
 		case 'C':
+		case 'T':
 			return "text-warning";
 		case NULL:
 			return "";
@@ -64,6 +73,7 @@ function color_text_score($score) {
 			return "text-success";
 		case 'B':
 		case 'C':
+		case 'T':
 			return "text-warning";
 		case NULL:
 			return "";

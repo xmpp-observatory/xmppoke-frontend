@@ -550,7 +550,7 @@ foreach ($srvs as $srv) {
 			<div class="col-md-2 text-center">
 				<strong>Grade:</strong>
 				<div>
-					<p class="<?= color_text_score(grade($srv)) ?> grade"><?= grade($srv) ?></p>
+					<p class="<?= color_text_grade(grade($srv)) ?> grade"><?= grade($srv) ?></p>
 				</div>
 			</div>
 		</div>
