@@ -921,9 +921,13 @@ foreach ($srvs as $srv) {
 				}
 			}
 
-			$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
+			$errors = NULL;
 
-			$errors = pg_fetch_all($res);
+			if (isset($cert["srv_certificates_id"])) {
+				$res = pg_execute($dbconn, "find_errors", array($cert["srv_certificates_id"]));
+
+				$errors = pg_fetch_all($res);
+			}
 
 			show_cert($dbconn, $cert, $errors ? $errors : array(), $prev_signed_by_id, $result->server_name, $srv, $i, $result_type);
 
