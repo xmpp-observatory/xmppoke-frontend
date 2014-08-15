@@ -203,7 +203,7 @@ function show_cert($dbconn, $cert, $errors, $prev_signed_by_id, $server_name, $s
 
 
 	?>
-		<h4 class="page-header"><?= $cert["chain_index"] !== NULL ? "#" . $cert["chain_index"] : "" ?> <?= htmlspecialchars($name) ?></h4>
+		<h4 class="page-header"><?= isset($cert["chain_index"]) ? "#" . $cert["chain_index"] : "" ?> <?= htmlspecialchars($name) ?></h4>
 
 		<h5>Subject</h5>
 

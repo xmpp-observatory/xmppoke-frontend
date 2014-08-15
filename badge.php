@@ -26,9 +26,13 @@ if (isset($result_domain)) {
 
 	$c2s_srvs = pg_fetch_all($res);
 
+	if ($c2s_srvs === FALSE) $c2s_srvs = array();
+
 	$res = pg_execute($dbconn, "find_srvs", array($result_s2s->test_id));
 
 	$s2s_srvs = pg_fetch_all($res);
+
+	if ($s2s_srvs === FALSE) $s2s_srvs = array();
 
 	$c2s_final_score = NULL;
 	$s2s_final_score = NULL;
