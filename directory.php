@@ -18,7 +18,7 @@ $res = pg_execute($dbconn, "list_server", array());
 
 $list = pg_fetch_all($res);
 
-common_header();
+common_header("");
 
 ?>
 	<body>

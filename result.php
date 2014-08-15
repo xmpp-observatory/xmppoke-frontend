@@ -13,9 +13,11 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 		$result = pg_fetch_object($res);
 
-		$result_id = $_GET['id'];
-		$result_domain = $result->server_name;
-		$result_type = $result->type;
+		if ($result) {
+			$result_id = $_GET['id'];
+			$result_domain = $result->server_name;
+			$result_type = $result->type;
+		}
 	} else {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
@@ -25,9 +27,10 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 		$result = pg_fetch_object($res);
 
-		$result_id = $result->test_id;
-		$result_type = $_GET['type'];
-
+		if ($result) {
+			$result_id = $result->test_id;
+			$result_type = $_GET['type'];
+		}
 	}
 
 	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY done DESC, error DESC, priority, weight DESC, port, target");
