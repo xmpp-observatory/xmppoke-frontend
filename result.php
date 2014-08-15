@@ -1079,8 +1079,6 @@ if (count($srvs) > 1) {
 		</div>
 <?php
 }
-
-}
 ?>
 				<h3>Badge</h3>
 
@@ -1089,6 +1087,9 @@ if (count($srvs) > 1) {
 				<p>Want to show this result on your webpage? Add this:</p>
 
 				<pre>&lt;a href='https://xmpp.net/result.php?domain=<?= urlencode($result_domain) ?>&amp;amp;type=<?= $result_type ?>'>&lt;img src='https://xmpp.net/badge.php?domain=<?= urlencode($result_domain) ?>' alt='xmpp.net score' />&lt;/a></pre>
+<?php
+}
+?>
 			</div>
 		</div> <!-- /row -->
 
