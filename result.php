@@ -611,6 +611,12 @@ foreach ($srvs as $srv) {
 					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2. Grade capped to <strong>A<sup>-</sup></strong>.
 				</div>
 <?php
+	}	if ($srv["warn_no_fs"] === 't' && $srv["done"] === 't') {
+?>
+				 <div class="alert alert-block alert-warning">
+					Warning: Server offers no forward-secret ciphers. Grade capped to <strong>A<sup>-</sup></strong>.
+				</div>
+<?php
 	}
 }
 
