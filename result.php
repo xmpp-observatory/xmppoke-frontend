@@ -450,7 +450,7 @@ if (!$result) {
 		<p>
 			<a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
 <?php
-if (date_diff(strtotime($result->test_date), date_create()) < - 3600) {
+if (date_diff(strtotime($result->test_date), date_create()) > 3600) {
 ?>
 		| <a href='submit.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>Retest</a>
 <?php
