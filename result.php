@@ -4,29 +4,30 @@ include("common.php");
 
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
 
-$result_id = $_GET['id'];
-$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
-$result_type = $_GET['type'];
+if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
-if (isset($result_id) || (isset($result_domain) && isset($result_type))) {
-
-	if (isset($result_id)) {
+	if (isset($_GET['id'])) {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE test_id = $1");
 
-		$res = pg_execute($dbconn, "find_result", array($result_id));
+		$res = pg_execute($dbconn, "find_result", array($_GET['id']));
 
 		$result = pg_fetch_object($res);
 
+		$result_id = $_GET['id'];
 		$result_domain = $result->server_name;
 		$result_type = $result->type;
 	} else {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
-		$res = pg_execute($dbconn, "find_result", array($result_domain, $result_type));
+		$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
+
+		$res = pg_execute($dbconn, "find_result", array($result_domain, $_GET['type']));
 
 		$result = pg_fetch_object($res);
 
 		$result_id = $result->test_id;
+		$result_type = $_GET['type'];
+
 	}
 
 	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY done DESC, error DESC, priority, weight DESC, port, target");
