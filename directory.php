@@ -8,7 +8,7 @@ pg_prepare($dbconn, "find_s2s", "SELECT test_id FROM test_results WHERE server_n
 
 pg_prepare($dbconn, "find_c2s", "SELECT test_id, version FROM test_results WHERE server_name = $1 AND type = 'client' ORDER BY test_date DESC LIMIT 1;");
 
-pg_prepare($dbconn, "find_srvs", "SELECT grade, total_score, certificate_score, done, error, srv_result_id, certificate_score, warn_rc4_tls11 FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
+pg_prepare($dbconn, "find_srvs", "SELECT grade, total_score, certificate_score, done, error, srv_result_id, certificate_score, warn_rc4_tls11, warn_no_fs FROM srv_results WHERE test_id = $1 ORDER BY priority ASC;");
 
 pg_prepare($dbconn, "find_cert", "SELECT signed_by_id, certificates.certificate_id FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1;");
 
