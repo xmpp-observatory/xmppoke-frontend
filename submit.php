@@ -2,36 +2,41 @@
 
 include("common.php");
 
-$domain = idn_to_utf8(strtolower(idn_to_ascii($_REQUEST["domain"])));
-$type = $_REQUEST["type"];
+if (isset($_REQUEST["domain"]) && isset($_REQUEST["type"])) {
 
-$error = NULL;
+	$domain = idn_to_utf8(strtolower(idn_to_ascii($_REQUEST["domain"])));
+	$type = $_REQUEST["type"];
 
-if(strpos($domain, ".") !== FALSE && preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_ascii($domain)) && ($type === "c2s" || $type === "s2s" || $type === "client" || $type === "server")) {
+	$error = NULL;
 
-	if ($type === "c2s") {
-		$type = "client";
-	}
-	if ($type === "s2s") {
-		$type = "server";
-	}
+	if(strpos($domain, ".") !== FALSE && preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", idn_to_ascii($domain)) && ($type === "c2s" || $type === "s2s" || $type === "client" || $type === "server")) {
 
-	pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
+		if ($type === "c2s") {
+			$type = "client";
+		}
+		if ($type === "s2s") {
+			$type = "server";
+		}
 
-	$res = pg_execute($dbconn, "find_result", array($domain, $type));
+		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
-	$result = pg_fetch_object($res);
+		$res = pg_execute($dbconn, "find_result", array($domain, $type));
 
-	if ($result && (time() - strtotime($result->test_date)) < 60 * 60) {
-		$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour or <a href="result.php?domain=' . urlencode($domain) . '&type=' . $type . '">check the latest report</a>.';
+		$result = pg_fetch_object($res);
+
+		if ($result && (time() - strtotime($result->test_date)) < 60 * 60) {
+			$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour or <a href="result.php?domain=' . urlencode($domain) . '&type=' . $type . '">check the latest report</a>.';
+		} else {
+			exec("LD_LIBRARY_PATH=/opt/xmppoke/lib LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so;/usr/lib/i386-linux-gnu/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --key=/opt/xmppoke/etc/certs/server.key --certificate=/opt/xmppoke/etc/certs/server.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 -v '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' | gzip -c > /var/log/xmppoke/logs/" . escapeshellarg($domain) . "-$type.log.gz 2>/dev/null &");
+
+			header("Refresh: 1;result.php?domain=" . urlencode($domain) . "&type=$type");
+		}
+
 	} else {
-		exec("LD_LIBRARY_PATH=/opt/xmppoke/lib LUA_PATH='?.lua;/opt/xmppoke/usr/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua;' LUA_CPATH='?.so;/opt/xmppoke/usr/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so;/usr/lib/i386-linux-gnu/lua/5.1/?.so' /opt/xmppoke/bin/luajit /opt/xmppoke/bin/xmppoke --cafile=/etc/ssl/certs/ca-certificates.crt --key=/opt/xmppoke/etc/certs/server.key --certificate=/opt/xmppoke/etc/certs/server.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 -v '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' | gzip -c > /var/log/xmppoke/logs/" . escapeshellarg($domain) . "-$type.log.gz 2>/dev/null &");
-
-		header("Refresh: 1;result.php?domain=" . urlencode($domain) . "&type=$type");
+		$error = '"' . htmlspecialchars($domain) . '" is not a valid domain name.';
 	}
-
 } else {
-	$error = '"' . htmlspecialchars($domain) . '" is not a valid domain name.';
+	$error = "Something went wrong.";
 }
 
 common_header("");
