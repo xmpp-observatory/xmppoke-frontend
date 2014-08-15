@@ -31,7 +31,7 @@ function grade($srv) {
 	if ($srv["certificate_score"] == 0 && $grade === "A") {
 		$grade = "T";
 	} elseif ($srv["certificate_score"] == 0) {
-		$grade = "F"
+		$grade = "F";
 	}
 
 	return $grade;
@@ -53,21 +53,6 @@ function color_label_text_grade($score) {
 }
 
 function color_text_grade($score) {
-	switch ($score[0]) {
-		case 'A':
-			return "text-success";
-		case 'B':
-		case 'C':
-		case 'T':
-			return "text-warning";
-		case NULL:
-			return "";
-		default:
-			return "text-danger";
-	}
-}
-
-function color_text_score($score) {
 	switch ($score[0]) {
 		case 'A':
 			return "text-success";
