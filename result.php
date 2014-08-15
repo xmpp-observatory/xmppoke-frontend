@@ -36,6 +36,10 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 	$srvs = pg_fetch_all($res);
 
+	if ($srvs === FALSE) {
+		$srvs = array();
+	}
+
 	pg_prepare($dbconn, "find_ciphers", "SELECT * FROM srv_ciphers, ciphers WHERE srv_ciphers.srv_result_id = $1 AND srv_ciphers.cipher_id = ciphers.cipher_id ORDER BY cipher_index;");
 
 	pg_prepare($dbconn, "find_and_sort_ciphers", "SELECT * FROM srv_ciphers, ciphers WHERE srv_ciphers.srv_result_id = $1 AND srv_ciphers.cipher_id = ciphers.cipher_id ORDER BY bitsize DESC, forward_secret DESC, export DESC, ciphers.cipher_id DESC;");
