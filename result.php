@@ -450,7 +450,7 @@ if (!$result) {
 		<p>
 			<a href='result.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type === "client" ? "server" : "client" ?>'>Show <?= $result_type === "client" ? "server" : "client" ?> to server result</a> | <a href='result.php?id=<?= $result->test_id ?>'>Permalink to this report</a>
 <?php
-if (mktime() - strtotime($result->test_date) > 3600) {
+if (time() - strtotime($result->test_date) > 3600) {
 ?>
 		| <a href='submit.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>Retest</a>
 <?php
@@ -594,20 +594,20 @@ foreach ($srvs as $srv) {
 				</div>
 <?php
 	}
-	if ($cert->pubkey_bitsize < 1024 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
+	if ($cert && $cert->pubkey_bitsize < 1024 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server uses an RSA key with &lt; 1024 bits. Grade capped to <strong>F</strong>.
 				</div>
 <?php
-	} else if ($cert->pubkey_bitsize < 2048 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
+	} else if ($cert && $cert->pubkey_bitsize < 2048 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
 						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
 				</div>
 <?php
 	}
-	if ($cert->sign_algorithm === "md5WithRSAEncryption" && $srv["done"] === 't') {
+	if ($cert && $cert->sign_algorithm === "md5WithRSAEncryption" && $srv["done"] === 't') {
 ?>
 				<div class="alert alert-block alert-danger">
 					Server uses an MD5 signature. Grade capped to <strong>F</strong>.
