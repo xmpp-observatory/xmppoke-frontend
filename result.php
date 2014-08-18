@@ -382,8 +382,8 @@ if ($result) {
 	}
 
 	if ($refresh !== NULL) {
-		common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
 		header("Cache-Control: max-age=" . $refresh);
+		common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
 	} else {
 		common_header("");
 	}
