@@ -382,6 +382,7 @@ if ($result) {
 		$refresh = 15;
 	} else {
 		$date = strtotime($result->test_date);
+		header("Cache-Control: must-revalidate, max-age=300");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s", $date + 30 * 60) . " GMT");
 	}
 
