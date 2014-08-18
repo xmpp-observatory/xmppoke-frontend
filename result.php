@@ -382,7 +382,7 @@ if ($result) {
 		$refresh = 15;
 	} else {
 		$date = strtotime($result->test_date);
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s", $date) . " GMT");
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s", $date + 30 * 60) . " GMT");
 	}
 
 	if ($refresh !== NULL) {
