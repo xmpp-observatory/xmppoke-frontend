@@ -2,6 +2,7 @@
 
 include("common.php");
 
+header("Cache-Control: must-revalidate, max-age=0");
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
 
 if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
@@ -382,7 +383,6 @@ if ($result) {
 	}
 
 	if ($refresh !== NULL) {
-		header("Cache-Control: must-revalidate, max-age=" . $refresh);
 		common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
 	} else {
 		common_header("");
