@@ -382,7 +382,7 @@ if ($result) {
 	}
 
 	if ($refresh !== NULL) {
-		header("Cache-Control: max-age=" . $refresh);
+		header("Cache-Control: must-revalidate, max-age=" . $refresh);
 		common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
 	} else {
 		common_header("");
