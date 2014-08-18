@@ -48,7 +48,7 @@ if (isset($result_domain)) {
 		}
 	}
 
-	header("Last-Modified: " . gmdate("D, d M Y H:i:s", min($result_s2s->test_date, $result_c2s->test_date)) . " GMT");
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s", min(strtotime($result_s2s->test_date), strtotime($result_c2s->test_date))) . " GMT");
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
