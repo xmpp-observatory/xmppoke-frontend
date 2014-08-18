@@ -2,7 +2,7 @@
 
 include("secrets.php");
 
-header("Content-Security-Policy: default-src 'self'");
+header("Cache-Control: max-age=10");
 
 date_default_timezone_set('UTC');
 setlocale(LC_CTYPE, "UTF8", "en_US.UTF-8");

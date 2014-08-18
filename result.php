@@ -383,6 +383,7 @@ if ($result) {
 
 	if ($refresh !== NULL) {
 		common_header("<meta http-equiv='refresh' content='" . $refresh . "'>");
+		header("Cache-Control: max-age=" . $refresh);
 	} else {
 		common_header("");
 	}

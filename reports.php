@@ -2,6 +2,8 @@
 
 include("common.php");
 
+header("Cache-Control: max-age=600");
+
 // Different policy for the charts API
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com https://ajax.googleapis.com");
 
