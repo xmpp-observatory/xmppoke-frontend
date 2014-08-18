@@ -380,6 +380,9 @@ if ($result) {
 		$refresh = 5;
 	} else if (!$done && time() - strtotime($result->test_date) < 60 * 15) {
 		$refresh = 15;
+	} else {
+		$date = strtotime($result->test_date);
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s", $date) . " GMT");
 	}
 
 	if ($refresh !== NULL) {
