@@ -51,7 +51,7 @@ if (isset($result_domain)) {
 	$date = NULL;
 
 	if ($result_c2s && $result_s2s) {
-		$date =  min(strtotime($result_s2s->test_date), strtotime($result_c2s->test_date));
+		$date =  max(strtotime($result_s2s->test_date), strtotime($result_c2s->test_date));
 	} else if ($result_c2s) {
 		$date = strtotime($result_c2s->test_date);
 	} else if ($result_s2s) {
