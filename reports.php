@@ -3,6 +3,7 @@
 include("common.php");
 
 header("Cache-Control: max-age=1800");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
 // Different policy for the charts API
 header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com https://ajax.googleapis.com");
