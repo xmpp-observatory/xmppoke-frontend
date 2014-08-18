@@ -3,7 +3,7 @@
 include("common.php");
 
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
-
+header("Cache-Control: must-revalidate, max-age=600");
 header("Content-Type: image/svg+xml");
 
 $result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
