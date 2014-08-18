@@ -408,8 +408,8 @@ foreach ($bitsizes as $bitsize) {
 				<table class="table table-bordered table-striped">
 					<tr>
 						<th>Type</th>
-						<td>Client to server</td>
-						<td>Server to client</td>
+						<th>Client to server</th>
+						<th>Server to server</th>
 					</tr>
 					<tr>
 						<th>Required</th>
