@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: text/xml");
+header("Cache-Control: max-age=1800");
 ?>
 <vcards xmlns='urn:ietf:params:xml:ns:vcard-4.0'>
 <?php
