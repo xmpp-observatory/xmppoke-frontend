@@ -201,7 +201,7 @@ if ($shares_private_keys === FALSE) {
 }
 
 
-pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism, test_id FROM srv_mechanisms, srv_results WHERE srv_mechanisms.srv_result_id = srv_results.srv_result_id AND srv_results.test_id IN (SELECT DISTINCT ON (server_name) test_id FROM test_results WHERE test_date > $1 AND type = 'client' AND error IS NULL ORDER BY server_name, type, test_date DESC) AND srv_results.done = 't' AND srv_results.error IS NULL AND after_tls = $2 GROUP BY mechanism, test_id) AS q GROUP BY mechanism ORDER BY count DESC;");
+pg_prepare($dbconn, "mechanisms", "SELECT mechanism, COUNT(*) FROM (SELECT DISTINCT mechanism, test_id FROM srv_mechanisms, srv_results WHERE srv_mechanisms.srv_result_id = srv_results.srv_result_id AND srv_results.test_id IN (SELECT test_id FROM recent_results WHERE type = 'client' AND error IS NULL) AND srv_results.done = 't' AND srv_results.error IS NULL AND after_tls = $2 GROUP BY mechanism, test_id) AS q GROUP BY mechanism ORDER BY count DESC;");
 
 $res = pg_execute($dbconn, "mechanisms", array(0));
 
