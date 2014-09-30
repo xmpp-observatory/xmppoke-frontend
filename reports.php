@@ -57,7 +57,7 @@ $res = pg_execute($dbconn, "total", array());
 
 $total = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "c2s_total", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name) * FROM test_results WHERE test_date > $1 AND type = 'client' ORDER BY server_name, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL);");
+pg_prepare($dbconn, "c2s_total", "SELECT COUNT(*) FROM (SELECT * FROM recent_results WHERE type = 'client' ORDER BY server_name, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE test_id = results.test_id AND done = 't' AND error IS NULL);");
 
 $res = pg_execute($dbconn, "c2s_total", array());
 
@@ -120,25 +120,25 @@ if ($too_weak_1024_2014 === FALSE) {
 
 
 
-pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date > $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
+pg_prepare($dbconn, "c2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT * FROM recent_results WHERE type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "c2s_starttls_allowed", array());
 
 $c2s_starttls_allowed = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date > $1 AND type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
+pg_prepare($dbconn, "c2s_starttls_required", "SELECT COUNT(*) FROM (SELECT * FROM recent_results WHERE type = 'client' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "c2s_starttls_required", array());
 
 $c2s_starttls_required = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date > $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
+pg_prepare($dbconn, "s2s_starttls_allowed", "SELECT COUNT(*) FROM (SELECT * FROM recent_results WHERE type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 'f' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "s2s_starttls_allowed", array());
 
 $s2s_starttls_allowed = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date > $1 AND type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
+pg_prepare($dbconn, "s2s_starttls_required", "SELECT COUNT(*) FROM (SELECT * FROM recent_results WHERE type = 'server' ORDER BY server_name, type, test_date DESC) AS results WHERE EXISTS (SELECT 1 FROM srv_results WHERE requires_starttls = 't' AND done = 't' AND error IS NULL AND test_id = results.test_id);");
 
 $res = pg_execute($dbconn, "s2s_starttls_required", array());
 
@@ -190,9 +190,9 @@ $res = pg_execute($dbconn, "score_F", array());
 
 $score_F = pg_fetch_assoc($res);
 
-pg_prepare($dbconn, "shares_private_keys", "select distinct on (results.server_name, results.type, results.test_id, subject_key_info_sha256) results.server_name, results.type, results.test_id, subject_key_info_sha256 from (select distinct on (server_name, type) * from test_results WHERE test_date > $1 order by server_name, type, test_date desc) as results, srv_results, srv_certificates, certificates as c where chain_index = 0 and srv_certificates.certificate_id = c.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and exists (select 1 from (select distinct on (server_name) test_id, server_name from test_results WHERE test_date > $1 order by server_name, test_date desc) as r, (select * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = r.test_id and results.server_name != r.server_name and certificates.subject_key_info_sha256 = c.subject_key_info_sha256) order by subject_key_info_sha256, server_name, type;");
+pg_prepare($dbconn, "shares_private_keys", "select distinct on (results.server_name, results.type, results.test_id, subject_key_info_sha256) results.server_name, results.type, results.test_id, subject_key_info_sha256 from (SELECT * FROM recent_results) as results, srv_results, srv_certificates, certificates as c where chain_index = 0 and srv_certificates.certificate_id = c.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id and srv_results.test_id = results.test_id and exists (select 1 from (SELECT test_id, server_name FROM recent_results) as r, (select * from srv_results, srv_certificates, certificates where chain_index = 0 and srv_certificates.certificate_id = certificates.certificate_id and srv_results.srv_result_id = srv_certificates.srv_result_id) as certificates where certificates.test_id = r.test_id and results.server_name != r.server_name and certificates.subject_key_info_sha256 = c.subject_key_info_sha256) order by subject_key_info_sha256, server_name, type;");
 
-$res = pg_execute($dbconn, "shares_private_keys");
+$res = pg_execute($dbconn, "shares_private_keys", array());
 
 $shares_private_keys = pg_fetch_all($res);
 
@@ -233,7 +233,7 @@ if ($unencrypted === FALSE) {
 }
 
 
-pg_prepare($dbconn, "cas", "SELECT certificate_name(certificates.signed_by_id), issuer.digest_sha1, count(*) AS c FROM certificates, certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT DISTINCT ON (server_name, type) test_id FROM test_results WHERE test_date > $1) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
+pg_prepare($dbconn, "cas", "SELECT certificate_name(certificates.signed_by_id), issuer.digest_sha1, count(*) AS c FROM certificates, certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT test_id FROM recent_results) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
 
 $res = pg_execute($dbconn, "cas", array());
 
