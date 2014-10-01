@@ -13,7 +13,7 @@ common_header("");
 $since = "2014-01-25 17:00:00 GMT";
 
 if (isset($_GET["since"])) {
-	$since = strftime("%F %T %Z", time() - intval($_GET["since"]));
+	$since = strftime("%F %T %Z", time() - 24 * 60 * 60 * intval($_GET["since"]));
 }
 
 pg_prepare($dbconn, "recent_results_table", "CREATE TEMPORARY TABLE recent_results AS (SELECT DISTINCT ON (server_name, type) * FROM test_results WHERE test_date > $1 ORDER BY server_name, type, test_date DESC);");
