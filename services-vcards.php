@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: text/xml");
 header("Cache-Control: max-age=1800");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 ?>
 <vcards xmlns='urn:ietf:params:xml:ns:vcard-4.0'>
 <?php
