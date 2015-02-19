@@ -1,12 +1,13 @@
 <?php
+
+include("common.php");
+
 header("Content-Type: text/xml");
 header("Cache-Control: max-age=1800");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 ?>
 <vcards xmlns='urn:ietf:params:xml:ns:vcard-4.0'>
 <?php
-
-include("common.php");
 
 pg_prepare($dbconn, "list_server", "SELECT * FROM public_servers ORDER BY server_name;");
 
