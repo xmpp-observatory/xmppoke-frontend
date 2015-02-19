@@ -4,6 +4,9 @@ include("common.php");
 
 header("Content-Type: text/xml");
 header("Cache-Control: max-age=1800");
+
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+
 echo "<?xml version='1.0'?>\n";
 ?>
 <query xmlns:reg="urn:xmpp:vcard:registration:1">
