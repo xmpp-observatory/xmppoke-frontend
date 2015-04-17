@@ -622,6 +622,12 @@ foreach ($srvs as $srv) {
 						Server uses an RSA key with &lt; 2048 bits. Grade capped to <strong>B</strong>.
 				</div>
 <?php
+	} else if ($cert && $cert->pubkey_bitsize > 4096 && $cert->pubkey_type === 'RSA' && $srv["done"] === 't' && $srv["error"] === NULL) {
+?>
+				<div class="alert alert-block alert-warning">
+						Server uses an RSA key with &gt; 4096 bits. This has known incompatibility problems with many servers and clients.
+				</div>
+<?php
 	}
 	if ($cert && $cert->sign_algorithm === "md5WithRSAEncryption" && $srv["done"] === 't') {
 ?>
