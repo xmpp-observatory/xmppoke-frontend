@@ -96,6 +96,8 @@ function released($software) {
 			return "2013/11/05";
 		case "Metronome 3.3.3":
 			return "2014/01/14";
+		case "Metronome 3.7":
+			return "2015/03/09";
 		
 		case "Openfire 3.6.4":
 			return "2009/05/01";
@@ -109,6 +111,8 @@ function released($software) {
 			return "2013/05/28";
 		case "Openfire 3.9.0":
 			return "2014/02/05";
+		case "Openfire 3.9.3":
+			return "2014/05/06";
 
 		case "ejabberd 2.0.5":
 			return "2009/04/03";
@@ -149,6 +153,8 @@ function released($software) {
 		case "jabberd 2.2.17":
 		case "jabberd 2.2.17-399":
 			return "2012/08/26";
+		case "jabberd 2.3.2":
+			return "2014/02/24";
 
 		
 		case "Prosody 0.7.0rc1":
