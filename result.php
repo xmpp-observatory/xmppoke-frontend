@@ -227,7 +227,7 @@ foreach ($subjects as $subject) {
 		<h5>Details</h5>
 
 <?php
-if ($cert["trusted_root"] === 'f' && $cert["chain_index"] === NULL && $cert["signed_by_id"] !== $cert["certificate_id"]) {
+if ($cert["trusted_root"] === 'f' && !isset($cert["chain_index"]) && $cert["signed_by_id"] !== $cert["certificate_id"]) {
 ?>
 		<div class="alert alert-block alert-danger">
 			<strong>Error:</strong> Intermediate certificate was not included in the chain.

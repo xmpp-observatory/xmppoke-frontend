@@ -86,9 +86,11 @@ foreach ($list as $result) {
 <?php
 	$final_score = NULL;
 
-	foreach ($scores as $score) {
-		if (grade($score) && (!$final_score || grade($score) < $final_score)) {
-			$final_score = grade($score);
+	if ($scores) {
+		foreach ($scores as $score) {
+			if (grade($score) && (!$final_score || grade($score) < $final_score)) {
+				$final_score = grade($score);
+			}
 		}
 	}
 ?>
