@@ -10,7 +10,7 @@ $res = pg_execute($dbconn, "list_results", array());
 
 $list = pg_fetch_all($res);
 
-common_header();
+common_header(NULL);
 
 ?>
 	<body>
