@@ -48,7 +48,7 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 	pg_prepare($dbconn, "find_and_sort_ciphers", "SELECT * FROM srv_ciphers, ciphers WHERE srv_ciphers.srv_result_id = $1 AND srv_ciphers.cipher_id = ciphers.cipher_id ORDER BY bitsize DESC, forward_secret DESC, export DESC, ciphers.cipher_id DESC;");
 
-	pg_prepare($dbconn, "find_dh_group", "SELECT dh_group_id, generator, group_name FROM dh_groups WHERE dh_group_id = ? LIMIT 1;");
+	pg_prepare($dbconn, "find_dh_group", "SELECT dh_group_id, generator, group_name FROM dh_groups WHERE dh_group_id = $1 LIMIT 1;");
 
 	pg_prepare($dbconn, "find_certs", "SELECT * FROM srv_certificates, certificates WHERE srv_certificates.certificate_id = certificates.certificate_id AND srv_certificates.srv_result_id = $1 ORDER BY chain_index;");
 
