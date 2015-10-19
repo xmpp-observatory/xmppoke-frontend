@@ -1057,7 +1057,7 @@ foreach ($srvs as $srv) {
 		<div class="row">
 			<div class="col-md-9">
 				<table class="table table-bordered table-striped">
-					<tr><th>Cipher suite</th><th>Bitsize</th><th>Forward secrecy</th></tr>
+					<tr><th>Cipher suite</th><th>Bitsize</th><th>Forward secrecy</th><th>Info</th></tr>
 <?php
 			if ($srv["reorders_ciphers"] === 't') {
 				$res = pg_execute($dbconn, "find_ciphers", array($srv["srv_result_id"]));
@@ -1078,6 +1078,9 @@ foreach ($srvs as $srv) {
 						</td>
 						<td>
 							<span class="label label-<?= $cipher["forward_secret"] === 't' ? "success" : "danger" ?>"><?= $cipher["forward_secret"] === 't' ? "Yes" : "No" ?></span>
+						</td>
+						<td>
+							<span><?= isset($cipher["ecdh_curve"]) ? "Curve: " . $cipher["ecdh_curve"] : "" ?></span>
 						</td>
 					</tr>
 <?php
