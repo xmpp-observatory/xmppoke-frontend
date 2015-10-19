@@ -1080,7 +1080,22 @@ foreach ($srvs as $srv) {
 							<span class="label label-<?= $cipher["forward_secret"] === 't' ? "success" : "danger" ?>"><?= $cipher["forward_secret"] === 't' ? "Yes" : "No" ?></span>
 						</td>
 						<td>
-							<span><?= isset($cipher["ecdh_curve"]) ? "Curve: " . $cipher["ecdh_curve"] : "" ?></span>
+<?
+if (isset($cipher["ecdh_curve"])) {
+?>
+							<span>Curve: <?= $cipher["ecdh_curve"] ?></span>
+<?
+} elseif (isset($cipher["dh_bits"])) {
+?>
+							<span>DH bitsize: <?= $cipher["dh_bits"] ?></span>
+<?
+} else
+{
+?>
+							<span>-</span>
+<?
+}
+?>
 						</td>
 					</tr>
 <?php
