@@ -862,14 +862,14 @@ foreach ($srvs as $srv) {
 ?>
 			<td>
 				<div class="collapse-group">
-					<pre class="collapse" id="collapse-tlsa-record-<?= $tlsa["tlsa_record_id"] ?>" style="height: 100px; overflow: hidden;"><?= pg_unescape_bytea($tlsa["data"]) ?></pre>
+					<pre class="collapse" id="collapse-tlsa-record-<?= $tlsa["tlsa_record_id"] ?>" style="height: 100px; overflow: hidden;"><?= bin2hex(pg_unescape_bytea($tlsa["data"])) ?></pre>
 					<p><a class="btn btn-default" data-toggle="collapse" data-target="#collapse-tlsa-record-<?= $tlsa["tlsa_record_id"] ?>">Show full <span class="glyphicon glyphicon-collapse-down"></span></a></p>
 				</div>
 			</td>
 <?
 		} else {
 ?>
-			<td><pre><?= fp(pg_unescape_bytea($tlsa["data"])) ?></pre></td>
+			<td><pre><?= fp(bin2hex(pg_unescape_bytea($tlsa["data"]))) ?></pre></td>
 <?
 		}
 ?>
