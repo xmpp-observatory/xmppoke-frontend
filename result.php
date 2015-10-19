@@ -1085,12 +1085,12 @@ foreach ($srvs as $srv) {
 <?
 if (isset($cipher["ecdh_curve"])) {
 ?>
-							<span>Curve: <?= $cipher["ecdh_curve"] ?></span>
+							<span><b>Curve:</b> <?= $cipher["ecdh_curve"] ?></span>
 <?
 } elseif (isset($cipher["dh_bits"])) {
 ?>
 							<span>
-								Diffie-Hellman:
+								<b>Diffie-Hellman:</b>
 <?
 	if (isset($cipher["dh_group_id"])) {
 		$res = pg_execute($dbconn, "find_dh_group", array($cipher["dh_group_id"]));
@@ -1099,12 +1099,12 @@ if (isset($cipher["ecdh_curve"])) {
 
 		if (isset($group["group_name"])) {
 ?>
-								Group: <?= $group["group_name"] ?>
+								<b>Group:</b> <?= $group["group_name"] ?>
 <?
 		}
 	}
 ?>
-								Bitsize: <?= $cipher["dh_bits"] ?>
+								<b>Bitsize:</b> <span class="label label-<?= $cipher["dh_bits"] < 1024 ? "danger" : ($cipher["dh_bits"] < 2048 ? "warning" : "success") ?>"><?= $cipher["dh_bits"] ?></span>
 							</span>
 <?
 } else
