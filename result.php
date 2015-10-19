@@ -1022,7 +1022,7 @@ foreach ($srvs as $srv) {
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="SSLv3 is old and not recommended. Servers <strong>should not</strong> allow it to be used." data-toggle="popover" data-original-title="SSLv3">SSLv3</abbr></td>
-						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-warning" : ($srv["sslv3"] === 'f' ? "label-success" : "label-default") ?>">
+						<td><span class="label <?= $srv["sslv3"] === 't' ? "label-warning" : "label-success" ?>">
 							<?= show_bool($srv["sslv3"]) ?>
 						</span></td>
 					</tr>
@@ -1034,13 +1034,13 @@ foreach ($srvs as $srv) {
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="There are no known security issues with TLSv1.1." data-toggle="popover" data-original-title="TLSv1.1">TLSv1.1</abbr></td>
-						<td><span class="label <?= $srv["tlsv1_1"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default") ?>">
+						<td><span class="label <?= $srv["tlsv1_1"] === 't' ? "label-success" : "label-default" ?>">
 							<?= show_bool($srv["tlsv1_1"]) ?>
 						</span></td>
 					</tr>
 					<tr>
 						<td><abbr class="my-popover" title="" data-content="TLSv1.2 is the latest version and it is <strong>strongly recommended</strong> that servers support it as it adds a number of newer cipher suites." data-toggle="popover" data-original-title="TLSv1.2">TLSv1.2</abbr></td>
-						<td><span class="label <?= $srv["tlsv1_2"] === 't' ? "label-success" : ($srv["sslv2"] === 'f' ? "label-danger" : "label-default" ) ?>">
+						<td><span class="label <?= $srv["tlsv1_2"] === 't' ? "label-success" : "label-danger" ?>">
 							<?= show_bool($srv["tlsv1_2"]) ?>
 						</span></td>
 					</tr>
