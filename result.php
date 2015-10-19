@@ -696,7 +696,7 @@ foreach ($srvs as $srv) {
 	if ($srv["compression"]) {
 ?>
 			<dt>TLS compression</dt>
-			<dd><?= htmlspecialchars($srv["compression"]) ?></dd>
+			<dd><span class="label label-danger"><?= htmlspecialchars($srv["compression"]) ?></span></dd>
 <?php
 	}
 	if ($srv["requires_peer_cert"] === 't') {
