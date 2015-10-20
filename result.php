@@ -23,7 +23,7 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
 		$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
-			$result_type = $_GET['type'];
+		$result_type = $_GET['type'];
 
 		$res = pg_execute($dbconn, "find_result", array($result_domain, $_GET['type']));
 
@@ -1126,7 +1126,7 @@ if (isset($cipher["ecdh_curve"])) {
 } elseif (isset($cipher["dh_bits"])) {
 ?>
 							<span>
-								<b>Diffie-Hellman:</b>
+								<b>Diffie-Hellman:</b><br>
 <?
 	if (isset($cipher["dh_group_id"])) {
 		$res = pg_execute($dbconn, "find_dh_group", array($cipher["dh_group_id"]));
@@ -1135,7 +1135,7 @@ if (isset($cipher["ecdh_curve"])) {
 
 		if (isset($group["group_name"])) {
 ?>
-								<b>Group:</b> <?= $group["group_name"] ?>
+								<b>Group:</b> <?= $group["group_name"] ?><br>
 <?
 		}
 	}
