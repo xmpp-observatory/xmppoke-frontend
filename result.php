@@ -608,7 +608,7 @@ foreach ($srvs as $srv) {
 	if ($srv["tlsv1_2"] === 'f' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
-					Server does not support the newest version, TLS 1.2. Grade capped to <strong>B</strong>.
+					Server does not support the newest version, TLS 1.2. Grade capped to <strong>C</strong>.
 				</div>
 <?php
 	}
@@ -641,13 +641,42 @@ foreach ($srvs as $srv) {
 	if ($srv["warn_rc4_tls11"] === 't' && $srv["done"] === 't') {
 ?>
 				 <div class="alert alert-block alert-warning">
-					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2. Grade capped to <strong>A<sup>-</sup></strong>.
+					Warning: Server allows RC4 when using TLS 1.1 and/or TLS 1.2. Grade capped to <strong>C</strong>.
 				</div>
 <?php
-	}	if ($srv["warn_no_fs"] === 't' && $srv["done"] === 't') {
+	}
+	if ($srv["warn_no_fs"] === 't' && $srv["done"] === 't') {
 ?>
 				 <div class="alert alert-block alert-warning">
 					Warning: Server offers no forward-secret ciphers. Grade capped to <strong>A<sup>-</sup></strong>.
+				</div>
+<?php
+	}
+	if ($srv["sslv3"] === 't' && $srv["tlsv1"] === 'f' && $srv["tlsv1_1"] === 'f' && $srv["tlsv1_2"] === 'f' && $srv["done"] === 't' && $srv["error"] === NULL) {
+?>
+				 <div class="alert alert-block alert-danger">
+					Server does not support TLS 1.0 or better. Grade capped to <strong>F</strong>.
+				</div>
+<?php
+	}
+	if ($srv["sslv3"] === 't' && $srv["done"] === 't' && $srv["error"] === NULL) {
+?>
+				 <div class="alert alert-block alert-warning">
+					Server supports SSL 3. Grade capped to <strong>B</strong>.
+				</div>
+<?php
+	}
+	if ($srv["compression"] && $srv["done"] === 't' && $srv["error"] === NULL) {
+?>
+				 <div class="alert alert-block alert-warning">
+					Server supports TLS compression. Grade capped to <strong>C</strong>.
+				</div>
+<?php
+	}
+	if ($srv["warn_dh_2048"] === 't' && $srv["done"] === 't' && $srv["error"] === NULL) {
+?>
+				 <div class="alert alert-block alert-warning">
+					Server uses Diffie-Hellman parameters of &lt; 2048 bits. Grade capped to <strong>B</strong>.
 				</div>
 <?php
 	}
