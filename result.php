@@ -23,6 +23,7 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 		pg_prepare($dbconn, "find_result", "SELECT * FROM test_results WHERE server_name = $1 AND type = $2 ORDER BY test_date DESC LIMIT 1");
 
 		$result_domain = idn_to_utf8(strtolower(idn_to_ascii($_GET['domain'])));
+			$result_type = $_GET['type'];
 
 		$res = pg_execute($dbconn, "find_result", array($result_domain, $_GET['type']));
 
@@ -30,7 +31,6 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 		if ($result) {
 			$result_id = $result->test_id;
-			$result_type = $_GET['type'];
 		}
 	}
 
