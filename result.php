@@ -455,6 +455,13 @@ if (!$result) {
 		<h1>404</h1>
 		<div class="alert alert-block alert-danger">
 			Test result could not be found.
+<?
+	if (isset($result_domain) && isset($result_type)) {
+?>
+			<a href='submit.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>Start test.</a>
+<?
+	}
+?>
 		</div>
 <?php
 
