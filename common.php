@@ -199,9 +199,9 @@ function released($software) {
 			return "2014/11/24";
 		case "Prosody 0.9.8":
 			return "2015/03/26";
-		case "Prosody 0.9.8":
+		case "Prosody 0.9.9":
 			return "2016/01/08";
-		case "Prosody 0.9.8":
+		case "Prosody 0.9.10":
 			return "2016/01/27";
 		
 		case "Tigase 5.1.4-b3001":
