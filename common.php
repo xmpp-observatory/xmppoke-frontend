@@ -113,6 +113,10 @@ function released($software) {
 			return "2014/02/05";
 		case "Openfire 3.9.3":
 			return "2014/05/06";
+		case "Openfire 4.0.0":
+			return "2016/01/11";
+		case "Openfire 4.0.1":
+			return "2016/01/26";
 
 		case "ejabberd 2.0.5":
 			return "2009/04/03";
@@ -139,6 +143,18 @@ function released($software) {
 			return "2015/02/17";
 		case "ejabberd 15.03":
 			return "2015/03/20";
+		case "ejabberd 15.04":
+			return "2015/04/27";
+		case "ejabberd 15.06":
+			return "2015/06/25";
+		case "ejabberd 15.07":
+			return "2015/07/29";
+		case "ejabberd 15.09":
+			return "2015/09/30";
+		case "ejabberd 15.11":
+			return "2015/11/30";
+		case "ejabberd 16.01":
+			return "2016/01/13";
 		
 		case "jabberd2 2.2.1":
 			return "2008/07/30";
@@ -183,6 +199,10 @@ function released($software) {
 			return "2014/11/24";
 		case "Prosody 0.9.8":
 			return "2015/03/26";
+		case "Prosody 0.9.8":
+			return "2016/01/08";
+		case "Prosody 0.9.8":
+			return "2016/01/27";
 		
 		case "Tigase 5.1.4-b3001":
 			return "2013/01/14";
