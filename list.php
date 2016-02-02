@@ -2,7 +2,7 @@
 
 include("common.php");
 
-pg_prepare($dbconn, "list_results", "SELECT * FROM (SELECT DISTINCT ON (server_name, type) * FROM test_results ORDER BY server_name, type, test_date DESC) AS results ORDER BY test_date DESC LIMIT 200;");
+pg_prepare($dbconn, "list_results", "SELECT * FROM test_results ORDER BY test_date DESC LIMIT 200;");
 
 pg_prepare($dbconn, "find_score", "SELECT grade, total_score, certificate_score, done, error, warn_rc4_tls11, warn_no_fs FROM srv_results WHERE test_id = $1;");
 
