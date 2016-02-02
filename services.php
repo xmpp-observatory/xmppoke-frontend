@@ -20,9 +20,8 @@ $list = pg_fetch_all($res);
 
 foreach ($list as $result) {
 ?>
-	<item jid='<?= $result["server_name"] ?>'/>
+<item jid='<?= preg_replace('/\s+/', '', $result["server_name"]) ?>'/>
 <?php
 }
 
-?>
-</query>
+?></query>
