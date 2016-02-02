@@ -113,6 +113,8 @@ function released($software) {
 			return "2014/02/05";
 		case "Openfire 3.9.3":
 			return "2014/05/06";
+		case "Openfire 3.10.3":
+			return "2015/11/18";
 		case "Openfire 4.0.0":
 			return "2016/01/11";
 		case "Openfire 4.0.1":
@@ -139,6 +141,8 @@ function released($software) {
 			return "2013/03/29";
 		case "ejabberd 14.07":
 			return "2014/07/23";
+		case "ejabberd 14.12":
+			return "2014/12/17";
 		case "ejabberd 15.02":
 			return "2015/02/17";
 		case "ejabberd 15.03":
@@ -151,6 +155,8 @@ function released($software) {
 			return "2015/07/29";
 		case "ejabberd 15.09":
 			return "2015/09/30";
+		case "ejabberd 15.10":
+			return "2015/10/29";
 		case "ejabberd 15.11":
 			return "2015/11/30";
 		case "ejabberd 16.01":
@@ -171,6 +177,8 @@ function released($software) {
 			return "2012/08/26";
 		case "jabberd 2.3.2":
 			return "2014/02/24";
+		case "jabberd 2.3.4":
+			return "2015/10/30";
 
 		
 		case "Prosody 0.7.0rc1":
