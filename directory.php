@@ -118,16 +118,20 @@ foreach ($list as $result) {
 	$c2s_final_score = NULL;
 	$s2s_final_score = NULL;
 
-	foreach ($c2s_scores as $score) {
-		if (grade($score) && (!$c2s_final_score || grade($score) < $c2s_final_score)) {
-			$c2s_final_score = grade($score);
-		}
-	}
-	foreach ($s2s_scores as $score) {
-		if (grade($score) && (!$s2s_final_score || grade($score) < $s2s_final_score)) {
-			$s2s_final_score = grade($score);
-		}
-	}
+    if ($c2s_scores) {
+    	foreach ($c2s_scores as $score) {
+    		if (grade($score) && (!$c2s_final_score || grade($score) < $c2s_final_score)) {
+			    $c2s_final_score = grade($score);
+		    }
+	    }
+    }
+    if ($s2s_scores) {
+    	foreach ($s2s_scores as $score) {
+	    	if (grade($score) && (!$s2s_final_score || grade($score) < $s2s_final_score)) {
+		    	$s2s_final_score = grade($score);
+    		}
+    	}
+    }
 ?>
 			<tr>
 				<td>
