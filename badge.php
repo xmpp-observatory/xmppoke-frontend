@@ -22,17 +22,25 @@ if (isset($result_domain)) {
 
 	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1");
 
-	$res = pg_execute($dbconn, "find_srvs", array($result_c2s->test_id));
+	$c2s_srvs = array();
 
-	$c2s_srvs = pg_fetch_all($res);
+	if ($result_c2s) {
+		$res = pg_execute($dbconn, "find_srvs", array($result_c2s->test_id));
 
-	if ($c2s_srvs === FALSE) $c2s_srvs = array();
+		$c2s_srvs = pg_fetch_all($res);
 
-	$res = pg_execute($dbconn, "find_srvs", array($result_s2s->test_id));
+		if ($c2s_srvs === FALSE) $c2s_srvs = array();
+	}
 
-	$s2s_srvs = pg_fetch_all($res);
+	$s2s_srvs = array();
 
-	if ($s2s_srvs === FALSE) $s2s_srvs = array();
+	if ($result_s2s) {
+		$res = pg_execute($dbconn, "find_srvs", array($result_s2s->test_id));
+
+		$s2s_srvs = pg_fetch_all($res);
+
+		if ($s2s_srvs === FALSE) $s2s_srvs = array();
+	}
 
 	$c2s_final_score = NULL;
 	$s2s_final_score = NULL;
