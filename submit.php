@@ -27,9 +27,29 @@ if (isset($_REQUEST["domain"]) && isset($_REQUEST["type"])) {
 		if ($result && (time() - strtotime($result->test_date)) < 60 * 60) {
 			$error = '"' . htmlspecialchars($domain) . '" was tested too recently. Try again in an hour or <a href="result.php?domain=' . urlencode($domain) . '&type=' . $type . '">check the latest report</a>.';
 		} else {
-			exec("LD_LIBRARY_PATH=/home/thijs/openssl/lib LUA_PATH='/home/thijs/xmppoke/?.lua;/home/thijs/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua' LUA_CPATH='/home/thijs/xmppoke/?.so;/home/thijs/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so;/usr/lib/x86_64-linux-gnu/lua/5.1/?.so' lua5.1 /home/thijs/xmppoke/xmppoke.lua --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 -v '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' > /dev/null &");
+			# 20160228 edwinm was here
+			# exec("LD_LIBRARY_PATH=/home/thijs/openssl/lib LUA_PATH='/home/thijs/xmppoke/?.lua;/home/thijs/share/lua/5.1/?.lua;/usr/share/lua/5.1/?.lua' LUA_CPATH='/home/thijs/xmppoke/?.so;/home/thijs/lib/lua/5.1/?.so;/usr/lib/lua/5.1/?.so;/usr/lib/x86_64-linux-gnu/lua/5.1/?.so' lua5.1 /home/thijs/xmppoke/xmppoke.lua --cafile=/etc/ssl/certs/ca-certificates.crt --db_password='" . escapeshellarg($dbpass) . "' --mode=$type -d=15 -v '" . escapeshellarg($domain) . "' --version_jid='" . $version_jid . "' --version_password='" . $version_password . "' > /dev/null &");
 
-			header("Refresh: 1;result.php?domain=" . urlencode($domain) . "&type=$type");
+			$data = http_build_query(array('domain' => $domain, 'mode' => $type));
+			$options = array(
+				'http' => array(
+					'method' => 'POST',
+					'content' => $data,
+					'header' => "Content-type: application/x-www-form-urlencoded\r\n"
+				),
+			);
+			$context = stream_context_create($options);
+			$result = file_get_contents("http://localhost:1337/", false, $context);
+			if ($result === FALSE) {
+				$error = 'Failed to enqueue a test for "' . htmlspecialchars($domain) . '".';
+			} else {
+				$result = json_decode($result, true);
+				if ($result['success'] === TRUE) {
+					header("Refresh: 1;result.php?domain=" . urlencode($domain) . "&type=$type");
+				} else {
+					$error = $result['error'];
+				}
+			}
 		}
 
 	} else {
