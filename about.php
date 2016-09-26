@@ -54,7 +54,7 @@ common_header("");
 
 			<strong>How do I improve my Certificate score?</strong>
 			<p>
-				The certificate score is either 0, for untrusted or invalid certificates, or 100. Scoring a 0 means your grade is capped to “F”. To obtain 100, you need a certificate that is trusted and valid for your XMPP domain. See <a href="https://www.startssl.com/">StartCom</a> for free XMPP certificates.
+				The certificate score is either 0, for untrusted or invalid certificates, or 100. Scoring a 0 means your grade is capped to “F”. To obtain 100, you need a certificate that is trusted and valid for your XMPP domain. See <a href="https://letsencrypt.org/">Let’s Encrypt</a> for free XMPP certificates.
 			</p>
 
 			<strong>How do I improve my Public key score?</strong>
