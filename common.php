@@ -119,6 +119,22 @@ function released($software) {
 			return "2016/01/11";
 		case "Openfire 4.0.1":
 			return "2016/01/26";
+		case "Openfire 4.0.2":
+			return "2016/03/21";
+		case "Openfire 4.0.3":
+			return "2016/08/17";
+		case "Openfire 4.0.4":
+			return "2016/12/01";
+		case "Openfire 4.1.0":
+			return "2016/12/21";
+		case "Openfire 4.1.1":
+			return "2016/12/31";
+		case "Openfire 4.1.2":
+			return "2017/02/18";
+		case "Openfire 4.1.3":
+			return "2017/02/24";
+		case "Openfire 4.1.4":
+			return "2017/05/04";
 
 		case "ejabberd 2.0.5":
 			return "2009/04/03";
@@ -127,7 +143,7 @@ function released($software) {
 		case "ejabberd 2.1.5":
 			return "2010/08/03";
 		case "ejabberd 2.1.9":
-			return "2011/10/3";
+			return "2011/10/03";
 		case "ejabberd 2.1.10":
 		case "ejabberd 2.1.10 Jabbim I need Holidays Edition":
 			return "2011/12/24";
@@ -161,6 +177,26 @@ function released($software) {
 			return "2015/11/30";
 		case "ejabberd 16.01":
 			return "2016/01/13";
+		case "ejabberd 16.02":
+			return "2016/02/29";
+		case "ejabberd 16.03":
+			return "2016/03/30";
+		case "ejabberd 16.04":
+			return "2016/04/29";
+		case "ejabberd 16.06":
+			return "2016/06/29";
+		case "ejabberd 16.08":
+			return "2016/08/04";
+		case "ejabberd 16.09":
+			return "2016/09/22";
+		case "ejabberd 16.12":
+			return "2016/12/23";
+		case "ejabberd 17.01":
+			return "2017/01/20";
+		case "ejabberd 17.03":
+			return "2017/03/24";
+		case "ejabberd 17.04":
+			return "2017/04/11";
 		
 		case "jabberd2 2.2.1":
 			return "2008/07/30";
@@ -179,6 +215,14 @@ function released($software) {
 			return "2014/02/24";
 		case "jabberd 2.3.4":
 			return "2015/10/30";
+		case "jabberd 2.3.5":
+			return "2016/01/28";
+		case "jabberd 2.3.6":
+			return "2016/02/27";
+		case "jabberd 2.4.0":
+			return "2016/05/22";
+		case "jabberd 2.5.0":
+			return "2017/01/05";
 
 		
 		case "Prosody 0.7.0rc1":
@@ -211,6 +255,10 @@ function released($software) {
 			return "2016/01/08";
 		case "Prosody 0.9.10":
 			return "2016/01/27";
+		case "Prosody 0.9.11":
+			return "2016/11/03";
+		case "Prosody 0.9.12":
+			return "2017/01/10";
 		
 		case "Tigase 5.1.4-b3001":
 			return "2013/01/14";
