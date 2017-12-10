@@ -19,6 +19,7 @@ services:
       POSTGRES_HOST: db
       DB_NAME: xmppoke
       DB_USER: xmppoke
+      QUEUE_URL: "http://poker:1337"
   poker:
     image: xsfjonas/xmppoke-docker:latest
     links:
