@@ -41,7 +41,7 @@ common_header(NULL);
 if (!$list) {
 
 ?>
-		<h1>404</h1>
+		<h1>Not found</h1>
 		<div class="alert alert-block alert-error">
 			Test results could not be found.
 		</div>
@@ -99,7 +99,7 @@ foreach ($list as $result) {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="./js/jquery.js"></script>
 	<script src="./js/jquery.timeago.js"></script>
-	<script src="./js/bootstrap.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 
 	<script src="./js/main.js"></script>
 

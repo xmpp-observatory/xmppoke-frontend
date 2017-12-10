@@ -6,7 +6,7 @@ header("Cache-Control: max-age=1800");
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
 // Different policy for the charts API
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com https://ajax.googleapis.com");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://www.google.com https://ajax.googleapis.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com");
 
 common_header("");
 
@@ -300,9 +300,11 @@ if ($cas === FALSE) {
 
 				<br>
 
+<!--
 				<div class="alert alert-block alert-warning">
 					<strong>Warning:</strong> On January 25th 2014 the test was updated, so results prior to this are not taken into account.
 				</div>
+-->
 
 				<div class="row">
 					<div class="col-md-6">
@@ -456,12 +458,12 @@ $sum = $trusted_valid[0]["count"] + $trusted_valid[1]["count"] + $trusted_valid[
 						<th>Untrusted</th>
 					</tr>
 					<tr>
-						<th>Valid</td>
+						<th>Valid</th>
 						<td><?= $trusted_valid[3]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[3]["count"] / $sum, 1) ?>%</span></td>
 						<td><?= $trusted_valid[1]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[1]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
 					<tr>
-						<th>Invalid</td>
+						<th>Invalid</th>
 						<td><?= $trusted_valid[2]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[2]["count"] / $sum, 1) ?>%</span></td>
 						<td><?= $trusted_valid[0]["count"] ?> <span class="text-muted"><?= round(100 * $trusted_valid[0]["count"] / $sum, 1) ?>%</span></td>
 					</tr>
@@ -568,10 +570,10 @@ foreach ($cas as $result) {
 						<td><?= $result["certificate_name"] === NULL ? "(Unknown)" : $result["certificate_name"] ?></td>
 						<td><?= fp($result["digest_sha1"]) ?></td>
 						<td><?= $result["c"] ?></td>
+					</tr>
 <?php
 }
 ?>
-					</tr>
 				</table>
 
 				<h3 id="1024-2014">Servers using &lt;2048-bit RSA certificates which expires after 01-01-2014 <small class="text-muted"><?= count($too_weak_1024_2014) ?> results</small></h3>
@@ -722,7 +724,7 @@ foreach ($shares_private_keys as $result) {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="./js/jquery.js"></script>
 	<script src="./js/jquery.timeago.js"></script>
-	<script src="./js/bootstrap.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 
 	<script src="./js/main.js"></script>
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>

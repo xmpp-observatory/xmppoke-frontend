@@ -40,16 +40,16 @@ common_header("");
 			
 			<h3>XMPPoke</h3>
 			<p>
-				The backend of this service is provided by XMPPoke, which can be found on <a href="https://bitbucket.org/xnyhps/xmppoke">https://bitbucket.org/xnyhps/xmppoke</a>.
+				The backend of this service is provided by XMPPoke, which can be found on <a href="https://bitbucket.org/xnyhps/xmppoke">https://bitbucket.org/xnyhps/xmppoke</a>. The frontend is based on <a href="https://bitbucket.org/xnyhps/xmppoke-frontend">https://bitbucket.org/xnyhps/xmppoke-frontend</a>.
 			</p>
 
 			<h3>Frequently Asked Questions</h3>
 			<strong id="slow">Why is the test so slow?</strong>
 			<p>
-				The test needs to make a large number of connections to the server to determine what it supports: one connection for every TLS version, one for every cipher it and some more for the other tests, like determining whether the server honors the the client's cipher order. Making 30 connections to the server is not uncommon.
+				The test needs to make a large number of connections to the server to determine what it supports: one connection for every TLS version, one for every cipher and some more for the other tests, like determining whether the server honors the the client's cipher order. Making 30 connections to the server is not uncommon.
 			</p>
 			<p>
-				During development it was observed that some servers require very strict rate limiting. Only when waiting 15 seconds between connection attempts it was possible to stay under these strict limits. Therefore the test is expected to take around 8 minutes. This is repeated for every SRV record for the server.
+				During development it was observed that some servers require very strict rate limiting. Only when waiting 20 seconds between connection attempts it was possible to stay under these strict limits. Therefore the test is expected to take around 10 minutes. This is repeated for every SRV record for the server.
 			</p>
 
 			<strong>How do I improve my Certificate score?</strong>
@@ -61,7 +61,6 @@ common_header("");
 			<p>
 				The public key score depends on two factors: the size of your RSA key pair and whether any cipher suites are enabled that don't use this key.
 			</p>
-			<p>
 				<table class="table">
 					<tr>
 						<th>RSA bitsize</th>
@@ -92,7 +91,6 @@ common_header("");
 						<td>100</td>
 					</tr>
 				</table>
-			</p>
 			<p>Enabling an anonymous DH cipher suite (ADH) caps your public key score to 0, as these do not use a public key for authentication. Enabling EXPORT cipher suites caps your score to 40, as these use an ephemeral 512-bit RSA key.</p>
 
 			<p>RSA keys larger than 4096 bits have known compatibility problems, notably with OpenSSL.</p>
@@ -101,7 +99,6 @@ common_header("");
 			<p>
 				Your protocol score is the average of the score for the lowest and the highest protocol you support. This means you have two ways of increasing your score: disabling older protocols and adding new ones. Note that it is recommended to keep support for TLS 1.0 for compatibility.
 			</p>
-			<p>
 				<table class="table">
 					<tr>
 						<th>Protocol</th>
@@ -128,13 +125,11 @@ common_header("");
 						<td>100</td>
 					</tr>
 				</table>
-			</p>
 
 			<strong>How do I improve my Cipher score?</strong>
 			<p>
 				You cipher score is the average of the score of the ciper suite with the smallest key and the cipher suite with the largest key. Note that it is recommended to keep support for 128 bit AES for compatibility.
 			</p>
-			<p>
 				<table class="table">
 					<tr>
 						<th>Bitsize</th>
@@ -157,7 +152,6 @@ common_header("");
 						<td>100</td>
 					</tr>
 				</table>
-			</p>
 
 		</div>
 
@@ -171,7 +165,7 @@ common_header("");
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="./js/jquery.js"></script>
 	<script src="./js/jquery.timeago.js"></script>
-	<script src="./js/bootstrap.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 
 	<script src="./js/main.js"></script>
 

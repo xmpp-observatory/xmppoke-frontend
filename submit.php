@@ -59,7 +59,7 @@ if (isset($_REQUEST["domain"]) && isset($_REQUEST["type"])) {
 	$error = "Something went wrong.";
 }
 
-common_header("");
+common_header('<meta http-equiv="refresh" content="2; url=result.php?domain=' . urlencode($domain) . '&type=' . $type . '">');
 
 ?>
 

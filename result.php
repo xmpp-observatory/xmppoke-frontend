@@ -3,7 +3,7 @@
 include("common.php");
 
 header("Cache-Control: must-revalidate, max-age=0");
-header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'");
+header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com");
 
 if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
@@ -36,11 +36,15 @@ if (isset($_GET['id']) || (isset($_GET['domain']) && isset($_GET['type']))) {
 
 	pg_prepare($dbconn, "find_srvs", "SELECT * FROM srv_results WHERE test_id = $1 ORDER BY done DESC, error DESC, priority, weight DESC, port, target");
 
-	$res = pg_execute($dbconn, "find_srvs", array($result_id));
+	if (isset($result_id)) {
+		$res = pg_execute($dbconn, "find_srvs", array($result_id));
 
-	$srvs = pg_fetch_all($res);
+		$srvs = pg_fetch_all($res);
 
-	if ($srvs === FALSE) {
+		if ($srvs === FALSE) {
+			$srvs = array();
+		}
+	} else {
 		$srvs = array();
 	}
 
@@ -309,7 +313,7 @@ if ($cert["private_key"] !== NULL) {
 ?>
 				</select>
 			</dt>
-			<dd><pre type="text" id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
+			<dd><pre id="hashfield<?= $i ?>"><?= fp($cert["digest_sha1"]) ?></pre></dd>
 		</dl>
 
 <?php
@@ -377,11 +381,11 @@ $refresh = NULL;
 
 if ($result) {
 	// In the first 30 seconds, always refresh every 5 seconds, as the SRV results still need to come in.
-	// In the first 15 minutes, refresh every 15 seconds when not yet done.
+	// In the first 15 minutes, refresh every 20 seconds when not yet done.
 	if (time() - strtotime($result->test_date) < 30) {
 		$refresh = 5;
 	} else if (!$done && time() - strtotime($result->test_date) < 60 * 15) {
-		$refresh = 15;
+		$refresh = 20;
 	} else {
 		$date = strtotime($result->test_date);
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s", $date + 30 * 60) . " GMT");
@@ -423,6 +427,10 @@ if ($result) {
 	<div class="container">
 		<div class="row">
 
+<?php
+if ($result) {
+
+?>
 			<div class="col-md-3">
 				<div id="sidebar" class="side-bar" role="complementary">
 					<ul class="nav">
@@ -446,13 +454,16 @@ if ($result) {
 					</ul>
 				</div>
 			</div>
+<?
+	}
+?>
 
 			<div class="col-md-9">
 <?php
 if (!$result) {
 
 ?>
-		<h1>404</h1>
+		<h1>Not found</h1>
 		<div class="alert alert-block alert-danger">
 			Test result could not be found.
 <?
@@ -506,7 +517,7 @@ foreach ($srvs as $srv) {
 		if (time() - strtotime($result->test_date) < 60 * 30) {
 ?>
 		<div class="alert alert-block alert-warning">
-			<img src="img/ajax-loader.gif"> Test did not complete successfully or is still in progress. <a class="text-muted" href="about.php#slow">Why is this taking so long?</a>
+			<img src="img/ajax-loader.gif" alt="In progress"> Test did not complete successfully or is still in progress. <a class="text-muted" href="about.php#slow">Why is this taking so long?</a>
 		</div>
 <?php
 		} else {
@@ -615,7 +626,7 @@ foreach ($srvs as $srv) {
 	if ($srv["tlsv1_2"] === 'f' && $srv["done"] === 't' && $srv["error"] === NULL) {
 ?>
 				<div class="alert alert-block alert-danger">
-					Server does not support the newest version, TLS 1.2. Grade capped to <strong>C</strong>.
+					Server does not support TLS 1.2. Grade capped to <strong>C</strong>.
 				</div>
 <?php
 	}
@@ -691,7 +702,7 @@ foreach ($srvs as $srv) {
 
 if (count($srvs) > 1) {
 ?>
-				</div>
+			</div>
 			<p><a class="btn btn-default" data-toggle="collapse" data-target="#collapse-scores">Show all <?= count($srvs) ?> SRV targets <span class="glyphicon glyphicon-collapse-down"></span></a></p>
 		</div>
 <?php
@@ -778,8 +789,6 @@ foreach ($srvs as $srv) {
 <?php
 	}
 ?>
-		</table>
-
 		<h5>Post-TLS</h5>
 
 <?php
@@ -873,7 +882,14 @@ foreach ($srvs as $srv) {
 		}
 ?>
 		<h4 class="page-header" title="_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars(idn_to_utf8($srv["target"])) ?>">_<?= $srv["port"] ?>._tcp.<?= htmlspecialchars($srv["target"]) ?> <span class="label <?= $srv["tlsa_dnssec_good"] === 't' ? "label-success" : ($srv["tlsa_dnssec_bogus"] === 't' ? "label-warning" : "label-default")?>"><?= $srv["tlsa_dnssec_good"] === 't' ? "" : ($srv["tlsa_dnssec_bogus"] === 't' ? "BOGUS " : "NO ")?>DNSSEC</span></h4>
+<?php
 
+	$res = pg_execute($dbconn, "find_tlsas", array($srv["srv_result_id"]));
+
+	$tlsas = pg_fetch_all($res);
+
+	if ($tlsas) {
+?>
 		<table class="table table-bordered table-striped">
 			<tr>
 				<th>Verified</th>
@@ -884,11 +900,7 @@ foreach ($srvs as $srv) {
 			</tr>
 <?php
 
-	$res = pg_execute($dbconn, "find_tlsas", array($srv["srv_result_id"]));
-
-	$tlsas = pg_fetch_all($res);
-
-	if ($tlsas) foreach ($tlsas as $tlsa) {
+		foreach ($tlsas as $tlsa) {
 ?>
 		<tr>
 			<td><span class="label label-<?= $tlsa["verified"] === 't' ? "success" : "warning" ?>"><?= $tlsa["verified"] === 't' ? "YES" : "NO" ?></span></td>
@@ -896,7 +908,7 @@ foreach ($srvs as $srv) {
 			<td><?= tlsa_selector($tlsa["selector"]) ?></td>
 			<td><?= tlsa_match($tlsa["match"]) ?></td>
 <?php
-		if ($tlsa["match"] == 0) {
+			if ($tlsa["match"] == 0) {
 ?>
 			<td>
 				<div class="collapse-group">
@@ -905,24 +917,25 @@ foreach ($srvs as $srv) {
 				</div>
 			</td>
 <?
-		} else {
+			} else {
 ?>
 			<td><pre><?= fp(bin2hex(pg_unescape_bytea($tlsa["data"]))) ?></pre></td>
 <?
-		}
+			}
 ?>
 		</tr>
 <?php
-	}
+		}
 ?>
 		</table>
 <?php
+	}
 }
 
 if (count($srvs) > 1) {
 ?>
-				</div>
 			<p><a class="btn btn-default" data-toggle="collapse" data-target="#collapse-tlsa">Show all <?= count($srvs) ?> SRV targets <span class="glyphicon glyphicon-collapse-down"></span></a></p>
+			</div>
 		</div>
 <?php
 }
@@ -989,10 +1002,12 @@ foreach ($srvs as $srv) {
 			$prev_signed_by_id = $cert["signed_by_id"];
 
 			if ($prev_signed_by_id === NULL) {
+				$i = $i + 1;
 				break;
 			}
 
 			if ($cert["signed_by_id"] === $cert["certificate_id"]) {
+				$i = $i + 1;
 				break;
 			}
 
@@ -1200,7 +1215,7 @@ if (count($srvs) > 1) {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="./js/jquery.js"></script>
 	<script src="./js/jquery.timeago.js"></script>
-	<script src="./js/bootstrap.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 
 	<script src="./js/main.js"></script>
 

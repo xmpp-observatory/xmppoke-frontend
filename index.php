@@ -67,7 +67,7 @@ common_header("");
 							</div><!-- /btn-group -->
 					</div><!-- /input-group -->
 				</form>
-				<br>
+				<br />
 				<small class="text-muted">Submit a publicly accessible XMPP server for testing. This test will make a large number of connections to the server and will take around 8-15 minutes. You can test either the client-to-server encryption or the server-to-server encryption.</small>
 
 				<br>
@@ -140,7 +140,7 @@ if ($news) {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="./js/jquery.js"></script>
 	<script src="./js/jquery.timeago.js"></script>
-	<script src="./js/bootstrap.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
 
 	<script src="./js/main.js"></script>
 

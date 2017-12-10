@@ -233,7 +233,7 @@ function common_header($head) {
 		<title>IM Observatory</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
-		<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="css/bootstrap-sortable.css" rel="stylesheet" media="screen">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">

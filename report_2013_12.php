@@ -3,7 +3,7 @@
 include("common.php");
 
 // Different policy for the charts API
-header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://www.google.com https://ajax.googleapis.com");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://www.google.com https://ajax.googleapis.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com");
 
 common_header("");
 
@@ -106,7 +106,7 @@ common_header("");
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="./js/jquery.js"></script>
   <script src="./js/jquery.timeago.js"></script>
-  <script src="./js/bootstrap.js"></script>
+  <script src="./js/bootstrap.min.js"></script>
   <script src="./js/bootstrap-sortable.js"></script>
 
   <script src="./js/main.js"></script>
