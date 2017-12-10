@@ -46,7 +46,7 @@ common_header("");
 		<div class="jumbotron">
 		  <div class="container">
 			<h1>IM Observatory</h1>
-			<p>Testing the security of the Jabber/XMPP network.</p>
+			<p>Testing the security of the Jabber/XMPP network since '13.</p>
 		  </div>
 		</div>
 
