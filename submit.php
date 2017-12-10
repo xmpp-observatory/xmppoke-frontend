@@ -39,7 +39,7 @@ if (isset($_REQUEST["domain"]) && isset($_REQUEST["type"])) {
 				),
 			);
 			$context = stream_context_create($options);
-			$result = file_get_contents("http://localhost:1337/", false, $context);
+			$result = file_get_contents("http://poker:1337/", false, $context);
 			if ($result === FALSE) {
 				$error = 'Failed to enqueue a test for "' . htmlspecialchars($domain) . '".';
 			} else {
