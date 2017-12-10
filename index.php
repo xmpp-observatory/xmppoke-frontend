@@ -108,11 +108,11 @@ foreach ($list as $result) {
 				<p>Looking for a server to register an account? Check the list of <a href="directory.php">free, public and secure XMPP servers</a>.</p>
 
 				<br>
-
+<!--
 				<h3>Join the network</h3>
 				<p>Interested in setting up your own XMPP server? Our <a href="howto.php">HOWTO page</a> gets you started.</p>
 
-				<br>
+				<br>-->
 				<h3>Learn about XMPP</h3>
 				<p>XMPP is an open standard for instant messaging and real-time communication. Visit <a href="http://xmpp.org/">xmpp.org</a> for all the details.</p>
 
