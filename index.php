@@ -114,7 +114,7 @@ foreach ($list as $result) {
 
 				<br>-->
 				<h3>Learn about XMPP</h3>
-				<p>XMPP is an open standard for instant messaging and real-time communication. Visit <a href="http://xmpp.org/">xmpp.org</a> for all the details.</p>
+				<p>XMPP is an open standard for instant messaging and real-time communication. Visit <a href="https://xmpp.org/">xmpp.org</a> for all the details.</p>
 
 				<br>
 				<h3>Latest news</h3>
