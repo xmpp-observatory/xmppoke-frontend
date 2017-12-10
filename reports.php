@@ -108,7 +108,7 @@ $res = pg_execute($dbconn, "bitsizes", array());
 $bitsizes = pg_fetch_all($res);
 
 
-pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificate_name(certificates.signed_by_id) AS issuer_certificate_name, trusted, valid_identity FROM (SELECT * FROM recent_results) AS results, srv_results, srv_certificates, certificates WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND pubkey_bitsize < 2048 AND (pubkey_type = 'RSA' OR pubkey_type = 'DSA') AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
+pg_prepare($dbconn, "1024-2014", "SELECT results.*, certificates.certificate_id, certificate_subjects.value AS issuer_certificate_name, trusted, valid_identity FROM (SELECT * FROM recent_results) AS results, srv_results, srv_certificates, certificates LEFT JOIN certificate_subjects ON certificate_subjects.certificate_id = certificates.signed_by_id AND certificate_subjects.name = 'commonName' WHERE srv_results.test_id = results.test_id AND srv_results.done = 't' AND srv_results.error IS NULL AND srv_certificates.certificate_id = certificates.certificate_id AND pubkey_bitsize < 2048 AND (pubkey_type = 'RSA' OR pubkey_type = 'DSA') AND notafter > '2013-12-31' AND notbefore > '2012-07-01' AND chain_index = 0 AND srv_certificates.srv_result_id = srv_results.srv_result_id ORDER BY server_name, type, test_date DESC;");
 
 $res = pg_execute($dbconn, "1024-2014", array());
 
@@ -233,7 +233,7 @@ if ($unencrypted === FALSE) {
 }
 
 
-pg_prepare($dbconn, "cas", "SELECT certificate_name(certificates.signed_by_id), issuer.digest_sha1, count(*) AS c FROM certificates, certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT test_id FROM recent_results) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
+pg_prepare($dbconn, "cas", "SELECT certificate_subjects.value AS certificate_name, issuer.digest_sha1, count(*) AS c FROM certificates LEFT JOIN certificate_subjects ON certificate_subjects.certificate_id = certificates.signed_by_id AND certificate_subjects.name = 'commonName', certificates as issuer WHERE certificates.certificate_id IN (SELECT certificate_id FROM srv_results, srv_certificates where test_id in (SELECT test_id FROM recent_results) AND error IS NULL AND done = 't' AND srv_certificates.srv_result_id = srv_results.srv_result_id AND chain_index = 0) GROUP BY certificate_subjects.value, certificates.signed_by_id, issuer.digest_sha1, issuer.certificate_id HAVING issuer.certificate_id = certificates.signed_by_id ORDER BY c DESC LIMIT 30;");
 
 $res = pg_execute($dbconn, "cas", array());
 
