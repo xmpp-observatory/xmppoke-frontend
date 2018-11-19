@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 
-RUN hg clone https://bitbucket.org/horazont/xmppoke-frontend /var/www/html/
+RUN hg clone https://bitbucket.org/jssfr/xmppoke-frontend /var/www/html/
 COPY secrets.php /var/www/html/
 #COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 
