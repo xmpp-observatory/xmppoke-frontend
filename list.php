@@ -72,14 +72,15 @@ foreach ($list as $result) {
 				<td><?= $result["type"] ?> to server</td>
 <?php
 	$final_score = NULL;
-
-	foreach ($scores as $score) {
-		if (grade($score) && (!$final_score || grade($score) < $final_score)) {
-			$final_score = grade($score);
-		}
-	}
+    if ($scores) {
+	    foreach ($scores as $score) {
+		    if (grade($score) && (!$final_score || grade($score) < $final_score)) {
+			    $final_score = grade($score);
+		    }
+	    }
+    }
 ?>
-				<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
+				<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= $final_score !== NULL && count($scores) > 1 ? "*" : "" ?></td>
 				<td><time class="timeago" datetime="<?= date("c", strtotime($result["test_date"])) ?>"><?= date("c", strtotime($result["test_date"])) ?></time></td>
 			</tr>
 <?php
