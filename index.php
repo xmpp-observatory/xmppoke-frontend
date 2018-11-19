@@ -94,7 +94,7 @@ foreach ($list as $result) {
 		}
 	}
 ?>
-							<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= count($scores) > 1 ? "*" : "" ?></td>
+							<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= $final_score !== NULL && count($scores) > 1 ? "*" : "" ?></td>
 						</tr>
 <?php
 }
