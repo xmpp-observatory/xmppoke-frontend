@@ -76,27 +76,29 @@ common_header("");
 					<table class="table recent-results">
 <?php
 
-foreach ($list as $result) {
-	$res = pg_execute($dbconn, "find_score", array($result["test_id"]));
+if ($list) {
+	foreach ($list as $result) {
+		$res = pg_execute($dbconn, "find_score", array($result["test_id"]));
 
-	$scores = pg_fetch_all($res);
-?>
-						<tr>
-							<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a> <span class="text-muted"><?= $result["type"] ?></span></td>
-<?php
-	$final_score = NULL;
+		$scores = pg_fetch_all($res);
+	?>
+							<tr>
+								<td><a href="result.php?domain=<?= $result["server_name"] ?>&amp;type=<?= $result["type"] ?>"><?= $result["server_name"] ?></a> <span class="text-muted"><?= $result["type"] ?></span></td>
+	<?php
+		$final_score = NULL;
 
-	if ($scores) {
-		foreach ($scores as $score) {
-			if (grade($score) && (!$final_score || grade($score) < $final_score)) {
-				$final_score = grade($score);
+		if ($scores) {
+			foreach ($scores as $score) {
+				if (grade($score) && (!$final_score || grade($score) < $final_score)) {
+					$final_score = grade($score);
+				}
 			}
 		}
+	?>
+								<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= $final_score !== NULL && count($scores) > 1 ? "*" : "" ?></td>
+							</tr>
+	<?php
 	}
-?>
-							<td><span class="<?= color_label_text_grade($final_score) ?> label"><?= $final_score === NULL ? "?" : $final_score ?></span><?= $final_score !== NULL && count($scores) > 1 ? "*" : "" ?></td>
-						</tr>
-<?php
 }
 ?>
 					</table>
