@@ -11,6 +11,8 @@ CREATE TABLE test_results
 , error TEXT
 );
 
+CREATE INDEX test_results_by_date ON test_results (test_date);
+
 CREATE TABLE srv_results
 ( srv_result_id SERIAL UNIQUE
 , test_id INTEGER REFERENCES test_results(test_id)
