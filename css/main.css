@@ -64,3 +64,41 @@ h2[id], h3[id] {
 	width: 100%;
 	height: 450px;
 }
+
+/* source: loading.io */
+.lds-facebook {
+	display: inline-block;
+	position: relative;
+	width: 2em;
+	height: 1em;
+}
+.lds-facebook div {
+	display: inline-block;
+	position: absolute;
+	left: -0.6em;
+	width: .5em;
+	background: #999;
+	animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+	left: -0.6em;
+	animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+	left: 0.15em;
+	animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+	left: 0.9em;
+	animation-delay: 0s;
+}
+@keyframes lds-facebook {
+	0% {
+		top: 0;
+		height: 1em;
+	}
+	50%, 100% {
+		top: 0.25em;
+		height: 0.5em;
+	}
+}

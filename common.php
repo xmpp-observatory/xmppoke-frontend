@@ -49,7 +49,8 @@ function color_label_text_grade($score) {
 		case 'T':
 			return "label-warning";
 		case NULL:
-			return "label-default";
+        case '?':
+            return "label-default";
 		default:
 			return "label-danger";
 	}
@@ -300,4 +301,32 @@ function common_header($head) {
 
 <?php
 
+}
+
+function show_score_label($result, $scores) {
+    $final_score = NULL;
+    $all_error = $scores; // 'false' if no scores are provided.
+    $all_done = true;
+    if ($scores) {
+        foreach ($scores as $score) {
+            if (grade($score) && (!$final_score || grade($score) < $final_score)) {
+                $final_score = grade($score);
+            }
+            if ($score["done"] !== "t") {
+                $all_done = false;
+            }
+            if ($score["error"] === NULL) {
+                $all_error = false;
+            }
+        }
+    }
+
+    if (!$all_done) {
+        $label = "<div class=\"lds-facebook\"><div></div><div></div><div></div></div>";
+    } else if ($all_error || $result["error"] !== NULL) {
+        $label = "E";
+    } else {
+        $label = $final_score !== NULL ? $final_score : "?";
+    }
+?><span class="<?= $all_done ? color_label_text_grade($label) : "" ?> label"><?= $label ?></span><?= $final_score !== NULL && count($scores) > 1 ? "*" : "" ?><?php
 }
