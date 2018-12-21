@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    build: database
+    environment:
+      POSTGRES_USER: xmppoke
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+    - /var/lib/postgresql/data
+  web:
+    build: .
+    ports:
+    - "8000:80"
+    links:
+    - poker
+    - db
+    environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: db
+      DB_NAME: xmppoke
+      DB_USER: xmppoke
+      QUEUE_URL: "http://poker:1337"
+  poker:
+    image: xsfjonas/xmppoke-docker:latest
+    links:
+    - db
+    environment:
+      XMPPOKE_DB_HOST: db
+      XMPPOKE_QUEUE_LISTEN: 0.0.0.0

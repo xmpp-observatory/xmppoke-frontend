@@ -1,0 +1,19 @@
+diff -r 1cebf91a82ba submit.php
+--- a/submit.php	Mon Sep 26 21:45:57 2016 +0200
++++ b/submit.php	Sat Dec 09 16:32:25 2017 +0100
+@@ -39,7 +39,7 @@
+ 				),
+ 			);
+ 			$context = stream_context_create($options);
+-			$result = file_get_contents("http://localhost:1337/", false, $context);
++			$result = file_get_contents("http://poker:1337/", false, $context);
+ 			if ($result === FALSE) {
+ 				$error = 'Failed to enqueue a test for "' . htmlspecialchars($domain) . '".';
+ 			} else {
+@@ -116,4 +116,4 @@
+ 	<script src="./js/main.js"></script>
+ 
+ 	</body>
+-</html>
+\ No newline at end of file
++</html>
