@@ -469,7 +469,15 @@ if (!$result) {
 <?
 	if (isset($result_domain) && isset($result_type)) {
 ?>
-			<a href='submit.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>Start test.</a>
+        <form id="test-server" action="submit.php" method="post">
+            <div class="input-group">
+                <input type="hidden" name="type" id="type" form="test-server" value="<?= $result_type ?>">
+                <input type="hidden" name="domain" id="domain" form="test-server" value="<?= $result_domain ?>">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default">Start test.</button>
+                </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+        </form>
 <?
 	}
 ?>
@@ -488,7 +496,15 @@ if (!$result) {
 <?php
 if (time() - strtotime($result->test_date) > 3600) {
 ?>
-		| <a href='submit.php?domain=<?= urlencode($result_domain) ?>&amp;type=<?= $result_type ?>'>Retest</a>
+		| <form id="retest-server" action="submit.php" method="post">
+        <div class="input-group">
+            <input type="hidden" name="type" id="type" form="retest-server" value="<?= $result_type ?>">
+            <input type="hidden" name="domain" id="domain" form="retest-server" value="<?= $result_domain ?>">
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-default">Retest</button>
+            </div><!-- /btn-group -->
+        </div><!-- /input-group -->
+    </form>
 <?php
 }
 ?>
