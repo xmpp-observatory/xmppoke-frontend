@@ -1,4 +1,10 @@
 <?php
+// Don't accept anything but a POST, to prevent crawlers from starting tests.
+// See https://github.com/xmpp-observatory/xmppoke-frontend/issues/5
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    return;
+}
 
 include("common.php");
 
