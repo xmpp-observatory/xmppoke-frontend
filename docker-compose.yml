@@ -21,7 +21,7 @@ services:
       DB_USER: xmppoke
       QUEUE_URL: "http://poker:1337"
   poker:
-    image: xsfjonas/xmppoke-docker:latest
+    image: xmppobservatory/xmppoke:latest
     links:
     - db
     environment:
