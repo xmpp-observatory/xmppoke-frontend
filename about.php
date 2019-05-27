@@ -40,7 +40,7 @@ common_header("");
 			
 			<h3>XMPPoke</h3>
 			<p>
-				The backend of this service is provided by XMPPoke, which can be found on <a href="https://bitbucket.org/xnyhps/xmppoke">https://bitbucket.org/xnyhps/xmppoke</a>. The frontend is based on <a href="https://bitbucket.org/xnyhps/xmppoke-frontend">https://bitbucket.org/xnyhps/xmppoke-frontend</a>.
+				The backend of this service is provided by XMPPoke, which can be found on <a href="https://github.com/xmpp-observatory/xmppoke">https://github.com/xmpp-observatory/xmppoke</a>. The frontend is based on <a href="https://github.com/xmpp-observatory/xmppoke-frontend">https://github.com/xmpp-observatory/xmppoke-frontend</a>.
 			</p>
 
 			<h3>Frequently Asked Questions</h3>
