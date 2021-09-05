@@ -1094,8 +1094,8 @@ foreach ($srvs as $srv) {
 						</span></td>
 					</tr>
 					<tr>
-						<td><abbr class="my-popover" title="" data-content="Although replaced by TLSv1.1 and TLSv1.2, it is <strong>recommended</strong> to support TLSv1 for compatibility with older clients. There are no known security issues with TLSv1.0 for XMPP." data-toggle="popover" data-original-title="TLSv1">TLSv1</abbr></td>
-						<td><span class="label label-default">
+						<td><abbr class="my-popover" title="" data-content="TLSv1 is old and not recommended." data-toggle="popover" data-original-title="TLSv1">TLSv1</abbr></td>
+            <td><span class="label <?= $srv["tlsv1"] === 't' ? "label-warning" : "label-default" ?>">
 							<?= show_bool($srv["tlsv1"]) ?>
 						</span></td>
 					</tr>
